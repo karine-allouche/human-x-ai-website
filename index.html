@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human × AI — The playbook to build the company of tomorrow</title>
+<meta name="description" content="A playbook for AI transformation that produces measurable P&L results, accelerates innovation, and rebuilds the organisation to be customer-centred, intelligence-embedded, and learning-loop ready. Judgment before automation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1c1c;
+    --charcoal: #333333;
+    --slate: #5a5a5a;
+    --quiet: #909090;
+    --rule: #ececec;
+    --rule-strong: #1c1c1c;
+    --canvas: #fbfaf7;
+    --canvas-pure: #ffffff;
+    --signal: #d9412c;
+    --signal-soft: #f5e0d8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 400;
+    color: var(--charcoal);
+    background: var(--canvas);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern", "liga", "calt";
+  }
+
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--signal); }
+  a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+  /* skip link */
+  .skip {
+    position: absolute;
+    left: -9999px;
+    padding: 12px 16px;
+    background: var(--ink);
+    color: var(--canvas);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    z-index: 200;
+  }
+  .skip:focus { left: 16px; top: 16px; }
+
+  /* ── NAV ──────────────────────────────────────── */
+  nav.top {
+    position: sticky;
+    top: 0;
+    background: rgba(251, 250, 247, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 18px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wordmark {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 18px;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .wordmark .x {
+    color: var(--signal);
+    font-style: italic;
+    padding: 0 1px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--slate);
+    font-weight: 500;
+  }
+  .nav-links a { letter-spacing: 0.01em; }
+  .nav-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+    padding: 10px 18px;
+    border: 1px solid var(--ink);
+    transition: all 0.15s ease;
+  }
+  .nav-cta:hover {
+    background: var(--ink);
+    color: var(--canvas);
+  }
+
+  /* ── PAGE ─────────────────────────────────────── */
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 72px;
+  }
+  .container-narrow {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 72px;
+  }
+
+  /* ── HERO ─────────────────────────────────────── */
+  .hero {
+    padding: 120px 0 160px;
+  }
+  h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    font-size: 60px;
+    line-height: 1.08;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+    margin-bottom: 48px;
+    max-width: 880px;
+  }
+  h1 .period { color: var(--signal); }
+  .hero-deck {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--slate);
+    max-width: 720px;
+    margin-bottom: 64px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--quiet);
+    font-weight: 500;
+  }
+  .hero-meta .accent { color: var(--signal); font-weight: 600; }
+
+  /* ── SECTION SCAFFOLDING ──────────────────────── */
+  section.std {
+    padding: 140px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .section-header {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 80px;
+    margin-bottom: 80px;
+  }
+  .section-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--signal);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding-top: 14px;
+  }
+  .section-num span {
+    display: block;
+    color: var(--quiet);
+    font-weight: 500;
+    margin-top: 4px;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .section-title h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    font-size: 52px;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    max-width: 760px;
+  }
+  .section-title h2 .period { color: var(--signal); }
+  .section-lede {
+    font-family: 'Inter', sans-serif;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--charcoal);
+    max-width: 660px;
+  }
+
+  /* ── PROSE ────────────────────────────────────── */
+  .prose-grid {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 80px;
+  }
+  .prose {
+    max-width: 660px;
+  }
+  .prose p {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+  }
+  .prose p em {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  /* ── STAT CALLOUT (60% / 39%) ─────────────────── */
+  .stat-callout {
+    margin-top: 56px;
+    padding: 48px;
+    background: var(--canvas-pure);
+    border: 1px solid var(--rule);
+    border-left: 2px solid var(--signal);
+    max-width: 660px;
+  }
+  .stat-pair {
+    display: flex;
+    gap: 64px;
+    margin-bottom: 24px;
+    align-items: baseline;
+  }
+  .stat-num {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 56px;
+    color: var(--signal);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+  .stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--slate);
+    max-width: 220px;
+  }
+  .stat-callout p.stat-prose {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--charcoal);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .stat-callout .cite {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--quiet);
+    font-style: italic;
+  }
+
+  /* ── FOUNDER NOTE ─────────────────────────────── */
+  .founder-note {
+    padding: 56px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin: 64px 0 0;
+    max-width: 760px;
+  }
+  .founder-quote {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.45;
+    color: var(--ink);
+    margin-bottom: 24px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .founder-attribution {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--signal);
+    font-weight: 600;
+  }
+
+  /* ── PURPOSE / RULE PULL ──────────────────────── */
+  .purpose-rule {
+    padding: 160px 0;
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .purpose-rule-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+  }
+  .pr-block .pr-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--signal);
+    font-weight: 600;
+    margin-bottom: 28px;
+  }
+  .pr-block .pr-text {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 38px;
+    line-height: 1.18;
+    color: var(--ink);
+    letter-spacing: -0.018em;
+    font-weight: 400;
+  }
+  .pr-block .pr-text .period { color: var(--signal); }
+
+  /* ── METHODOLOGY ──────────────────────────────── */
+  .methodology-moves {
+    margin-top: 24px;
+  }
+  .move-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 80px;
+    padding: 56px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .move-row:first-child { border-top: 1px solid var(--rule); }
+  .move-num-big {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 36px;
+    color: var(--signal);
+    line-height: 1;
+    padding-top: 8px;
+    font-weight: 400;
+  }
+  .move-content { max-width: 700px; }
+  .move-content h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 36px;
+    line-height: 1.15;
+    color: var(--ink);
+    letter-spacing: -0.018em;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+  .move-content h3 .period { color: var(--signal); }
+  .move-content p {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--charcoal);
+  }
+
+  /* ── RESULTS STRIP ────────────────────────────── */
+  .results-section {
+    padding: 140px 0;
+    background: var(--canvas-pure);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .results-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    margin: 64px 0 48px;
+  }
+  .result {
+    padding: 48px 28px 40px;
+    border-right: 1px solid var(--rule);
+    text-align: left;
+  }
+  .result:last-child { border-right: none; }
+  .result-num {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 84px;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.035em;
+    margin-bottom: 18px;
+    font-weight: 400;
+  }
+  .result-num .accent { color: var(--signal); }
+  .result-num .small { font-size: 42px; vertical-align: top; }
+  .result-num.text { font-size: 32px; padding-top: 8px; line-height: 1.05; }
+  .result-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+  .result-arrow {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--signal);
+    margin: 0 4px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* ── FIELD NOTES (Substack posts) ─────────────── */
+  .field-notes {
+    margin-top: 24px;
+  }
+  .post {
+    display: grid;
+    grid-template-columns: 80px 1fr 200px;
+    gap: 32px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+    transition: background 0.15s ease;
+  }
+  .post:first-child { border-top: 1px solid var(--rule); }
+  .post:hover { background: var(--canvas-pure); margin: 0 -16px; padding: 36px 16px; }
+  .post-num {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--signal);
+    font-weight: 400;
+  }
+  .post-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .post-title .period { color: var(--signal); }
+  .post-excerpt {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--slate);
+    max-width: 560px;
+    font-style: italic;
+  }
+  .post-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--quiet);
+    font-weight: 500;
+    text-align: right;
+  }
+  .field-notes-cta {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .field-notes-cta .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--slate);
+  }
+  .field-notes-cta .link {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .field-notes-cta .link:hover { color: var(--signal); border-color: var(--signal); }
+
+  /* ── PATTERN PULL LINE (closing line of section 4) ─ */
+  .pattern-pull {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--ink);
+    margin-top: 32px;
+    max-width: 760px;
+  }
+
+  /* ── ABOUT (Karine) ───────────────────────────── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .about-photo {
+    position: relative;
+  }
+  .about-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--canvas-pure);
+  }
+  .about-body {
+    max-width: 660px;
+  }
+  .about-body .lead-line {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.012em;
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+  .about-body p {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--charcoal);
+    margin-bottom: 22px;
+  }
+  .about-body .signature {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--signal);
+    margin-top: 8px;
+    margin-bottom: 40px;
+  }
+  .about-ctas {
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+  .about-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--ink);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .about-cta:hover {
+    color: var(--signal);
+    border-bottom-color: var(--signal);
+  }
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-photo { max-width: 280px; }
+    .about-body .lead-line { font-size: 22px; }
+    .about-ctas { gap: 16px 20px; }
+    .about-cta { font-size: 12px; }
+  }
+
+  /* ── WHO IT'S FOR ─────────────────────────────── */
+  .audience-list {
+    margin-top: 24px;
+  }
+  .audience-item {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: baseline;
+  }
+  .audience-item:first-child { border-top: 1px solid var(--rule); }
+  .audience-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--signal);
+    font-weight: 600;
+  }
+  .audience-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .audience-name .period { color: var(--signal); }
+  .audience-detail {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--slate);
+    max-width: 600px;
+  }
+
+  /* ── CTA SECTION (One door / One step) ────────── */
+  .cta-section {
+    background: var(--ink);
+    color: var(--canvas);
+    padding: 160px 0;
+  }
+  .cta-section .container { max-width: 1080px; }
+  .cta-section .section-num { color: var(--signal); }
+  .cta-section .section-num span { color: rgba(251, 250, 247, 0.5); }
+  .cta-section h2 {
+    color: var(--canvas);
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    font-size: 52px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+  .cta-section h2 .period { color: var(--signal); }
+  .cta-section .section-lede {
+    color: rgba(251, 250, 247, 0.7);
+    margin-bottom: 64px;
+  }
+  .cta-doors {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid rgba(251, 250, 247, 0.18);
+    border-bottom: 1px solid rgba(251, 250, 247, 0.18);
+  }
+  .door {
+    padding: 48px 36px 56px;
+    border-right: 1px solid rgba(251, 250, 247, 0.18);
+    display: flex;
+    flex-direction: column;
+  }
+  .door:last-child { border-right: none; }
+  .door-num {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--signal);
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+  .door h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 28px;
+    line-height: 1.2;
+    color: var(--canvas);
+    margin-bottom: 16px;
+    font-weight: 400;
+    letter-spacing: -0.012em;
+  }
+  .door h3 .period { color: var(--signal); }
+  .door p {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(251, 250, 247, 0.75);
+    margin-bottom: 32px;
+    flex-grow: 1;
+  }
+  .door .door-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--canvas);
+    font-weight: 600;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--signal);
+    display: inline-block;
+    align-self: flex-start;
+  }
+  .door .door-cta:hover { color: var(--signal); }
+
+  /* ── CLOSING MANIFESTO ────────────────────────── */
+  .closing-manifesto {
+    padding: 200px 0;
+    text-align: center;
+  }
+  .closing-text {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 56px;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.022em;
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+  .closing-text .period { color: var(--signal); }
+  .closing-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+  }
+  .closing-sub .dot { color: var(--signal); margin: 0 12px; }
+
+  /* ── FOOTER ───────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--rule-strong);
+    padding: 56px 0 40px;
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-brand {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+  .footer-brand .x { color: var(--signal); font-style: italic; }
+  .footer-tagline {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--slate);
+    max-width: 320px;
+  }
+  .footer-col-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .footer-col a {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--slate);
+    padding: 6px 0;
+    font-weight: 400;
+  }
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--quiet);
+    font-weight: 500;
+  }
+
+  /* ── RESPONSIVE ───────────────────────────────── */
+  @media (max-width: 900px) {
+    .container, .container-narrow { padding: 0 28px; }
+    .nav-inner { padding: 16px 28px; }
+    .nav-links { gap: 14px; font-size: 12px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .nav-cta { padding: 8px 14px; font-size: 11px; }
+    .hero { padding: 80px 0 100px; }
+    h1 { font-size: 40px; margin-bottom: 32px; }
+    .hero-deck { font-size: 17px; margin-bottom: 40px; }
+    .hero-meta { flex-direction: column; gap: 16px; }
+    section.std { padding: 80px 0; }
+    .section-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+    .section-title h2 { font-size: 32px; }
+    .prose-grid, .move-row { grid-template-columns: 1fr; gap: 24px; }
+    .stat-callout { padding: 32px 24px; margin-top: 32px; }
+    .stat-pair { flex-direction: column; gap: 8px; }
+    .stat-num { font-size: 40px; }
+    .purpose-rule { padding: 80px 0; }
+    .purpose-rule-grid { grid-template-columns: 1fr; gap: 56px; }
+    .pr-block .pr-text { font-size: 26px; }
+    .move-content h3 { font-size: 26px; }
+    .results-section { padding: 80px 0; }
+    .results-strip { grid-template-columns: 1fr 1fr; }
+    .result { border-right: none; border-bottom: 1px solid var(--rule); padding: 32px 20px; }
+    .result:nth-child(odd) { border-right: 1px solid var(--rule); }
+    .result:nth-last-child(-n+2) { border-bottom: none; }
+    .result-num { font-size: 56px; }
+    .result-num .small { font-size: 28px; }
+    .result-num.text { font-size: 24px; }
+    .post { grid-template-columns: 1fr; gap: 8px; }
+    .post-meta { text-align: left; }
+    .audience-item { grid-template-columns: 1fr; gap: 8px; }
+    .cta-section { padding: 80px 0; }
+    .cta-section h2 { font-size: 32px; }
+    .cta-doors { grid-template-columns: 1fr; }
+    .door { border-right: none; border-bottom: 1px solid rgba(251, 250, 247, 0.18); }
+    .door:last-child { border-bottom: none; }
+    .closing-manifesto { padding: 100px 0; }
+    .closing-text { font-size: 32px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 8px; }
+  }
+  @media (max-width: 540px) {
+    .results-strip { grid-template-columns: 1fr; }
+    .result, .result:nth-child(odd) { border-right: none; border-bottom: 1px solid var(--rule); }
+    .result:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#content" class="skip">Skip to content</a>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="top" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="#" class="wordmark" aria-label="Human × AI home">Human <span class="x">×</span> AI</a>
+    <div class="nav-links">
+      <a href="#methodology">The Methodology</a>
+      <a href="#pattern">The Pattern</a>
+      <a href="#field-notes">Field Notes</a>
+      <a href="#cta" class="nav-cta">Start a Conversation</a>
+    </div>
+  </div>
+</nav>
+
+<main id="content">
+
+  <!-- ═══════════════ 1. HERO ═══════════════ -->
+  <section class="hero">
+    <div class="container">
+      <h1>The playbook to build the company of tomorrow. Not automate the one of yesterday<span class="period">.</span></h1>
+      <p class="hero-deck">Human × AI is a playbook for AI transformation that produces measurable P&amp;L results, accelerates innovation, and rebuilds the organisation to be customer-centred, intelligence-embedded, and learning-loop ready.</p>
+      <div class="hero-meta">
+        <div><span class="accent">1,200+</span> &nbsp; Senior leaders, Substack community</div>
+        <div><span class="accent">Tuesdays</span> &nbsp; One essay, from inside the redesign</div>
+        <div><span class="accent">Vol. I</span> &nbsp; 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 2. THE POSITION ═══════════════ -->
+  <section class="std" id="position">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">01<span>The Position</span></div>
+        <div class="section-title">
+          <h2>Not a thesis about AI. A position drawn from inside the work<span class="period">.</span></h2>
+        </div>
+      </div>
+
+      <div class="prose-grid">
+        <div></div>
+        <div class="prose">
+          <p>The Human × AI playbook is drawn from leading the Human × AI community of 1,200+ senior leaders on Substack, and from inside the work itself. Running the AI redesign at Chegg today, while advising tech and tech-services companies through theirs. Four prior tech transitions before that: leading the largest corporate and governmental AI programs at Coursera; licensing to SaaS at Microsoft and Oracle; web to mobile at Microsoft and Oracle; on-prem to cloud at NetApp.</p>
+          <p>The pattern held every time. <em>The companies that won did not buy better technology. They redesigned how their people and processes worked around what the technology now made possible.</em> The ones that added it as a layer produced incremental gains and structural fragility.</p>
+
+          <div class="stat-callout">
+            <div class="stat-pair">
+              <div>
+                <div class="stat-num">60<span style="font-size: 32px;">%</span></div>
+                <div class="stat-label">of companies generate no material value from AI</div>
+              </div>
+              <div>
+                <div class="stat-num">39<span style="font-size: 32px;">%</span></div>
+                <div class="stat-label">of AI users see any EBIT impact, most of it under 5%</div>
+              </div>
+            </div>
+            <p class="stat-prose">Not because the technology fails. Because the organisation underneath was never redesigned to hold what AI now makes possible.</p>
+            <div class="cite">Sources: BCG, The Widening AI Value Gap (Sept 2025); McKinsey, The State of AI (2025).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 3. WHAT AI CHANGES ═══════════════ -->
+  <section class="std" id="what-changes">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">02<span>What AI Changes</span></div>
+        <div class="section-title">
+          <h2>AI changes what the company is<span class="period">.</span></h2>
+          <p class="section-lede">Cloud, SaaS, mobile, CRM changed how work was done. AI is a different kind of shift.</p>
+        </div>
+      </div>
+
+      <div class="prose-grid">
+        <div></div>
+        <div class="prose">
+          <p>Organisations were built around knowledge. Who has it, who produces it, who synthesises it. AI has made knowledge abundant.</p>
+          <p>The companies that win the next decade will be built on judgment, learning velocity, and the orchestration of humans and AI working together.</p>
+
+          <div class="founder-note">
+            <div class="founder-quote">"I started Human × AI after sitting in a room of smart operators whose AI strategy was to automate, drive efficiency, take cost out. That was the whole strategy. They had not lived through the prior transitions. Most rooms are still that room. The point of this playbook is to change that."</div>
+            <div class="founder-attribution">— Karine Allouche, Founder</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 4. AI-NATIVE LEADERSHIP ═══════════════ -->
+  <section class="std" id="ai-native-leadership">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">03<span>AI-Native Leadership</span></div>
+        <div class="section-title">
+          <h2>The redesign creates the conditions. The leader holds the lead<span class="period">.</span></h2>
+        </div>
+      </div>
+
+      <div class="prose-grid">
+        <div></div>
+        <div class="prose">
+          <p>AI makes intelligence, knowledge, and speed abundant. What stays scarce becomes the source of value: <em>judgment, purpose, integrity, courage, empathy, groundedness.</em></p>
+          <p>The new conscious leader, in integrity, grounded, holding the truth for the path forward, is the highest-leverage asset in the company of tomorrow.</p>
+          <p style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--rule);">
+            <a href="https://karine.substack.com/p/the-seven-traits-of-ai-native-leadership" rel="noopener" style="font-family: 'Libre Baskerville', serif; font-size: 18px; font-style: italic; color: var(--signal); border-bottom: 1px solid var(--signal); padding-bottom: 2px;">Read: The Seven Traits of AI-Native Leadership →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 5. PURPOSE / RULE ═══════════════ -->
+  <section class="purpose-rule" aria-label="Purpose and Rule">
+    <div class="container">
+      <div class="purpose-rule-grid">
+        <div class="pr-block">
+          <div class="pr-label">The Purpose</div>
+          <div class="pr-text">Build the companies of tomorrow. Not automate the companies of yesterday<span class="period">.</span></div>
+        </div>
+        <div class="pr-block">
+          <div class="pr-label">The Rule</div>
+          <div class="pr-text">Judgment before automation<span class="period">.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 5. METHODOLOGY ═══════════════ -->
+  <section class="std" id="methodology">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">04<span>The Methodology</span></div>
+        <div class="section-title">
+          <h2>Four moves, run in order<span class="period">.</span></h2>
+          <p class="section-lede">The work that produces results is always the same work, in the same sequence. The discipline is the methodology, not the technology.</p>
+        </div>
+      </div>
+
+      <div class="methodology-moves">
+        <div class="move-row">
+          <div class="move-num-big">01</div>
+          <div class="move-content">
+            <h3>Capabilities<span class="period">.</span></h3>
+            <p>What outcomes the function exists to deliver, defined before any workflow is touched. Most redesigns fail here, by skipping straight to tools. The capability question comes first because everything downstream is in service of it.</p>
+          </div>
+        </div>
+        <div class="move-row">
+          <div class="move-num-big">02</div>
+          <div class="move-content">
+            <h3>Workflows<span class="period">.</span></h3>
+            <p>Current state mapped honestly. Then redesigned end-to-end. Each step classified as autonomous, augmented, or human-essential. The classification is the work, and it is the work that automation alone cannot do.</p>
+          </div>
+        </div>
+        <div class="move-row">
+          <div class="move-num-big">03</div>
+          <div class="move-content">
+            <h3>Judgment<span class="period">.</span></h3>
+            <p>The deliberate placement of human decision-making, where it creates more value than system autonomy would. Judgment is the most expensive resource in the company of tomorrow. It belongs where it is decisive.</p>
+          </div>
+        </div>
+        <div class="move-row">
+          <div class="move-num-big">04</div>
+          <div class="move-content">
+            <h3>Data flow &amp; learning loops<span class="period">.</span></h3>
+            <p>Data as shared infrastructure. Every correction logged. The organisation gets smarter when its people work, or it leaks value. The learning loop is what compounds; without it, the redesign is a snapshot, not a trajectory.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 6. THE PATTERN ═══════════════ -->
+  <section class="results-section" id="pattern">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">05<span>The Pattern</span></div>
+        <div class="section-title">
+          <h2>The results<span class="period">.</span></h2>
+          <p class="section-lede">Chegg is the first company running the Human × AI playbook end-to-end. The pattern below is what becomes possible when the work is governed before the AI is, and it is showing up in the tech and tech-services companies I advise.</p>
+        </div>
+      </div>
+
+      <div class="results-strip">
+        <div class="result">
+          <div class="result-num"><span class="accent">15</span><span class="small">%</span></div>
+          <div class="result-label">P&amp;L Cost Reduction</div>
+        </div>
+        <div class="result">
+          <div class="result-num"><span class="accent">25</span><span class="small">%</span></div>
+          <div class="result-label">FTE Reduction</div>
+        </div>
+        <div class="result">
+          <div class="result-num"><span class="accent">~10×</span></div>
+          <div class="result-label">Innovation Delivery<br>Months <span class="result-arrow">→</span> Weeks</div>
+        </div>
+        <div class="result">
+          <div class="result-num text">Pulled<br>Forward</div>
+          <div class="result-label" style="margin-top: 12px;">Customer Validation</div>
+        </div>
+      </div>
+
+      <div class="prose-grid">
+        <div></div>
+        <div class="prose">
+          <p>Margin expansion alongside value creation. Cost-out and growth in the same motion, not as a tradeoff. Customer validation pulled forward from months to weeks. <em>Scalability of key human capital. The most valuable people scale further; their judgment reaches more of the work, because the work is built to receive it.</em></p>
+          <p class="pattern-pull">The numbers will vary. The pattern doesn't. Companies that run the Human × AI playbook don't deploy a tool. They redesign the work, and everything that follows changes with it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 6. ABOUT KARINE ═══════════════ -->
+  <section class="std" id="about">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">06<span>About · Karine Allouche</span></div>
+        <div class="section-title">
+          <h2>Written by an operator who's lived four of these<span class="period">.</span></h2>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-photo">
+          <img src="karine.jpg" alt="Karine Allouche, founder of Human × AI" />
+        </div>
+        <div class="about-body">
+          <p class="lead-line">I'm Karine Allouche, founder of Human × AI.</p>
+          <p>CEO and operator. I led the management buyout of GlobalEnglish, rebuilt it around SaaS and AI-powered learning, and sold it into the world's largest online corporate language training company. Since 2024, I've led some of the largest governmental and Fortune 2000 Gen AI capacity programs in the market. Today I'm GM of Language Learning Worldwide and Skills Integration Europe at Chegg, running the AI redesign from the inside. Through Human × AI, I advise companies and investors on theirs.</p>
+          <p>I've lived four of these transitions. Corporate and governmental AI at Coursera. Licensing to SaaS at Microsoft and Oracle. Web to mobile across the same era. On-prem to cloud at NetApp — the company now powering the data layer of this AI world. The pattern held every time: the winners didn't buy better technology. They redesigned how their people and processes worked around what the technology now made possible.</p>
+          <p>Human × AI is the playbook for this one — written from inside it, not above it. Tuesdays on Substack. I read every reply. Running this redesign and want a thinking partner? Write directly.</p>
+          <p class="signature">— Karine</p>
+
+          <div class="about-ctas">
+            <a href="https://karine.substack.com" class="about-cta" rel="noopener">Read Human × AI on Substack →</a>
+            <a href="https://www.linkedin.com/in/karineallouche/" class="about-cta" rel="noopener">Connect on LinkedIn →</a>
+            <a href="mailto:karine@human-x-ai.com" class="about-cta">Write to Karine →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 9. FIELD NOTES ═══════════════ -->
+  <section class="std" id="field-notes">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">07<span>Field Notes</span></div>
+        <div class="section-title">
+          <h2>Written from inside the redesign<span class="period">.</span></h2>
+          <p class="section-lede">One essay, every Tuesday. Naming names, naming numbers. Read by 1,200+ senior leaders.</p>
+        </div>
+      </div>
+
+      <div class="field-notes">
+        <a href="https://karine.substack.com/p/why-the-race-to-deploy-ai-agents" class="post" rel="noopener">
+          <div class="post-num">01</div>
+          <div>
+            <div class="post-title">The Organisations Winning With AI Aren't Deploying More. They're Drifting Less<span class="period">.</span></div>
+            <div class="post-excerpt">Agents multiply action. Only humans multiply meaning.</div>
+          </div>
+          <div class="post-meta">Apr 07 · 2026</div>
+        </a>
+        <a href="https://karine.substack.com/p/your-org-chart-is-the-bottleneck" class="post" rel="noopener">
+          <div class="post-num">02</div>
+          <div>
+            <div class="post-title">Your org chart is the bottleneck<span class="period">.</span></div>
+            <div class="post-excerpt">Functions were never the right unit of organisation for what AI makes possible.</div>
+          </div>
+          <div class="post-meta">Mar 31 · 2026</div>
+        </a>
+        <a href="https://karine.substack.com/p/your-work-has-no-architecture-ai" class="post" rel="noopener">
+          <div class="post-num">03</div>
+          <div>
+            <div class="post-title">Your Work Has No Architecture. AI Just Found Out<span class="period">.</span></div>
+            <div class="post-excerpt">A very precise, very fast mirror reflecting back the absence of architecture you didn't know you had.</div>
+          </div>
+          <div class="post-meta">Mar 17 · 2026</div>
+        </a>
+        <a href="https://karine.substack.com/p/you-cant-automate-what-you-havent" class="post" rel="noopener">
+          <div class="post-num">04</div>
+          <div>
+            <div class="post-title">You Can't Automate What You Haven't Codified<span class="period">.</span></div>
+            <div class="post-excerpt">Governing the work before governing the AI. The precondition most redesigns skip.</div>
+          </div>
+          <div class="post-meta">Read on Substack</div>
+        </a>
+      </div>
+
+      <div class="field-notes-cta">
+        <div class="label">Subscribe. One essay, every Tuesday, 1,200+ senior leaders.</div>
+        <a href="https://karine.substack.com" class="link" rel="noopener">Read the Archive →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 9. WHO IT'S FOR ═══════════════ -->
+  <section class="std" id="who-its-for">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">08<span>Who This Is For</span></div>
+        <div class="section-title">
+          <h2>The leaders accountable for the redesign<span class="period">.</span></h2>
+        </div>
+      </div>
+
+      <div class="audience-list">
+        <div class="audience-item">
+          <div class="audience-num">01</div>
+          <div>
+            <div class="audience-name">CEO, CRO, CMO, CHRO<span class="period">.</span></div>
+            <div class="audience-detail">And the boards that govern them. The senior leaders sitting with a named outcome on a named timeline, accountable for the AI redesign of their function or their company.</div>
+          </div>
+        </div>
+        <div class="audience-item">
+          <div class="audience-num">02</div>
+          <div>
+            <div class="audience-name">Founders<span class="period">.</span></div>
+            <div class="audience-detail">Of growth-stage and PE-backed companies, making the call now, when the redesign is the work that determines the next round, the next chapter, the next decade.</div>
+          </div>
+        </div>
+        <div class="audience-item">
+          <div class="audience-num">03</div>
+          <div>
+            <div class="audience-name">PE and VC firms<span class="period">.</span></div>
+            <div class="audience-detail">Deploying methodology across portfolio companies. The pattern transfers; the discipline is what produces results across portfolios, not just inside one.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 10. CTA — ONE DOOR ═══════════════ -->
+  <section class="cta-section" id="cta">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">09<span>What To Do Next</span></div>
+        <div class="section-title">
+          <h2>One door. One next step<span class="period">.</span></h2>
+          <p class="section-lede">Three ways to engage. Pick the one that fits where you are.</p>
+        </div>
+      </div>
+
+      <div class="cta-doors">
+        <div class="door">
+          <div class="door-num">01</div>
+          <h3>Read the work<span class="period">.</span></h3>
+          <p>The Human × AI Substack. Tuesdays, one essay at a time, naming names, naming numbers, written from inside the redesign.</p>
+          <a href="https://karine.substack.com" class="door-cta" rel="noopener">Subscribe →</a>
+        </div>
+        <div class="door">
+          <div class="door-num">02</div>
+          <h3>Start a conversation<span class="period">.</span></h3>
+          <p>If you are running this redesign and want a thinking partner, write directly. I read every reply.</p>
+          <a href="mailto:karine@human-x-ai.com" class="door-cta">Write to Karine →</a>
+        </div>
+        <div class="door">
+          <div class="door-num">03</div>
+          <h3>Join the first cohort<span class="period">.</span></h3>
+          <p><a href="https://dareonai.com" rel="noopener" style="color: var(--canvas); border-bottom: 1px solid var(--signal);">DareOnAI</a>, the leader-companion app from this playbook, in private beta. Twenty design partners, selected, not signed up.</p>
+          <a href="mailto:karine@human-x-ai.com?subject=DareOnAI%20Cohort%2001" class="door-cta">Apply →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 11. CLOSING MANIFESTO ═══════════════ -->
+  <section class="closing-manifesto" aria-label="Closing">
+    <div class="container-narrow">
+      <div class="closing-text">Build the companies of tomorrow<span class="period">.</span></div>
+      <div class="closing-sub">Humans lead<span class="dot">·</span>AI scales<span class="dot">·</span>Judgment before automation</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer aria-label="Footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">Human <span class="x">×</span> AI</div>
+        <div class="footer-tagline">A playbook for AI transformation that produces measurable P&amp;L results, accelerates innovation, and rebuilds the organisation around what AI now makes possible.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">The Playbook</div>
+        <a href="#methodology">The Methodology</a>
+        <a href="#pattern">The Pattern</a>
+        <a href="#the-lead">The Lead</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Read</div>
+        <a href="#field-notes">Field Notes</a>
+        <a href="https://karine.substack.com" rel="noopener">Substack</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Engage</div>
+        <a href="mailto:karine@human-x-ai.com">karine@human-x-ai.com</a>
+        <a href="https://dareonai.com" rel="noopener">DareOnAI</a>
+        <a href="https://www.linkedin.com/in/karineallouche/" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Human × AI · Karine Allouche</div>
+      <div>Judgment before automation</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
