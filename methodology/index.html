@@ -1,1 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Methodology — Human × AI</title>
+<meta name="description" content="Four moves, run in order. The playbook for AI transformation, unpacked: Capabilities, Workflows, Judgment, Data flow & learning loops. Judgment before automation.">
+<link rel="canonical" href="https://human-x-ai.com/methodology">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1c1c;
+    --charcoal: #333333;
+    --slate: #5a5a5a;
+    --quiet: #909090;
+    --rule: #ececec;
+    --rule-strong: #1c1c1c;
+    --canvas: #fbfaf7;
+    --canvas-pure: #ffffff;
+    --signal: #d9412c;
+    --signal-soft: #f5e0d8;
+    --callout-bg: #f7f4ed;
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 400;
+    color: var(--charcoal);
+    background: var(--canvas);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern", "liga", "calt";
+  }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--signal); }
+  a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+  /* skip link */
+  .skip { position: absolute; left: -9999px; padding: 12px 16px; background: var(--ink); color: var(--canvas); font-family: 'Inter', sans-serif; font-size: 14px; z-index: 200; }
+  .skip:focus { left: 16px; top: 16px; }
+
+  /* NAV */
+  nav.top {
+    position: sticky; top: 0;
+    background: rgba(251, 250, 247, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto; padding: 18px 56px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .wordmark { font-family: 'Libre Baskerville', serif; font-size: 18px; color: var(--ink); font-weight: 400; letter-spacing: -0.005em; }
+  .wordmark .x { color: var(--signal); font-style: italic; padding: 0 1px; }
+  .nav-links { display: flex; gap: 32px; align-items: center; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--slate); font-weight: 500; }
+  .nav-links a { letter-spacing: 0.01em; }
+  .nav-links a.current { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--signal); padding-bottom: 4px; }
+  .nav-cta {
+    font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink); font-weight: 600; padding: 10px 18px; border: 1px solid var(--ink);
+    transition: all 0.15s ease;
+  }
+  .nav-cta:hover { background: var(--ink); color: var(--canvas); }
+
+  /* CONTAINERS */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 72px; }
+  .container-narrow { max-width: 880px; margin: 0 auto; padding: 0 72px; }
+
+  /* HERO */
+  .hero { padding: 120px 0 100px; }
+  .eyebrow {
+    font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--signal); font-weight: 600; margin-bottom: 32px;
+  }
+  h1 {
+    font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 60px;
+    line-height: 1.08; letter-spacing: -0.022em; color: var(--ink);
+    margin-bottom: 40px; max-width: 920px;
+  }
+  h1 .period { color: var(--signal); }
+  .hero-deck {
+    font-family: 'Inter', sans-serif; font-weight: 400; font-size: 19px;
+    line-height: 1.65; color: var(--slate); max-width: 700px;
+  }
+
+  /* SECTION BASE */
+  section.std { padding: 100px 0; border-top: 1px solid var(--rule); }
+  .section-header {
+    display: grid; grid-template-columns: 160px 1fr; gap: 80px; margin-bottom: 56px;
+  }
+  .section-num {
+    font-family: 'Inter', sans-serif; font-size: 13px; color: var(--signal);
+    font-weight: 600; letter-spacing: 0.04em; padding-top: 14px;
+  }
+  .section-num span {
+    display: block; color: var(--quiet); font-weight: 500; margin-top: 4px;
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .section-title h2 {
+    font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 44px;
+    line-height: 1.12; color: var(--ink); letter-spacing: -0.018em;
+    margin-bottom: 20px; max-width: 800px;
+  }
+  .section-title h2 .period { color: var(--signal); }
+  .section-subtitle {
+    font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 22px;
+    line-height: 1.4; color: var(--charcoal); max-width: 700px; letter-spacing: -0.005em;
+  }
+
+  /* PROSE */
+  .prose-grid { display: grid; grid-template-columns: 160px 1fr; gap: 80px; }
+  .prose { max-width: 720px; }
+  .prose p {
+    font-family: 'Inter', sans-serif; font-size: 17px; line-height: 1.75;
+    color: var(--charcoal); margin-bottom: 24px;
+  }
+  .prose p em {
+    font-family: 'Libre Baskerville', serif; font-style: italic; color: var(--ink);
+  }
+  .prose .signature {
+    font-family: 'Libre Baskerville', serif; font-size: 26px; line-height: 1.3;
+    color: var(--ink); font-weight: 400; letter-spacing: -0.012em;
+    padding: 28px 0 28px 24px; margin: 32px 0;
+    border-left: 3px solid var(--signal); font-style: italic;
+    max-width: 560px;
+  }
+  .prose .signature strong { font-weight: 700; font-style: normal; color: var(--signal); }
+  .anchor-essay {
+    margin-top: 16px; padding-top: 24px; border-top: 1px solid var(--rule);
+    display: block;
+  }
+  .anchor-essay a {
+    font-family: 'Libre Baskerville', serif; font-size: 18px; font-style: italic;
+    color: var(--signal); border-bottom: 1px solid var(--signal); padding-bottom: 2px;
+  }
+  .anchor-essay a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+  /* MOVE BIG NUMBER */
+  .move-num-big {
+    font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 72px;
+    color: var(--signal); line-height: 1; padding-top: 6px; font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  /* CLASSIFICATION BLOCK (Move 02) */
+  .classification {
+    background: var(--callout-bg); border-left: 3px solid var(--signal);
+    padding: 32px 36px; margin: 32px 0;
+  }
+  .classification .label {
+    font-family: 'Libre Baskerville', serif; font-size: 22px; font-weight: 400;
+    font-style: italic; color: var(--ink); margin-bottom: 20px; line-height: 1.3;
+  }
+  .classification .label .accent { color: var(--signal); }
+  .classification dl { margin: 0; }
+  .classification dt {
+    font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 17px;
+    color: var(--signal); margin-top: 12px; font-weight: 400;
+  }
+  .classification dt:first-child { margin-top: 0; }
+  .classification dd {
+    font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.6;
+    color: var(--charcoal); margin: 4px 0 0;
+  }
+
+  /* THREE-LAYER ROI CALLOUT (Move 03) — listed layers, no pyramid */
+  .roi-callout {
+    background: var(--ink); color: var(--canvas);
+    padding: 56px 56px; margin: 48px 0;
+    border-left: 4px solid var(--signal);
+  }
+  .roi-callout .roi-eyebrow {
+    font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--signal); font-weight: 600; margin-bottom: 18px;
+  }
+  .roi-callout .roi-title {
+    font-family: 'Libre Baskerville', serif; font-size: 28px; line-height: 1.25;
+    color: var(--canvas); margin-bottom: 32px; font-weight: 400; letter-spacing: -0.01em;
+  }
+  .roi-callout .roi-title .period { color: var(--signal); }
+  .roi-layer { padding: 24px 0; border-top: 1px solid rgba(251, 250, 247, 0.2); }
+  .roi-layer:first-of-type { border-top: 1px solid rgba(251, 250, 247, 0.4); }
+  .roi-layer .layer-num {
+    font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 16px;
+    color: var(--signal); font-weight: 400; margin-bottom: 4px;
+  }
+  .roi-layer .layer-name {
+    font-family: 'Libre Baskerville', serif; font-size: 22px; color: var(--canvas);
+    font-weight: 400; margin-bottom: 10px; letter-spacing: -0.005em;
+  }
+  .roi-layer .layer-name .period { color: var(--signal); }
+  .roi-layer .layer-body {
+    font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.7;
+    color: rgba(251, 250, 247, 0.75);
+  }
+  .roi-layer .layer-body em { font-style: italic; color: var(--canvas); }
+  .roi-callout .roi-close {
+    margin-top: 32px; padding-top: 24px;
+    border-top: 1px solid rgba(251, 250, 247, 0.2);
+    font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 16px;
+    line-height: 1.6; color: rgba(251, 250, 247, 0.85);
+  }
+
+  /* CLOSING */
+  .closing-section { padding: 120px 0; border-top: 1px solid var(--rule); }
+  .closing-section .closing-eyebrow {
+    font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--signal); font-weight: 600; margin-bottom: 24px;
+  }
+  .closing-section h2 {
+    font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 36px;
+    line-height: 1.18; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 32px;
+    max-width: 760px;
+  }
+  .closing-section h2 .period { color: var(--signal); }
+  .closing-section .closing-body {
+    font-family: 'Inter', sans-serif; font-size: 17px; line-height: 1.75;
+    color: var(--charcoal); max-width: 720px; margin-bottom: 40px;
+  }
+  .closing-section .closing-pull {
+    font-family: 'Libre Baskerville', serif; font-size: 24px; font-style: italic;
+    line-height: 1.4; color: var(--signal); max-width: 700px; margin: 48px 0;
+    padding: 24px 0 24px 24px; border-left: 3px solid var(--signal);
+  }
+
+  /* Three-beat score (closing) */
+  .closing-score {
+    margin: 56px 0 64px;
+    padding-top: 56px;
+    border-top: 1px solid var(--ink);
+  }
+  .beat {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+    align-items: baseline;
+  }
+  .beat:last-child { margin-bottom: 0; }
+  .beat .num {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--signal);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .beat .text {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.012em;
+    max-width: 720px;
+  }
+  @media (max-width: 900px) {
+    .closing-score { padding-top: 40px; }
+    .beat .text { font-size: 22px; }
+    .beat { grid-template-columns: 32px 1fr; gap: 12px; }
+  }
+  .closing-ctas {
+    display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center;
+    padding-top: 32px; border-top: 1px solid var(--rule);
+  }
+  .btn-primary {
+    font-family: 'Inter', sans-serif; font-size: 13px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--canvas); background: var(--ink);
+    font-weight: 600; padding: 16px 24px; border: 1px solid var(--ink);
+    transition: all 0.15s ease;
+  }
+  .btn-primary:hover { background: #000; color: var(--canvas); }
+  .btn-outline {
+    font-family: 'Inter', sans-serif; font-size: 13px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink); background: transparent;
+    font-weight: 600; padding: 16px 24px; border: 1px solid var(--ink);
+    transition: all 0.15s ease;
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--canvas); }
+  .link-terra {
+    font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 17px;
+    color: var(--signal); border-bottom: 1px solid var(--signal); padding-bottom: 2px;
+    transition: color 0.15s ease;
+  }
+  .link-terra:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--rule-strong); padding: 56px 0 40px; }
+  .footer-inner {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px;
+    max-width: 1080px; margin-left: auto; margin-right: auto; padding: 0 72px;
+  }
+  .footer-brand { font-family: 'Libre Baskerville', serif; font-size: 22px; color: var(--ink); margin-bottom: 16px; font-weight: 400; }
+  .footer-brand .x { color: var(--signal); font-style: italic; }
+  .footer-tagline { font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.55; color: var(--slate); max-width: 320px; }
+  .footer-col-label { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); font-weight: 600; margin-bottom: 16px; }
+  .footer-col a { display: block; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--slate); padding: 6px 0; font-weight: 400; }
+  .footer-bottom {
+    padding-top: 32px; border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between;
+    font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em;
+    color: var(--quiet); font-weight: 500;
+    max-width: 1080px; margin: 0 auto; padding-left: 72px; padding-right: 72px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .container, .container-narrow { padding: 0 28px; }
+    .nav-inner { padding: 16px 28px; }
+    .nav-links { gap: 14px; font-size: 12px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .nav-cta { padding: 8px 14px; font-size: 11px; }
+    .hero { padding: 80px 0 60px; }
+    h1 { font-size: 40px; margin-bottom: 28px; }
+    .hero-deck { font-size: 17px; }
+    section.std { padding: 64px 0; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; margin-bottom: 40px; }
+    .section-title h2 { font-size: 30px; }
+    .section-subtitle { font-size: 18px; }
+    .prose-grid { grid-template-columns: 1fr; gap: 24px; }
+    .move-num-big { font-size: 48px; padding-top: 0; }
+    .classification { padding: 24px 20px; }
+    .roi-callout { padding: 40px 28px; }
+    .roi-callout .roi-title { font-size: 22px; }
+    .closing-section { padding: 64px 0; }
+    .closing-section h2 { font-size: 28px; }
+    .closing-section .closing-pull { font-size: 20px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; padding: 0 28px; }
+    .footer-bottom { flex-direction: column; gap: 8px; padding-left: 28px; padding-right: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#content" class="skip">Skip to content</a>
+
+<nav class="top" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="wordmark" aria-label="Human × AI home">Human <span class="x">×</span> AI</a>
+    <div class="nav-links">
+      <a href="/methodology" class="current" aria-current="page">The Methodology</a>
+      <a href="/#pattern">The Pattern</a>
+      <a href="/#field-notes">Field Notes</a>
+      <a href="/#cta" class="nav-cta">Start a Conversation</a>
+    </div>
+  </div>
+</nav>
+
+<main id="content">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">The Methodology</p>
+      <h1>Four moves that turn AI ambition into operating capacity<span class="period">.</span></h1>
+      <p class="hero-deck">This is the playbook I run when a CEO, CRO, or board asks why their AI investment is not translating into operating leverage. It is built for senior operators who already understand the technology and now need a sequence to run inside their own function. Read it end to end and you will know how I work before the first conversation.</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="std" id="intro">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-num">00<span>Why the methodology</span></div>
+        <div class="section-title">
+          <h2>Built from a decade inside the work<span class="period">.</span></h2>
+        </div>
+      </div>
+
+      <div class="prose-grid">
+        <div></div>
+        <div class="prose">
+          <p>I built this method over a decade of running global functions inside Coursera, Microsoft, Oracle, NetApp, and Chegg, and then advising leaders across tech and tech-services through the current wave of AI redesigns. The pattern was consistent. The organisations that struggled were not short on tools or budget. They were short on a sequence. They were deploying AI on top of workflows that had never been examined, inside org charts that had never been redrawn, against capabilities that had never been defined. The result was activity without leverage.</p>
+          <p>What is different about this methodology is the order. <em>Judgment before automation. Capability before workflow. Workflow before tool.</em> Data flow last, because it only compounds once the first three are in place. The four moves are sequenced deliberately, and they hold across functions, industries, and company sizes. <em>The numbers will vary. The pattern doesn't.</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVE 01 -->
+  <section class="std" id="move-01">
+    <div class="container">
+      <div class="section-header">
+        <div class="move-num-big">01</div>
+        <div class="section-title">
+          <h2>Capabilities<span class="period">.</span></h2>
+          <p class="section-subtitle">What outcomes the function exists to deliver, defined before any workflow is touched.</p>
+        </div>
+      </div>
+
+      <div class="prose-grid">
+        <div></div>
+        <div class="prose">
+          <p>I start every engagement here, and it is the move most leaders want to skip. The instinct is to begin with the tools, or the workflows, or the headcount line. I refuse. Until the capabilities a function owes the business are named and ranked, every downstream decision is guesswork.</p>
+
+          <div class="signature"><strong>Capacity first.</strong> Tools follow.</div>
+
+          <p>The principle underneath is that you are governing the work before you are governing the AI. A capability is not a job title and it is not a workflow. It is an outcome the function exists to produce. In the capability economy, the unit of value is no longer the knowledge a person holds. It is the capability a person can <em>compose, codify, and orchestrate.</em> That shift is the reason this move comes first. If you cannot compose the capability, you cannot codify it. If you cannot codify it, you cannot orchestrate it across humans and systems. And if you cannot orchestrate it, no tool you buy will give you leverage.</p>
+
+          <p>The failure mode is well-rehearsed. A function brings in an AI platform, runs a pilot, gets a productivity bump on a narrow task, and then cannot explain to the board why the function's output has not changed. It has not changed because the capability was never redefined. The team is doing the same work, slightly faster.</p>
+
+          <p>Here is what the move looks like when it lands. I worked with a qualitative research lead whose role on paper was <em>"running customer surveys."</em> We rewrote the capability. Her function was not to run surveys. It was to architect how the organisation hears its customers, at the cadence the business actually needs to make decisions. Once the capability was named that way, the workflow redesign wrote itself. The tools came last, and they were the right tools, because we knew what they were serving.</p>
+
+          <div class="anchor-essay">
+            <a href="https://karine.substack.com/p/you-cant-automate-what-you-havent" rel="noopener">Read: You Can't Automate What You Haven't Codified →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVE 02 -->
+  <section class="std" id="move-02">
+    <div class="container">
+      <div class="section-header">
+        <div class="move-num-big">02</div>
+        <div class="section-title">
+          <h2>Workflows<span class="period">.</span></h2>
+          <p class="section-subtitle">Current state mapped honestly. Redesigned end-to-end. Every step classified.</p>
+        </div>
+      </div>
+
+      <div class="prose-grid">
+        <div></div>
+        <div class="prose">
+          <p>Once the capabilities are named, I walk the workflows. End to end. The discipline here is honesty. Most workflow maps inside large organisations are a sanitised version of how the work is supposed to happen, not how it actually happens. I do not work from those. I work from the version the people doing the work will tell you about over coffee, with the workarounds, the silent rework, the duplicate approvals, the spreadsheets nobody officially owns.</p>
+
+          <p>Then every step gets classified.</p>
+
+          <div class="classification">
+            <p class="label"><span class="accent">Autonomous</span> · <span class="accent">Augmented</span> · <span class="accent">Human-essential</span></p>
+            <dl>
+              <dt>Autonomous</dt>
+              <dd>The system runs the step without human input. The human is informed, not involved.</dd>
+              <dt>Augmented</dt>
+              <dd>AI accelerates a human. The human stays in the loop and the system raises their ceiling.</dd>
+              <dt>Human-essential</dt>
+              <dd>The human is the decisive actor. The system supports, but the judgment, the relationship, or the accountability sits with a person.</dd>
+            </dl>
+          </div>
+
+          <p>The phrase I hold the room to is <em>classified, not cut.</em> This is where my work parts company with headcount-reduction consulting. The point of the classification is not to find the autonomous bucket and shrink the org around it. The point is to redesign the function so that human attention lands on the human-essential steps, augmented capacity lands on the augmented ones, and the autonomous work runs without taxing anyone's calendar. Headcount may move. It is not the target. <em>The target is leverage.</em></p>
+
+          <p>The clearest version of this I have run was a CRO redesign that arrived on my desk as a spreadsheet of FTE reductions. The CEO wanted a number. We did not give him a number first. We rebuilt the revenue workflow end to end and classified every step Autonomous / Augmented / Human-essential. The output to the board was not a cost line. It was a three-part narrative: the customer outcomes the redesigned function would now deliver, the org redesign that made those outcomes possible, and the financial leverage that fell out of the redesign as a consequence. The cost-out number was in there. It was the third thing the board heard, not the first. The redesign was approved in one meeting.</p>
+
+          <div class="anchor-essay">
+            <a href="https://karine.substack.com/p/your-org-chart-is-the-bottleneck" rel="noopener">Read: Your org chart is the bottleneck →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVE 03 -->
+  <section class="std" id="move-03">
+    <div class="container">
+      <div class="section-header">
+        <div class="move-num-big">03</div>
+        <div class="section-title">
+          <h2>Judgment<span class="period">.</span></h2>
+          <p class="section-subtitle">The deliberate placement of human decision-making, where it creates more value than system autonomy would.</p>
+        </div>
+      </div>
+
+      <div class="prose-grid">
+        <div></div>
+        <div class="prose">
+          <p>Judgment is the most expensive resource in the organisation. I treat it that way. The third move is where I decide, with the leader, where human judgment is placed in the redesigned function and where it is consciously withheld. <em>Placement is a design choice.</em> Default placement, where judgment sits wherever it has historically sat, is the most common failure mode I see in AI redesigns.</p>
+
+          <p>The question I ask in every Move 03 session is the same. Where does a human decision change the outcome enough to justify the cost of the human deciding it? Where it does, the human is the decisive actor and the system serves them. Where it does not, the system runs and the human is informed.</p>
+
+          <p>This move is also where The Lead comes into focus. The leader's job in an AI-native function is not to approve more. It is to decide better, and to be present in the moments where the system cannot. <em>AI does not replace leadership. It increases the consequences of weak leadership.</em> Every decision a leader makes now propagates through a system that runs faster and wider than it used to. Sharpening judgment is no longer a development goal. It is an operating requirement.</p>
+
+          <!-- THREE-LAYER ROI CALLOUT -->
+          <div class="roi-callout">
+            <p class="roi-eyebrow">Three-Layer ROI</p>
+            <h3 class="roi-title">How I structure every ROI conversation: three layers<span class="period">.</span></h3>
+
+            <div class="roi-layer">
+              <p class="layer-num">Layer 01</p>
+              <p class="layer-name">Efficiency<span class="period">.</span></p>
+              <p class="layer-body">Cost-out. Hours saved, headcount avoided, cycle time reduced. This is the layer most boards have heard. It is real, and it is the smallest part of the value.</p>
+            </div>
+
+            <div class="roi-layer">
+              <p class="layer-num">Layer 02</p>
+              <p class="layer-name">Leverage<span class="period">.</span></p>
+              <p class="layer-body">Margin expansion alongside value creation. The same people producing more, the same function carrying a larger surface area, revenue per employee bending in the right direction. Some boards hear this layer. Fewer than you would think.</p>
+            </div>
+
+            <div class="roi-layer">
+              <p class="layer-num">Layer 03</p>
+              <p class="layer-name">Strategic<span class="period">.</span></p>
+              <p class="layer-body">New capabilities the function did not previously have. New products, new customer outcomes, new positions the business can now hold because the function can now do something it could not do before. <em>This is where the conversation actually changes, and where the redesign gets funded.</em></p>
+            </div>
+
+            <p class="roi-close">Most boards have only ever heard the efficiency layer of the AI ROI conversation. When I sit with a CRO or CFO before a board meeting, the work is moving the conversation up the layers. Layer 1 gets the redesign approved as a cost story. Layer 3 gets it funded as a growth story. The number you walk in with is the same. The decision the board makes is not.</p>
+          </div>
+
+          <p>The Three-Layer ROI is a Judgment artefact, not a Finance artefact. It is the structure I hand the leader so that the most senior conversation in the company lands on the layer where the redesign actually creates value, rather than the layer the board is most rehearsed in discussing.</p>
+
+          <div class="anchor-essay">
+            <a href="https://karine.substack.com/p/putting-humans-in-the-loop-is-easy" rel="noopener">Read: Putting humans in the loop is easy. Giving them a loop worth being in, that's the hard part →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVE 04 -->
+  <section class="std" id="move-04">
+    <div class="container">
+      <div class="section-header">
+        <div class="move-num-big">04</div>
+        <div class="section-title">
+          <h2>Data flow &amp; learning loops<span class="period">.</span></h2>
+          <p class="section-subtitle">Data as shared infrastructure. Every correction logged. The organisation gets smarter when its people work.</p>
+        </div>
+      </div>
+
+      <div class="prose-grid">
+        <div></div>
+        <div class="prose">
+          <p>Most organisations still treat data as a function. A team owns it, a platform stores it, a dashboard surfaces it. In an AI-native function, data is not a function. It is shared infrastructure. It flows across the workflow, it carries the corrections the humans make, and it compounds. Every time someone overrides the system's suggestion, edits the draft, reclassifies the case, or refines the segmentation, that correction is logged and routed back into the system that produced the suggestion in the first place.</p>
+
+          <p>This is the compounding move. It is the difference between a function that is one redesign smarter than it was last quarter, and a function that gets smarter <em>every week</em> because its people are working. You do not need a separate program for it. You need the discipline that no correction is thrown away, and that the path from correction to system is short enough that the people doing the work can feel the loop closing.</p>
+
+          <p><em>Without it, the redesign is a snapshot, not a trajectory.</em> With it, the function you redesigned in Q1 is materially sharper by Q4, not because anyone ran another transformation, but because the work itself was the training data.</p>
+
+          <div class="anchor-essay">
+            <a href="https://karine.substack.com/p/your-work-has-no-architecture-ai" rel="noopener">Read: Your Work Has No Architecture. AI Just Found Out →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing-section">
+    <div class="container">
+      <p class="closing-eyebrow">When the four moves run in sequence</p>
+      <h2>What the methodology produces<span class="period">.</span></h2>
+      <p class="closing-body">Capabilities name what the function owes the business. Workflows turn that into a redesigned operating model with every step classified. Judgment places human decision-making where it changes outcomes, and structures the board conversation across the three layers of ROI. Data flow turns the whole thing into a trajectory that compounds. Run in this order, the four moves produce a function the leader can actually operate, a board narrative that funds the redesign as growth rather than cost, and an organisation that gets sharper every quarter without another transformation programme.</p>
+
+      <p class="closing-pull">The redesign creates the conditions; the playbook moves the work; the companion holds the outcome.</p>
+
+      <div class="closing-ctas">
+        <a href="https://karine.substack.com" class="btn-primary" rel="noopener">Read the work on Substack</a>
+        <a href="mailto:karine@human-x-ai.com" class="btn-outline">Start a conversation</a>
+        <a href="mailto:karine@human-x-ai.com?subject=DareOnAI%20Cohort%2001" class="link-terra">Apply to DareOnAI →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer aria-label="Footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Human <span class="x">×</span> AI</div>
+      <div class="footer-tagline">A playbook for AI transformation that produces measurable P&amp;L results, accelerates innovation, and rebuilds the organisation around what AI now makes possible.</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">The Playbook</div>
+      <a href="/methodology">The Methodology</a>
+      <a href="/#pattern">The Pattern</a>
+      <a href="/#the-lead">AI-Native Leadership</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">Read</div>
+      <a href="/#field-notes">Field Notes</a>
+      <a href="https://karine.substack.com" rel="noopener">Substack</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">Engage</div>
+      <a href="mailto:karine@human-x-ai.com">karine@human-x-ai.com</a>
+      <a href="https://dareonai.com" rel="noopener">DareOnAI</a>
+      <a href="https://www.linkedin.com/in/karineallouchesalanon/" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Human × AI · Karine Allouche</div>
+    <div>Judgment before automation</div>
+  </div>
+</footer>
+
+</body>
+</html>
