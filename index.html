@@ -332,95 +332,149 @@
   }
   .pr-block .pr-text .period { color: var(--signal); }
 
-  /* ── METHODOLOGY ──────────────────────────────── */
-  .methodology-moves {
-    margin-top: 24px;
-  }
-  .move-row {
+  /* ── METHODOLOGY ── sequence rail ─────────────── */
+  .moves-rail {
+    position: relative;
     display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 80px;
-    padding: 56px 0;
-    border-bottom: 1px solid var(--rule);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin: 48px 0 32px;
+    padding: 0 60px;
   }
-  .move-row:first-child { border-top: 1px solid var(--rule); }
-  .move-num-big {
+  .moves-rail::before {
+    content: "";
+    position: absolute;
+    top: 27px;
+    left: 90px;
+    right: 90px;
+    height: 1px;
+    background: var(--ink);
+    z-index: 0;
+  }
+  .moves-rail::after {
+    content: "";
+    position: absolute;
+    top: 21px;
+    right: 70px;
+    width: 0;
+    height: 0;
+    border-left: 9px solid var(--signal);
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    z-index: 0;
+  }
+  .move-node {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  .move-node .circle {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--canvas);
+    border: 1px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Libre Baskerville', serif;
     font-style: italic;
-    font-size: 36px;
+    font-size: 20px;
     color: var(--signal);
+    font-weight: 400;
+    margin: 0 auto 22px;
     line-height: 1;
-    padding-top: 8px;
-    font-weight: 400;
+    letter-spacing: -0.01em;
   }
-  .move-content { max-width: 700px; }
-  .move-content h3 {
+  .move-node h3 {
     font-family: 'Libre Baskerville', serif;
-    font-size: 36px;
-    line-height: 1.15;
+    font-size: 20px;
+    line-height: 1.25;
     color: var(--ink);
-    letter-spacing: -0.018em;
-    margin-bottom: 20px;
+    letter-spacing: -0.008em;
+    margin-bottom: 10px;
     font-weight: 400;
   }
-  .move-content h3 .period { color: var(--signal); }
-  .move-content p {
+  .move-node h3 .period { color: var(--signal); }
+  .move-node p {
     font-family: 'Inter', sans-serif;
-    font-size: 17px;
-    line-height: 1.65;
+    font-size: 13.5px;
+    line-height: 1.55;
     color: var(--charcoal);
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) {
+    .moves-rail {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      padding: 24px 0 0;
+    }
+    .moves-rail::before, .moves-rail::after { display: none; }
+    .move-node h3 { font-size: 22px; }
+    .move-node p { max-width: 100%; }
   }
 
-  /* ── RESULTS STRIP ────────────────────────────── */
+  /* ── RESULTS LEDGER ───────────────────────────── */
   .results-section {
     padding: 140px 0;
     background: var(--canvas-pure);
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
   }
-  .results-strip {
+  .ledger {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--ink);
+    border-top: 2px solid var(--ink);
     border-bottom: 1px solid var(--ink);
     margin: 64px 0 48px;
   }
-  .result {
-    padding: 48px 28px 40px;
+  .ledger-col {
+    padding: 40px 28px 36px;
     border-right: 1px solid var(--rule);
-    text-align: left;
   }
-  .result:last-child { border-right: none; }
-  .result-num {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 60px;
-    line-height: 1;
-    color: var(--ink);
-    letter-spacing: -0.03em;
-    margin-bottom: 18px;
-    font-weight: 400;
-  }
-  .result-num .accent { color: var(--signal); }
-  .result-num .small { font-size: 32px; vertical-align: top; }
-  .result-num.text { font-size: 26px; padding-top: 10px; line-height: 1.1; }
-  .result-label {
+  .ledger-col:last-child { border-right: none; }
+  .ledger-col .eyebrow {
     font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--slate);
+    font-size: 11px;
     font-weight: 600;
-    line-height: 1.45;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 18px;
   }
-  .result-arrow {
+  .ledger-col .range {
     font-family: 'Libre Baskerville', serif;
     font-style: italic;
-    font-size: 14px;
-    color: var(--signal);
-    margin: 0 4px;
-    text-transform: none;
-    letter-spacing: 0;
+    font-size: 48px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 18px;
+    letter-spacing: -0.022em;
+  }
+  .ledger-col .range .dash { color: var(--signal); }
+  .ledger-col .range.text { font-size: 28px; letter-spacing: -0.012em; }
+  .ledger-col .gloss {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--charcoal);
+    opacity: 0.72;
+    max-width: 200px;
+  }
+  @media (max-width: 900px) {
+    .ledger { grid-template-columns: 1fr 1fr; }
+    .ledger-col { border-right: none; border-bottom: 1px solid var(--rule); padding: 28px 20px; }
+    .ledger-col:nth-child(odd) { border-right: 1px solid var(--rule); }
+    .ledger-col:nth-last-child(-n+2) { border-bottom: none; }
+    .ledger-col .range { font-size: 36px; }
+    .ledger-col .range.text { font-size: 22px; }
+  }
+  @media (max-width: 540px) {
+    .ledger { grid-template-columns: 1fr; }
+    .ledger-col, .ledger-col:nth-child(odd) { border-right: none; border-bottom: 1px solid var(--rule); }
+    .ledger-col:last-child { border-bottom: none; }
   }
 
   /* ── FIELD NOTES (Substack posts) ─────────────── */
@@ -971,35 +1025,31 @@
         </div>
       </div>
 
-      <div class="methodology-moves">
-        <div class="move-row">
-          <div class="move-num-big">01</div>
-          <div class="move-content">
-            <h3>Capabilities<span class="period">.</span></h3>
-            <p>What outcomes the function exists to deliver, defined before any workflow is touched. Most redesigns fail here, by skipping straight to tools. The capability question comes first because everything downstream is in service of it.</p>
-          </div>
+      <div class="moves-rail">
+        <div class="move-node">
+          <div class="circle">01</div>
+          <h3>Capabilities<span class="period">.</span></h3>
+          <p>What outcomes the function exists to deliver. Defined before any workflow is touched.</p>
         </div>
-        <div class="move-row">
-          <div class="move-num-big">02</div>
-          <div class="move-content">
-            <h3>Workflows<span class="period">.</span></h3>
-            <p>Current state mapped honestly. Then redesigned end-to-end. Each step classified as autonomous, augmented, or human-essential. The classification is the work, and it is the work that automation alone cannot do.</p>
-          </div>
+        <div class="move-node">
+          <div class="circle">02</div>
+          <h3>Workflows<span class="period">.</span></h3>
+          <p>Mapped honestly, redesigned end-to-end. Each step classified <em>autonomous, augmented, or human-essential.</em></p>
         </div>
-        <div class="move-row">
-          <div class="move-num-big">03</div>
-          <div class="move-content">
-            <h3>Judgment<span class="period">.</span></h3>
-            <p>The deliberate placement of human decision-making, where it creates more value than system autonomy would. Judgment is the most expensive resource in the company of tomorrow. It belongs where it is decisive.</p>
-          </div>
+        <div class="move-node">
+          <div class="circle">03</div>
+          <h3>Judgment<span class="period">.</span></h3>
+          <p>The deliberate placement of human decision-making, where it changes the outcome.</p>
         </div>
-        <div class="move-row">
-          <div class="move-num-big">04</div>
-          <div class="move-content">
-            <h3>Data flow &amp; learning loops<span class="period">.</span></h3>
-            <p>Data as shared infrastructure. Every correction logged. The organisation gets smarter when its people work, or it leaks value. The learning loop is what compounds; without it, the redesign is a snapshot, not a trajectory.</p>
-          </div>
+        <div class="move-node">
+          <div class="circle">04</div>
+          <h3>Data flow &amp; loops<span class="period">.</span></h3>
+          <p>Data as shared infrastructure. Every correction logged. The function compounds.</p>
         </div>
+      </div>
+
+      <div style="margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--rule); display: flex; justify-content: flex-end;">
+        <a href="/methodology" style="font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 19px; color: var(--signal); border-bottom: 1px solid var(--signal); padding-bottom: 3px;">Read the full methodology →</a>
       </div>
     </div>
   </section>
@@ -1015,22 +1065,26 @@
         </div>
       </div>
 
-      <div class="results-strip">
-        <div class="result">
-          <div class="result-num"><span class="accent">10–25</span><span class="small">%</span></div>
-          <div class="result-label">P&amp;L Cost Reduction</div>
+      <div class="ledger">
+        <div class="ledger-col">
+          <div class="eyebrow">Cost reduction</div>
+          <div class="range">10<span class="dash">–</span>25%</div>
+          <div class="gloss">P&amp;L cost out, sustained across the redesigned function.</div>
         </div>
-        <div class="result">
-          <div class="result-num"><span class="accent">15–30</span><span class="small">%</span></div>
-          <div class="result-label">FTE Reduction<br>Classified, not cut</div>
+        <div class="ledger-col">
+          <div class="eyebrow">FTE reduction</div>
+          <div class="range">15<span class="dash">–</span>30%</div>
+          <div class="gloss">Classified, not cut. Headcount may move; leverage is the target.</div>
         </div>
-        <div class="result">
-          <div class="result-num"><span class="accent">5–10×</span></div>
-          <div class="result-label">Innovation Delivery<br>Months <span class="result-arrow">→</span> Weeks</div>
+        <div class="ledger-col">
+          <div class="eyebrow">Innovation delivery</div>
+          <div class="range">5<span class="dash">–</span>10<span class="dash">×</span></div>
+          <div class="gloss">From months to weeks. Cycle time compresses as workflows redesign.</div>
         </div>
-        <div class="result">
-          <div class="result-num text">Months <span style="color: var(--signal); font-style: italic;">→</span> Weeks</div>
-          <div class="result-label" style="margin-top: 12px;">Customer Validation</div>
+        <div class="ledger-col">
+          <div class="eyebrow">Customer validation</div>
+          <div class="range text">Months <span class="dash">→</span> Weeks</div>
+          <div class="gloss">Pulled forward in the cycle. Decisions earlier; risk lower.</div>
         </div>
       </div>
 
@@ -1087,37 +1141,45 @@
       </div>
 
       <div class="field-notes">
-        <a href="https://karine.substack.com/p/why-the-race-to-deploy-ai-agents" class="post" rel="noopener">
+        <a href="https://karine.substack.com/p/why-i-told-my-team-to-stop-planning" class="post" rel="noopener">
           <div class="post-num">01</div>
+          <div>
+            <div class="post-title">Why I Told My Team to Stop Planning and Start Experimenting<span class="period">.</span></div>
+            <div class="post-excerpt">AI transformation doesn't need a master plan. It needs a first experiment, and permission to learn from it.</div>
+          </div>
+          <div class="post-meta">May 12 · 2026</div>
+        </a>
+        <a href="https://karine.substack.com/p/from-functions-to-clusters-what-i" class="post" rel="noopener">
+          <div class="post-num">02</div>
+          <div>
+            <div class="post-title">From Functions to Clusters: What I Learned Redesigning an Organisation Around AI<span class="period">.</span></div>
+            <div class="post-excerpt">Why the org chart is the wrong unit of AI transformation, and what to replace it with.</div>
+          </div>
+          <div class="post-meta">Apr 28 · 2026</div>
+        </a>
+        <a href="https://karine.substack.com/p/you-cant-automate-what-you-havent" class="post" rel="noopener">
+          <div class="post-num">03</div>
+          <div>
+            <div class="post-title">You Can't Automate What You Haven't Codified<span class="period">.</span></div>
+            <div class="post-excerpt">Why 56% of companies aren't seeing AI ROI, and what to build before the technology.</div>
+          </div>
+          <div class="post-meta">Apr 21 · 2026</div>
+        </a>
+        <a href="https://karine.substack.com/p/putting-humans-in-the-loop-is-easy" class="post" rel="noopener">
+          <div class="post-num">04</div>
+          <div>
+            <div class="post-title">Putting humans in the loop is easy. Giving them a loop worth being in, that's the hard part<span class="period">.</span></div>
+            <div class="post-excerpt">Why oversight is not a junior role, and why designing it as one is quietly breaking your AI.</div>
+          </div>
+          <div class="post-meta">Apr 14 · 2026</div>
+        </a>
+        <a href="https://karine.substack.com/p/why-the-race-to-deploy-ai-agents" class="post" rel="noopener">
+          <div class="post-num">05</div>
           <div>
             <div class="post-title">The Organisations Winning With AI Aren't Deploying More. They're Drifting Less<span class="period">.</span></div>
             <div class="post-excerpt">Agents multiply action. Only humans multiply meaning.</div>
           </div>
           <div class="post-meta">Apr 07 · 2026</div>
-        </a>
-        <a href="https://karine.substack.com/p/your-org-chart-is-the-bottleneck" class="post" rel="noopener">
-          <div class="post-num">02</div>
-          <div>
-            <div class="post-title">Your org chart is the bottleneck<span class="period">.</span></div>
-            <div class="post-excerpt">Functions were never the right unit of organisation for what AI makes possible.</div>
-          </div>
-          <div class="post-meta">Mar 31 · 2026</div>
-        </a>
-        <a href="https://karine.substack.com/p/your-work-has-no-architecture-ai" class="post" rel="noopener">
-          <div class="post-num">03</div>
-          <div>
-            <div class="post-title">Your Work Has No Architecture. AI Just Found Out<span class="period">.</span></div>
-            <div class="post-excerpt">A very precise, very fast mirror reflecting back the absence of architecture you didn't know you had.</div>
-          </div>
-          <div class="post-meta">Mar 17 · 2026</div>
-        </a>
-        <a href="https://karine.substack.com/p/you-cant-automate-what-you-havent" class="post" rel="noopener">
-          <div class="post-num">04</div>
-          <div>
-            <div class="post-title">You Can't Automate What You Haven't Codified<span class="period">.</span></div>
-            <div class="post-excerpt">Governing the work before governing the AI. The precondition most redesigns skip.</div>
-          </div>
-          <div class="post-meta">Read on Substack</div>
         </a>
       </div>
 
@@ -1218,9 +1280,9 @@
       </div>
       <div class="footer-col">
         <div class="footer-col-label">The Playbook</div>
-        <a href="#methodology">The Methodology</a>
+        <a href="/methodology">The Methodology</a>
         <a href="#pattern">The Pattern</a>
-        <a href="#the-lead">The Lead</a>
+        <a href="#ai-native-leadership">AI-Native Leadership</a>
       </div>
       <div class="footer-col">
         <div class="footer-col-label">Read</div>
