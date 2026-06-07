@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Human × AI — Q-Free Partner Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --dark: #1a1a1a; --mid: #444; --muted: #888;
+      --border: #e0ddd8; --light: #f5f4f0; --white: #fff;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans:  'Inter', -apple-system, system-ui, sans-serif;
+    }
+    body { font-family: var(--sans); background: var(--light); color: var(--black); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    /* LOGIN */
+    #login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--black); }
+    .login-card { background: var(--white); width: 100%; max-width: 400px; padding: 52px 44px 44px; }
+    .login-wordmark { font-family: var(--serif); font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    .login-title { font-family: var(--serif); font-size: 28px; font-weight: 700; color: var(--black); line-height: 1.2; margin-bottom: 6px; }
+    .login-sub { font-size: 13px; color: var(--muted); margin-bottom: 36px; }
+    .rule { height: 1px; background: var(--border); margin-bottom: 28px; }
+    .field-label { display: block; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
+    .field-input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); font-family: var(--sans); font-size: 15px; color: var(--black); background: var(--white); outline: none; transition: border-color .15s; margin-bottom: 20px; }
+    .field-input:focus { border-color: var(--black); }
+    .btn-black { width: 100%; padding: 14px; background: var(--black); color: var(--white); border: none; font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: .04em; cursor: pointer; transition: background .15s; }
+    .btn-black:hover { background: var(--dark); }
+    .error-msg { font-size: 12px; color: #b91c1c; margin-top: -14px; margin-bottom: 16px; display: none; }
+    .login-footnote { font-size: 11px; color: var(--muted); text-align: center; margin-top: 20px; letter-spacing: .03em; }
+
+    /* APP */
+    #app { display: none; }
+    .topnav { background: var(--black); height: 58px; display: flex; align-items: center; padding: 0 32px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #1f1f1f; }
+    .nav-wordmark { font-family: var(--serif); font-size: 15px; font-weight: 400; color: var(--white); margin-right: 40px; letter-spacing: .01em; white-space: nowrap; }
+    .nav-wordmark .x { color: #666; }
+    .nav-links { display: flex; gap: 2px; flex: 1; }
+    .nav-link { font-size: 13px; font-weight: 500; color: #666; padding: 7px 14px; cursor: pointer; border: none; background: none; letter-spacing: .02em; transition: color .15s; border-bottom: 2px solid transparent; }
+    .nav-link:hover { color: #aaa; }
+    .nav-link.active { color: var(--white); border-bottom-color: var(--white); }
+    .nav-link.admin-link { color: #3a3a3a; font-size: 12px; letter-spacing: .05em; }
+    .nav-link.admin-link:hover { color: #666; }
+    .nav-link.admin-link.active { color: #888; border-bottom-color: #555; }
+    .nav-right { display: flex; align-items: center; }
+    .signout-btn { font-size: 12px; font-weight: 500; color: #555; cursor: pointer; border: none; background: none; letter-spacing: .04em; text-transform: uppercase; }
+    .signout-btn:hover { color: #888; }
+    /* Role-based visibility */
+    body[data-role="client"] .admin-only { display: none !important; }
+    /* Preview banner */
+    #preview-banner { background: #1a1a1a; border-bottom: 1px solid #333; color: #999; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 7px 32px; display: none; }
+    #preview-banner.visible { display: flex; align-items: center; gap: 14px; }
+    #preview-banner span { flex: 1; }
+    #preview-banner button { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff; background: none; border: 1px solid #444; padding: 4px 10px; cursor: pointer; }
+    #preview-banner button:hover { border-color: #666; }
+
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
+    .page-inner { max-width: 1080px; margin: 0 auto; padding: 52px 32px 80px; }
+    .page-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .page-title { font-family: var(--serif); font-size: 36px; font-weight: 700; color: var(--black); line-height: 1.15; margin-bottom: 8px; }
+    .page-sub { font-size: 15px; color: var(--muted); margin-bottom: 48px; max-width: 640px; line-height: 1.6; }
+
+    /* GRID */
+    .grid-3-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .grid-3-1 { grid-template-columns: 1fr; } .page-inner { padding: 36px 20px 60px; } }
+
+    /* METRICS */
+    .metrics-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 40px; }
+    @media (max-width: 600px) { .metrics-strip { grid-template-columns: 1fr; } }
+    .metric-cell { background: var(--white); padding: 28px 28px 24px; }
+    .metric-num { font-family: var(--serif); font-size: 40px; font-weight: 700; color: var(--black); line-height: 1; margin-bottom: 8px; }
+    .metric-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+    .metric-sub { font-size: 12px; color: #aaa; }
+
+    /* SECTION BLOCKS */
+    .section-block { background: var(--white); border: 1px solid var(--border); margin-bottom: 1px; }
+    .section-header { padding: 22px 26px 18px; border-bottom: 1px solid var(--border); }
+    .section-num { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+    .section-title { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--black); }
+    .section-body { padding: 22px 26px; }
+
+    /* PROGRESS */
+    .progress-bar-wrap { height: 3px; background: var(--border); margin: 16px 0 6px; }
+    .progress-bar-fill { height: 100%; background: var(--black); transition: width .6s ease; }
+    .progress-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+
+    /* PHASE ROWS */
+    .phases-list { margin-top: 22px; }
+    .phase-row { display: flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .phase-row:last-child { border-bottom: none; }
+    .phase-num { font-family: var(--serif); font-size: 21px; font-weight: 400; color: var(--border); line-height: 1.1; flex-shrink: 0; width: 34px; }
+    .phase-num.active { color: var(--black); }
+    .phase-num.done   { color: var(--mid); }
+    .phase-info { flex: 1; }
+    .phase-name { font-size: 14px; font-weight: 600; color: var(--black); margin-bottom: 2px; }
+    .phase-date-wrap { display: flex; align-items: center; gap: 6px; }
+    .phase-date { font-size: 12px; color: var(--muted); }
+    .edit-date-btn { font-size: 11px; color: var(--muted); cursor: pointer; opacity: .5; transition: opacity .15s; background: none; border: none; padding: 0; line-height: 1; }
+    .edit-date-btn:hover { opacity: 1; color: var(--black); }
+    .phase-status { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+    .phase-status.active { color: var(--black); }
+    .phase-status.done   { color: var(--mid); }
+    .phase-status.upcoming { color: #bbb; }
+
+    .text-link { font-size: 12px; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+    .text-link:hover { color: var(--black); }
+
+    /* TEAM */
+    .team-row { display: flex; gap: 12px; align-items: flex-start; padding: 11px 0; border-bottom: 1px solid var(--border); }
+    .team-row:last-child { border-bottom: none; }
+    .team-initial { width: 30px; height: 30px; background: var(--black); color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; font-family: var(--serif); }
+    .team-name { font-size: 14px; font-weight: 700; color: var(--black); }
+    .team-role { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+    /* QUICK LINKS */
+    .quick-link { display: block; padding: 11px 14px; font-size: 13px; font-weight: 600; color: var(--black); text-decoration: none; border: 1px solid var(--border); background: var(--white); margin-bottom: 8px; transition: background .15s; cursor: pointer; }
+    .quick-link:hover { background: var(--light); }
+
+    /* DAREONAI */
+    .dareonai-block { background: var(--white); border: 1px solid var(--border); margin-top: 28px; opacity: .5; }
+    .dareonai-tag { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; }
+
+    /* TABS */
+    .section-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
+    .section-tab { font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--muted); padding: 12px 20px; cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .15s; }
+    .section-tab:hover { color: var(--dark); }
+    .section-tab.active { color: var(--black); border-bottom-color: var(--black); }
+    .section-panel { display: none; }
+    .section-panel.active { display: block; }
+
+    /* TIMELINE */
+    .tl-item { display: flex; gap: 16px; margin-bottom: 2px; }
+    .tl-num-col { flex-shrink: 0; width: 36px; padding-top: 16px; }
+    .tl-item-num { font-family: var(--serif); font-size: 21px; font-weight: 400; line-height: 1; }
+    .tl-item-num.active { color: var(--black); }
+    .tl-item-num.done   { color: var(--mid); }
+    .tl-item-num.upcoming { color: #ccc; }
+    .tl-card { flex: 1; background: var(--white); border: 1px solid var(--border); transition: border-color .15s; margin-bottom: 8px; }
+    .tl-card:hover { border-color: var(--mid); }
+    .tl-card.is-active { border-color: var(--black); }
+    .tl-header { padding: 15px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+    .tl-header:hover { background: var(--light); }
+    .tl-name { font-size: 14px; font-weight: 700; color: var(--black); flex: 1; }
+    .tl-status { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .tl-status.active { color: var(--black); }
+    .tl-status.done   { color: var(--mid); }
+    .tl-status.upcoming { color: #bbb; }
+    .tl-chevron { font-size: 11px; color: var(--muted); transition: transform .2s; }
+    .tl-body { padding: 0 18px 18px; display: none; }
+    .tl-body.open { display: block; }
+    .tl-desc { font-size: 13px; color: var(--mid); line-height: 1.7; padding: 4px 0 15px; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
+
+    /* CHECKLIST */
+    .checklist { margin-bottom: 15px; }
+    .checklist-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--light); }
+    .check-item:last-child { border-bottom: none; }
+    .check-box { width: 15px; height: 15px; border: 1.5px solid var(--border); flex-shrink: 0; margin-top: 2px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .check-box:hover { border-color: var(--mid); }
+    .check-box.checked { background: var(--black); border-color: var(--black); }
+    .check-box.checked::after { content: '✓'; color: var(--white); font-size: 9px; font-weight: 700; }
+    .check-text { flex: 1; }
+    .check-main { font-size: 13px; color: var(--black); line-height: 1.5; }
+    .check-main.checked { color: var(--muted); text-decoration: line-through; text-decoration-color: #ccc; }
+    .check-meta { display: flex; gap: 10px; margin-top: 3px; flex-wrap: wrap; }
+    .check-owner { font-size: 11px; color: var(--muted); }
+    .check-note  { font-size: 11px; color: #bbb; font-style: italic; }
+    .check-star  { color: var(--black); font-style: normal; font-weight: 700; }
+    .progress-mini { height: 2px; background: var(--border); margin: 8px 0 12px; border-radius: 99px; overflow: hidden; }
+    .progress-mini-fill { height: 100%; background: var(--black); transition: width .3s ease; }
+
+    /* COMMENTS */
+    .comments-section { border-top: 1px solid var(--border); padding-top: 13px; }
+    .comments-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .comment-item { border-left: 2px solid var(--border); padding: 7px 12px; margin-bottom: 8px; }
+    .comment-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+    .comment-author { font-weight: 700; color: var(--black); }
+    .comment-text { font-size: 13px; color: var(--mid); line-height: 1.6; }
+    .comment-form { display: flex; gap: 8px; margin-top: 10px; }
+    .comment-input { flex: 1; padding: 9px 12px; border: 1px solid var(--border); font-family: var(--sans); font-size: 13px; color: var(--black); background: var(--white); outline: none; transition: border-color .15s; }
+    .comment-input:focus { border-color: var(--black); }
+    .comment-submit { padding: 9px 14px; background: var(--black); color: var(--white); border: none; font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: .04em; cursor: pointer; white-space: nowrap; }
+    .comment-submit:hover { background: var(--dark); }
+
+    /* METHODS */
+    .method-block { background: var(--white); border: 1px solid var(--border); margin-bottom: 2px; }
+    .method-hdr { display: flex; align-items: center; justify-content: space-between; padding: 17px 20px; cursor: pointer; user-select: none; }
+    .method-hdr:hover { background: var(--light); }
+    .method-hdr-left { display: flex; align-items: center; gap: 12px; }
+    .method-num { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .method-title { font-size: 14px; font-weight: 700; color: var(--black); }
+    .method-chev { font-size: 11px; color: var(--muted); transition: transform .2s; }
+    .method-hdr.open .method-chev { transform: rotate(180deg); }
+    .method-body { display: none; padding: 0 20px 18px; font-size: 13px; color: var(--mid); line-height: 1.8; border-top: 1px solid var(--border); }
+    .method-body.open { display: block; }
+    .method-body p { margin-top: 12px; }
+    .method-body p:first-child { margin-top: 14px; }
+    .method-body .step { padding: 3px 0 3px 14px; border-left: 2px solid var(--border); margin: 4px 0; }
+    .method-body strong { color: var(--black); font-weight: 700; }
+
+    /* DOCUMENTS */
+    .docs-section { margin-bottom: 26px; }
+    .docs-section-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding-bottom: 7px; border-bottom: 1px solid var(--border); }
+    .docs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .doc-card { background: var(--white); padding: 16px; text-decoration: none; display: flex; flex-direction: column; gap: 5px; transition: background .15s; cursor: pointer; }
+    .doc-card:hover { background: var(--light); }
+    .doc-icon { font-size: 19px; margin-bottom: 2px; }
+    .doc-name { font-size: 13px; font-weight: 700; color: var(--black); line-height: 1.3; }
+    .doc-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+    .doc-type { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #bbb; margin-top: 2px; }
+    .doc-owner { font-size: 10px; color: #ccc; font-style: italic; }
+    .add-doc-card { background: var(--white); padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; min-height: 100px; border: none; transition: background .15s; }
+    .add-doc-card:hover { background: var(--light); }
+    .add-doc-card .plus { font-size: 18px; color: #ccc; }
+    .add-doc-card p { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+    /* MODALS */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.65); display: none; align-items: center; justify-content: center; z-index: 200; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); width: 90%; max-width: 400px; padding: 32px; }
+    .modal h3 { font-family: var(--serif); font-size: 20px; font-weight: 700; margin-bottom: 20px; color: var(--black); }
+    .modal-field { margin-bottom: 14px; }
+    .modal-field label { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; }
+    .modal-field input, .modal-field textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); font-family: var(--sans); font-size: 14px; color: var(--black); background: var(--white); outline: none; transition: border-color .15s; }
+    .modal-field input:focus, .modal-field textarea:focus { border-color: var(--black); }
+    .modal-field textarea { resize: vertical; min-height: 70px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+    .btn-ghost { padding: 9px 16px; background: none; border: 1px solid var(--border); font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--mid); cursor: pointer; }
+    .btn-ghost:hover { border-color: var(--mid); }
+    .btn-solid { padding: 9px 16px; background: var(--black); border: none; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--white); cursor: pointer; }
+    .btn-solid:hover { background: var(--dark); }
+
+    /* CALENDAR TABLE */
+    .cal-table-wrap { overflow-x: auto; margin-top: 8px; }
+    .cal-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .cal-table th { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 10px 14px; text-align: left; border-bottom: 2px solid var(--black); white-space: nowrap; background: var(--white); }
+    .cal-table th.phase-col { background: var(--black); color: var(--white); }
+    .cal-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); vertical-align: top; line-height: 1.6; color: var(--mid); background: var(--white); }
+    .cal-table td:first-child { font-weight: 700; color: var(--black); white-space: nowrap; background: var(--light); border-right: 2px solid var(--border); }
+    .cal-table tr:last-child td { border-bottom: none; }
+    .cal-milestone { font-weight: 700; color: var(--black); }
+    .cal-star { color: var(--black); }
+    .cal-muted { color: #bbb; font-size: 11px; }
+    .cal-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; background: var(--black); color: var(--white); margin-bottom: 4px; }
+    .cal-tag.alt { background: var(--border); color: var(--mid); }
+
+    /* ADMIN PAGE */
+    .admin-section { background: var(--white); border: 1px solid var(--border); margin-bottom: 24px; }
+    .admin-section-hdr { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .admin-section-title { font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--black); }
+    .admin-section-body { padding: 20px 22px; }
+    .admin-doc-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .admin-doc-row:last-child { border-bottom: none; }
+    .admin-doc-info { flex: 1; }
+    .admin-doc-name { font-size: 13px; font-weight: 700; color: var(--black); }
+    .admin-doc-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .admin-doc-url  { font-size: 11px; color: #bbb; word-break: break-all; }
+    .btn-sm-ghost { padding: 5px 10px; background: none; border: 1px solid var(--border); font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--mid); cursor: pointer; white-space: nowrap; }
+    .btn-sm-ghost:hover { border-color: var(--mid); }
+    .btn-sm-danger { padding: 5px 10px; background: none; border: 1px solid #fca5a5; font-family: var(--sans); font-size: 11px; font-weight: 700; color: #b91c1c; cursor: pointer; }
+    .btn-sm-danger:hover { background: #fef2f2; }
+    .step-link-row { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .step-link-row:last-child { border-bottom: none; }
+    .step-link-label { font-size: 12px; font-weight: 600; color: var(--black); flex: 1; min-width: 200px; }
+    .step-link-phase { font-size: 10px; color: var(--muted); letter-spacing: .05em; }
+    .step-linked-docs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
+    .step-linked-doc-tag { display: flex; align-items: center; gap: 5px; background: var(--light); border: 1px solid var(--border); padding: 3px 8px; font-size: 11px; color: var(--mid); }
+    .step-linked-doc-tag a { color: var(--black); font-weight: 700; text-decoration: none; }
+    .step-linked-doc-tag a:hover { text-decoration: underline; }
+    .unlink-btn { font-size: 10px; color: #bbb; cursor: pointer; border: none; background: none; line-height: 1; }
+    .unlink-btn:hover { color: #b91c1c; }
+    .check-linked-docs { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 5px; }
+    .check-linked-doc { display: inline-flex; align-items: center; gap: 4px; background: var(--light); border: 1px solid var(--border); padding: 2px 7px; font-size: 10px; color: var(--mid); text-decoration: none; }
+    .check-linked-doc:hover { background: var(--border); }
+    select.admin-select { padding: 8px 10px; border: 1px solid var(--border); font-family: var(--sans); font-size: 13px; color: var(--black); background: var(--white); outline: none; cursor: pointer; }
+    select.admin-select:focus { border-color: var(--black); }
+
+    /* FOOTER */
+    .page-footer { max-width: 1080px; margin: 0 auto; padding: 20px 32px 40px; font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .page-footer span { margin: 0 8px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-page">
+  <div class="login-card">
+    <div class="login-wordmark">Human × AI</div>
+    <div class="login-title">Q-Free Partner Portal.</div>
+    <div class="login-sub">Phase 1 — Capability Recomposition Pilot.</div>
+    <div class="rule"></div>
+    <label class="field-label" for="pw-input">Access Password</label>
+    <input type="password" class="field-input" id="pw-input" placeholder="Enter password" autocomplete="current-password">
+    <div class="error-msg" id="pw-error">Incorrect password — please try again.</div>
+    <button class="btn-black" onclick="doLogin()">Sign In →</button>
+    <div class="login-footnote">Judgment before automation.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <div id="preview-banner">
+    <span>👁 Previewing as Q-Free (client view) — admin controls hidden</span>
+    <button onclick="exitPreview()">Exit Preview</button>
+  </div>
+
+  <nav class="topnav">
+    <div class="nav-wordmark">Human <span class="x">×</span> AI <span class="x" style="margin:0 6px">·</span> Q-Free</div>
+    <div class="nav-links">
+      <button class="nav-link active" onclick="showPage('dashboard', this)">Dashboard</button>
+      <button class="nav-link" onclick="showPage('project', this)">Phase 1 Project</button>
+      <button class="nav-link admin-link admin-only" onclick="showPage('admin', this)">Admin ⚙</button>
+    </div>
+    <div class="nav-right" style="display:flex;align-items:center;gap:14px">
+      <button class="signout-btn admin-only" id="preview-btn" onclick="enterPreview()" style="color:#444;border:1px solid #333;padding:5px 10px;letter-spacing:.04em">Preview as Q-Free</button>
+      <button class="signout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-inner">
+      <div class="page-eyebrow">Dashboard</div>
+      <div class="page-title">Where we are.</div>
+      <div class="page-sub">Phase 1 — AI Capability Recomposition Pilot (SOW-002). 3 weeks from kickoff. Early August 2026.</div>
+
+      <!-- Metrics — updated live from checklist -->
+      <div class="metrics-strip">
+        <div class="metric-cell">
+          <div class="metric-num">3 wk</div>
+          <div class="metric-label">Pilot Duration</div>
+          <div class="metric-sub">Kickoff early August 2026</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-num" id="dash-metric-status">Pre</div>
+          <div class="metric-label">Current Status</div>
+          <div class="metric-sub" id="dash-metric-status-sub">Pre-phase · preparing for kickoff</div>
+        </div>
+      </div>
+
+      <div class="grid-3-1">
+
+        <!-- LEFT -->
+        <div>
+          <!-- Engagement snapshot -->
+          <div class="section-block">
+            <div class="section-header">
+              <div class="section-num">01</div>
+              <div class="section-title">Engagement Snapshot</div>
+            </div>
+            <div class="section-body" style="padding-top:18px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:18px">
+                <div style="background:var(--white);padding:13px 15px">
+                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Engagement</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--black)">SOW-002 — Phase 1 Pilot</div>
+                </div>
+                <div style="background:var(--white);padding:13px 15px">
+                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Duration</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--black)">3 weeks · start confirmed by Jul 15</div>
+                </div>
+                <div style="background:var(--white);padding:13px 15px">
+                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Operating Model</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--black)">Q-Free produces · Karine briefs &amp; coaches</div>
+                </div>
+                <div style="background:var(--white);padding:13px 15px">
+                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Board Deck</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--black)">Review w/ Jan Arne · CEO visit wk of Jun 9</div>
+                </div>
+              </div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:9px">Core Team</div>
+              <div class="team-row">
+                <div class="team-initial">JA</div>
+                <div><div class="team-name">Jan Arne Eriksen</div><div class="team-role">Internal Champion · transitioning to Chief AI Officer (Q3 2026)</div></div>
+              </div>
+              <div class="team-row">
+                <div class="team-initial">JB</div>
+                <div><div class="team-name">James Barkman</div><div class="team-role">CFO / COO · Budget Signatory</div></div>
+              </div>
+              <div class="team-row" style="border-bottom:none">
+                <div class="team-initial" style="background:var(--border);color:var(--mid)">+</div>
+                <div><div class="team-name" style="color:var(--muted)">FP&amp;A · HR · Data &amp; AI Engineer</div><div class="team-role">To be named during pre-phase (Step 1)</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phase calendar — LIVE from checklist -->
+          <div class="section-block">
+            <div class="section-header">
+              <div class="section-num">02</div>
+              <div class="section-title">Phase 1 Calendar</div>
+            </div>
+            <div class="section-body">
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="dash-pb" style="width:0%"></div>
+              </div>
+              <div class="progress-labels">
+                <span>Pre-phase</span>
+                <span id="dash-pct-label">0% complete</span>
+                <span>End of Week 3</span>
+              </div>
+              <div class="phases-list" id="dash-phases">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div>
+          <!-- Quick access -->
+          <div class="section-block" style="margin-bottom:14px">
+            <div class="section-header"><div class="section-num">03</div><div class="section-title">Quick Access</div></div>
+            <div class="section-body" style="padding:13px 18px">
+              <a href="#" onclick="navTo('project');return false" class="quick-link">→ Phase 1 Checklist &amp; Timeline</a>
+              <a id="btn-book" href="#" target="_blank" rel="noopener" class="quick-link">Book a Meeting with Karine →</a>
+            </div>
+          </div>
+
+          <!-- DareOnAI -->
+          <div class="dareonai-block">
+            <div class="section-header">
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+                <div><div class="section-num">04</div><div class="section-title">DareOnAI</div></div>
+                <span class="dareonai-tag">Coming soon</span>
+              </div>
+            </div>
+            <div class="section-body">
+              <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px">The leader-companion app from the Human × AI playbook. Private beta — twenty design partners, selected, not signed up.</p>
+              <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                <button disabled style="padding:10px 16px;background:var(--border);color:var(--muted);border:none;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.04em;cursor:not-allowed">Download DareOnAI ↓</button>
+                <a href="mailto:karine@human-x-ai.com?subject=DareOnAI%20Cohort%2001" style="font-size:13px;font-weight:600;color:var(--black);text-decoration:underline;text-underline-offset:3px">Ask to be part of the first cohort →</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /grid -->
+    </div>
+    <div class="page-footer">Human × AI <span>·</span> Q-Free <span>·</span> Judgment before automation</div>
+  </div>
+
+  <!-- PHASE 1 PROJECT -->
+  <div class="page" id="page-project">
+    <div class="page-inner">
+      <div class="page-eyebrow">Phase 1 · SOW-002</div>
+      <div class="page-title">Capability Recomposition Pilot.</div>
+      <div class="page-sub">The discipline is the sequence. Pre-phase → three workshops → board-ready Capability Recomposition Brief.</div>
+      <div class="section-tabs">
+        <button class="section-tab active" onclick="showSection('timeline', this)">Checklist &amp; Timeline</button>
+        <button class="section-tab" onclick="showSection('calendar', this)">Calendar View</button>
+        <button class="section-tab" onclick="showSection('methods', this)">Methods &amp; Instructions</button>
+        <button class="section-tab" onclick="showSection('documents', this)">Key Documents</button>
+      </div>
+      <div class="section-panel active" id="section-timeline"><div id="tl-container"></div></div>
+      <div class="section-panel" id="section-calendar"><div id="cal-container"></div></div>
+      <div class="section-panel" id="section-methods"><div id="methods-container"></div></div>
+      <div class="section-panel" id="section-documents"><div id="docs-container"></div></div>
+    </div>
+    <div class="page-footer">Human × AI <span>·</span> Q-Free <span>·</span> Judgment before automation</div>
+  </div>
+
+  <!-- ADMIN PAGE -->
+  <div class="page" id="page-admin">
+    <div class="page-inner">
+      <div class="page-eyebrow">Admin</div>
+      <div class="page-title">Portal Settings.</div>
+      <div class="page-sub">Manage the Human × AI document library and link resources to specific checklist steps.</div>
+
+      <!-- HxA Doc Library -->
+      <div class="admin-section">
+        <div class="admin-section-hdr">
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">01</div>
+            <div class="admin-section-title">Human × AI Document Library</div>
+          </div>
+          <button class="btn-sm-ghost" onclick="openAddDocModal()">+ Add Document</button>
+        </div>
+        <div class="admin-section-body" id="admin-doc-list"><!-- rendered by JS --></div>
+      </div>
+
+      <!-- Step Linker -->
+      <div class="admin-section">
+        <div class="admin-section-hdr">
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">02</div>
+            <div class="admin-section-title">Link Documents to Checklist Steps</div>
+          </div>
+        </div>
+        <div class="admin-section-body">
+          <!-- Quick-link form -->
+          <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid var(--border);margin-bottom:18px">
+            <div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Step</div>
+              <select class="admin-select" id="link-step-sel" style="min-width:280px"></select>
+            </div>
+            <div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Document</div>
+              <select class="admin-select" id="link-doc-sel" style="min-width:220px"></select>
+            </div>
+            <button class="btn-solid" onclick="linkDocToStep()">Link →</button>
+          </div>
+          <!-- Current links per step -->
+          <div id="admin-step-links"><!-- rendered by JS --></div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">Human × AI <span>·</span> Admin <span>·</span> Judgment before automation</div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- Modals -->
+<div class="modal-overlay" id="doc-modal">
+  <div class="modal">
+    <h3>Add Document</h3>
+    <div class="modal-field"><label>Name</label><input type="text" id="d-name-in" placeholder="Document name"></div>
+    <div class="modal-field"><label>Link / URL</label><input type="url" id="d-url-in" placeholder="https://..."></div>
+    <div class="modal-field"><label>Description</label><textarea id="d-desc-in" placeholder="Brief description (optional)"></textarea></div>
+    <div class="modal-actions"><button class="btn-ghost" onclick="closeModal('doc-modal')">Cancel</button><button class="btn-solid" onclick="saveDoc()">Add</button></div>
+  </div>
+</div>
+
+<!-- Add/Edit HxA doc modal -->
+<div class="modal-overlay" id="hxa-doc-modal">
+  <div class="modal">
+    <h3 id="hxa-doc-modal-title">Add Document</h3>
+    <input type="hidden" id="hd-edit-idx">
+    <div class="modal-field"><label>Name</label><input type="text" id="hd-name-in" placeholder="e.g. Workflow Allocation Template"></div>
+    <div class="modal-field"><label>URL / Link</label><input type="url" id="hd-url-in" placeholder="https://drive.google.com/..."></div>
+    <div class="modal-field"><label>Description</label><textarea id="hd-desc-in" placeholder="One-line description of what this document is for"></textarea></div>
+    <div class="modal-field"><label>Icon (emoji, optional)</label><input type="text" id="hd-icon-in" placeholder="📄" maxlength="4"></div>
+    <div class="modal-actions"><button class="btn-ghost" onclick="closeModal('hxa-doc-modal')">Cancel</button><button class="btn-solid" onclick="saveHxaDoc()">Save</button></div>
+  </div>
+</div>
+
+<!-- Phase date edit modal -->
+<div class="modal-overlay" id="phase-date-modal">
+  <div class="modal">
+    <h3>Edit Phase Date</h3>
+    <input type="hidden" id="pd-phase-key">
+    <div class="modal-field"><label>Date / Period</label><input type="text" id="pd-date-in" placeholder="e.g. Early August 2026 · ★ Workshop 1"></div>
+    <div class="modal-actions"><button class="btn-ghost" onclick="closeModal('phase-date-modal')">Cancel</button><button class="btn-solid" onclick="savePhaseDates()">Save</button></div>
+  </div>
+</div>
+
+<script>
+// ════════ CONFIG ════════
+const PASS_CLIENT = 'Qfree2024';   // Share with Q-Free
+const PASS_ADMIN  = 'HxAI2026!';   // Keep private — Karine only
+
+// ← Paste your Microsoft Bookings URL here
+const BOOKING_URL = 'https://outlook.office365.com/book/humanxai';  // UPDATE THIS
+
+let ROLE = null; // 'admin' | 'client'
+
+// ════════ PHASE GROUPINGS (maps dashboard phases → timeline items) ════════
+const PHASE_GROUPS = [
+  { key:'prephase', label:'Pre-Phase',             short:'Pre',  sub:'Pre-phase · preparing for kickoff',  defaultDate:'June – July 2026 · start confirmed by Jul 15', tlIds:['contracts','comms-enable','friction-survey'] },
+  { key:'week1',    label:'Week 1 — Workshop 1',   short:'Wk 1', sub:'Workshop 1 underway',                defaultDate:'Early August 2026 · ★ Workshop 1 · Friction Map',        tlIds:['workshop1'] },
+  { key:'week2',    label:'Week 2 — Workshop 2',   short:'Wk 2', sub:'Workshop 2 underway',                defaultDate:'August 2026 · ★ Workshop 2 · Workflow Allocation',          tlIds:['workshop2'] },
+  { key:'week3',    label:'Week 3 — Workshop 3',   short:'Wk 3', sub:'Workshop 3 · final week',            defaultDate:'August 2026 · ★ Workshop 3 · Capability Recomposition Brief', tlIds:['workshop3'] },
+];
+
+// ════════ TIMELINE DATA ════════
+const TIMELINE = [
+  { id:'contracts', num:'01', name:'Pre-Phase — Contracts & Setup', dates:'June 2026', status:'active',
+    desc:'Execute all agreements and confirm the engagement structure. Nothing in Phase 1 starts before these are signed.',
+    checklist:[
+      {id:'nda-msa',        text:'Execute NDA and MSA (Q-Free Norge AS ↔ Human × AI Labs)', owner:'Karine + James', note:'Now'},
+      {id:'sow002',         text:'Execute SOW-002', owner:'Karine + James', note:'Now'},
+      {id:'board-deck',     text:'Pressure-test board deck and AI strategy narrative with Jan Arne', owner:'Karine + Jan Arne', note:'June · CEO visit week of Jun 9'},
+      {id:'core-team',      text:'Define core team: Internal Champion confirmed; FP&A, HR, and Data & AI engineer named', owner:'Jan Arne + Karine', note:'June – early July', star:true},
+      {id:'friction-scope', text:'Scope friction interview targets for the pilot organisation', owner:'Jan Arne + Karine', note:'July'},
+      {id:'start-date',     text:'Confirm Phase 1 start date', owner:'Jan Arne + James', note:'By July 15', star:true},
+    ]},
+  { id:'comms-enable', num:'02', name:'Pre-Phase — Comms & Team Enablement', dates:'Kickoff −3 to −2 weeks', status:'upcoming',
+    desc:'Frame the mandate for the teams. Ensure every workshop room is composed correctly and every participant knows what is expected of them before they walk in.',
+    checklist:[
+      {id:'kickoff-comm',   text:"Send kickoff communication from Jan Arne — 'Don't apply AI to your current workflow. Rethink how the function works.'", owner:'Jan Arne', note:'Kickoff −3 weeks'},
+      {id:'workshop-guide', text:'Distribute Pilot Recomposition Workshop Guide + Participant Pre-Read', owner:'Karine', note:'Kickoff −3 weeks'},
+      {id:'qa-session',     text:'Hold Q&A session with core team (60 min) — methodology, templates, roles', owner:'Karine + core team', note:'Kickoff −2 weeks'},
+      {id:'participant-val',text:'Validate participant list: 5–7 per room, actual drivers only, no passive observers, boundary partners confirmed', owner:'Jan Arne + Karine', note:'Kickoff −2 weeks'},
+      {id:'workshop-cal',   text:'Lock final workshop calendar: three workshop slots + weekly Jan Arne sync + async review slots', owner:'Jan Arne', note:'Kickoff −2 weeks', star:true},
+    ]},
+  { id:'friction-survey', num:'03', name:'Pre-Phase — Friction Survey', dates:'Kickoff −2 to −1 week', status:'upcoming',
+    desc:'The survey surfaces what the workshops work on. Results feed Workshop 1 — and give the wider organisation a reason to believe.',
+    checklist:[
+      {id:'s1-launch',       text:'Launch friction survey to pilot organisation participants', owner:'Jan Arne + Karine', note:'Kickoff −2 weeks', star:true},
+      {id:'s2-synthesis',    text:'Synthesise survey results: friction by workflow, R&R gaps, broken system items', owner:'Karine + Jan Arne', note:'Kickoff −1 week'},
+      {id:'s3a-participants',text:'Send results to survey participants: thank them, show what was heard, say what happens next', owner:'Jan Arne', note:'Kickoff −1 week'},
+      {id:'s3b-managers',    text:'Share full synthesis with workshop managers (sent with Workshop 1 pre-read)', owner:'Karine + Jan Arne', note:'Kickoff −1 week'},
+      {id:'s3c-org',         text:"Send org-wide message: 'We are looking at workflows to make your job easier'", owner:'Jan Arne', note:'Kickoff −1 week'},
+    ]},
+  { id:'workshop1', num:'04', name:'Week 1 — Workshop 1: Frame & Current State', dates:'Early August 2026', status:'upcoming',
+    desc:"Reject 'apply AI to what we have' out loud. Define the one overarching KPI, map capabilities as outcomes, map current workflows honestly — handoffs, delays, workarounds.",
+    checklist:[
+      {id:'w1-kpi',      text:'Define the one overarching KPI for the pilot organisation'},
+      {id:'w1-caps',     text:'Map capabilities as outcomes — not job titles, not workflows'},
+      {id:'w1-workflows',text:'Map current workflows honestly: handoffs, delays, workarounds — as they actually happen'},
+      {id:'w1-survey',   text:'Review friction interview findings and Survey Results Synthesis'},
+      {id:'w1-friction', text:'Produce Friction Map v1 for the pilot organisation', owner:'Core team', note:'Output document', star:true},
+      {id:'w1-feedback', text:'Send workshop outputs to Karine', owner:'Core team', note:'≤24h after workshop'},
+      {id:'w1-baseline', text:'Data & Insights: begin baseline metrics per workflow + draft uplift estimates', owner:'Data & Insights', note:'Between W1–W2'},
+    ]},
+  { id:'workshop2', num:'05', name:'Week 2 — Workshop 2: Target Workflows & Decision Boundaries', dates:'August 2026', status:'upcoming',
+    desc:"Draft the target workflow for each current workflow. Classify every step: Autonomous / Augmented / Human-essential. 'Classified, not cut.' Name workflow owners.",
+    checklist:[
+      {id:'w2-target',    text:'Draft target workflow for each current workflow on the Friction Map'},
+      {id:'w2-allocation',text:'Complete Workflow Allocation template: pre/post organisation structure for the pilot', owner:'Core team', note:'Output document', star:true},
+      {id:'w2-judgment',  text:'Complete Judgment Architecture template: Automate / Assist / Human / Never per step', owner:'Core team', note:'Output document', star:true},
+      {id:'w2-owners',    text:'Name workflow owners for each target workflow'},
+      {id:'w2-feedback',  text:'Send outputs to Karine', owner:'Core team', note:'≤24h after workshop'},
+      {id:'w2-cost',      text:'FP&A + HR: begin cost model for from→to organisation design', owner:'FP&A + HR', note:'Starts after W2 · deliver before W3'},
+      {id:'w2-uplift',    text:'Data & Insights: finalise productivity uplift estimate per target workflow', owner:'Data & Insights', note:'Deliver before W3'},
+    ]},
+  { id:'workshop3', num:'06', name:'Week 3 — Workshop 3 + Readout', dates:'August 2026', status:'upcoming',
+    desc:'Review ROI projection. Prioritise first workflow(s), agree migration sequence, outline the Brief. Then: 90-min readout with Jan Arne and James Barkman — walk the document, not slides.',
+    checklist:[
+      {id:'w3-roi',      text:'Review ROI projection: workflow optimisation gains + pre/post org design impact'},
+      {id:'w3-prioritise',text:'Prioritise first workflow(s) and agree migration sequence'},
+      {id:'w3-brief',    text:'Produce Capability Recomposition Brief (board-ready): KPI · Friction Map · current→target workflows · ROI · first workflow owner named', owner:'Core team', note:'End of Week 3', star:true},
+      {id:'w3-feedback', text:'Send outputs to Karine', owner:'Core team', note:'≤24h after workshop'},
+      {id:'w3-readout',  text:'Readout session (90 min) — Jan Arne + James Barkman + invited stakeholders · walk the Brief, not slides', owner:'Core team + Karine', note:'End of Week 3', star:true},
+      {id:'w3-advisory', text:'Private Capability Advisory: team strengths, gaps, and structural decisions required before Phase 2', owner:'Karine', note:'After readout', star:true},
+    ]},
+];
+
+// ════════ METHODS ════════
+const METHODS = [
+  {id:'workshop-method', title:'Pilot Recomposition Workshop — How to Run It',
+   body:`<p>Every workshop opens with the same <strong>10-minute rhythm</strong>:</p>
+<div class="step">What's happened since we last talked?</div>
+<div class="step">Where do you feel great about progress?</div>
+<div class="step">Where are you blocked — and what's the cross-functional need behind the block?</div>
+<p>Pre-reads sent <strong>24h in advance</strong> of every review. Outputs sent to Karine within <strong>24h</strong>; written feedback returned within <strong>48h</strong>; reviewed at the weekly Jan Arne sync.</p>
+<p><strong>Pressure-test posture:</strong> "make this good", not "catch you out."</p>
+<div class="step">Is this the recomposed version — or "apply AI to what we have" in disguise?</div>
+<div class="step">Does the KPI govern the work?</div>
+<div class="step">Where is a TBD hiding the absence of a point of view?</div>`},
+  {id:'room-rules', title:'Room Rules & Participant Selection',
+   body:`<p><strong>5–7 people per room.</strong> The room is the work.</p>
+<div class="step">The actual drivers — not the people who should be there on paper</div>
+<div class="step">No passive observers</div>
+<div class="step">Room reflects the target operating model, not the current org chart</div>
+<p><strong>Composition:</strong> leaders of the organisation · 2 builders who do the core work daily · 1 boundary partner from an adjacent function · 1 AI-native voice.</p>
+<p><strong>Three facilitator reframes:</strong></p>
+<div class="step">"We already do this" — challenge it: are you doing it at the right level, with the right leverage?</div>
+<div class="step">"AI can't do that" — challenge it: which part, specifically, and why?</div>
+<div class="step">"Org chart comes last" — capability and workflow design first; structure follows.</div>`},
+  {id:'workflow-method', title:'Workflow Classification: Automate / Assist / Human / Never',
+   body:`<p>Every step in every workflow gets classified:</p>
+<div class="step"><strong>Autonomous</strong> — system runs the step. Human is informed, not involved.</div>
+<div class="step"><strong>Augmented</strong> — AI accelerates a human. Human stays in the loop; system raises their ceiling.</div>
+<div class="step"><strong>Human-essential</strong> — human is the decisive actor. Judgment, relationship, or accountability sits with a person.</div>
+<div class="step"><strong>Never automate</strong> — the step loses its value if the human leaves the loop.</div>
+<p><strong>Classified, not cut.</strong> The target is leverage — not headcount reduction.</p>`},
+  {id:'roi-method', title:'ROI Projection — Three Layers',
+   body:`<p>Structure every ROI conversation in three layers:</p>
+<div class="step"><strong>Layer 01 — Efficiency:</strong> Cost-out. Hours saved, headcount avoided, cycle time reduced. The layer most boards have heard. Real, and the smallest part of the value.</div>
+<div class="step"><strong>Layer 02 — Leverage:</strong> Margin expansion alongside value creation. Same people, more output; same function, larger surface area.</div>
+<div class="step"><strong>Layer 03 — Strategic:</strong> New capabilities the function did not previously have. This is where the redesign gets funded as a growth story, not a cost story.</div>
+<p><strong>Sequencing:</strong> workflow optimisation evaluation runs between W1–W2; cost evaluation starts only after W2 (once the from→to organisations exist).</p>`},
+  {id:'comms-norms', title:'Communication & Working Norms',
+   body:`<div class="step">Weekly project sync &amp; coaching: Karine + Jan Arne (facilitated session)</div>
+<div class="step">Weekly async outputs review — pre-read sent 24h in advance</div>
+<div class="step">Workshop outputs → Karine ≤24h · feedback ≤48h · reviewed at weekly sync</div>
+<p><strong>Channels:</strong> [Add primary channel — Slack / Email / Teams after kickoff]</p>
+<p><strong>Response SLA:</strong> 1 business day for routine queries.</p>`},
+];
+
+// ════════ DOCUMENTS ════════
+const DOCS_SIGNED = [
+  {name:'NDA', url:'#', desc:'Confidentiality — Q-Free Norge AS ↔ Human × AI Labs', type:'Sign', icon:'📝', owner:'Q-Free + Human × AI Labs'},
+  {name:'MSA', url:'#', desc:'Master terms governing all SOWs', type:'Sign', icon:'📝', owner:'James Barkman + Karine Allouche'},
+  {name:'SOW-001 — Advisory Retainer', url:'#', desc:'Covers all pre-Phase 1 preparation work', type:'Sign', icon:'📋', owner:'James Barkman + Karine Allouche'},
+  {name:'SOW-002 — Phase 1', url:'#', desc:'Activates the 3-week Capability Recomposition Pilot', type:'Sign', icon:'📋', owner:'James Barkman + Karine Allouche'},
+];
+const DOCS_QFREE = [
+  {name:'Core Team Profile & Participant List', url:'#', desc:'Roles, room composition, named participants', type:'Pre-phase', icon:'👥'},
+  {name:'Kickoff Communication', url:'#', desc:'Frames the mandate and announces the program to the teams', type:'−3 weeks', icon:'📣'},
+  {name:'Workshop Calendar', url:'#', desc:'Three workshop slots + weekly syncs + async review slots', type:'−2 weeks', icon:'📅'},
+  {name:'Survey Results Synthesis', url:'#', desc:'Themes from the survey — input to managers for Workshop 1', type:'−1 week', icon:'📊'},
+  {name:'Friction Map', url:'#', desc:'Friction across the pilot organisation — output of Workshop 1', type:'Week 1', icon:'🗺️'},
+  {name:'Workflow Allocation (completed)', url:'#', desc:'Pre/post organisation structure for the pilot cluster', type:'Week 2', icon:'🔀'},
+  {name:'Judgment Architecture (completed)', url:'#', desc:'Automate / Assist / Human / Never per workflow step', type:'Week 2', icon:'⚖️'},
+  {name:'From→To Cost Model', url:'#', desc:'Cost optimisation of the pre/post organisation design', type:'Week 2–3', icon:'💰'},
+  {name:'ROI Projection', url:'#', desc:'Workflow optimisation gains + org design impact', type:'Week 3', icon:'📈'},
+  {name:'Capability Recomposition Brief', url:'#', desc:'Board-ready synthesis — the deliverable that closes Phase 1', type:'End W3', icon:'⭐'},
+];
+const DOCS_METHODOLOGY = [
+  {name:'Pilot Recomposition Workshop Guide', url:'#', desc:'How to run the workshops: mandate, room rules, opening rhythm, facilitator reframes', type:'Advisor IP', icon:'📖'},
+  {name:'Participant Pre-Read', url:'#', desc:'10-minute read for everyone in the room before Workshop 1', type:'Advisor IP', icon:'📖'},
+  {name:'Friction Survey (instrument)', url:'#', desc:'Survey design: workflow friction, R&R gaps, broken system items', type:'Advisor IP', icon:'📋'},
+  {name:'Workflow Allocation Template (blank)', url:'#', desc:'Framework for designing the pre/post organisation structure', type:'Advisor IP', icon:'📐'},
+  {name:'Judgment Architecture Template (blank)', url:'#', desc:'Framework for Automate / Assist / Human / Never decision boundaries', type:'Advisor IP', icon:'📐'},
+];
+
+// ════════ STATE ════════
+function load(k, fb) { try { const v = localStorage.getItem(k); return v !== null ? JSON.parse(v) : fb; } catch { return fb; } }
+function save(k, v)  { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+
+let S = {
+  comments:   load('qf_comments', {}),
+  checks:     load('qf_checks', {}),
+  phaseDates: load('qf_phaseDates', {}),
+  docs:       load('qf_docs', []),
+};
+
+// ════════ AUTH ════════
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  if (pw === PASS_ADMIN) {
+    ROLE = 'admin';
+  } else if (pw === PASS_CLIENT) {
+    ROLE = 'client';
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+    return;
+  }
+  applyRole(ROLE);
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  renderAll();
+}
+
+function applyRole(role) {
+  document.body.dataset.role = role;
+}
+
+function doLogout() {
+  ROLE = null;
+  document.body.dataset.role = '';
+  document.getElementById('preview-banner').classList.remove('visible');
+  document.getElementById('login-page').style.display = '';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').style.display = 'none';
+  // If we were on admin page, reset nav to dashboard
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.nav-link')[0].classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-dashboard').classList.add('active');
+}
+
+// Preview mode — admin only, temporarily shows client view
+function enterPreview() {
+  applyRole('client');
+  document.getElementById('preview-banner').classList.add('visible');
+  // Navigate away from admin page if on it
+  const adminPage = document.getElementById('page-admin');
+  if (adminPage && adminPage.classList.contains('active')) {
+    showPage('dashboard', document.querySelectorAll('.nav-link')[0]);
+  }
+}
+function exitPreview() {
+  applyRole('admin');
+  document.getElementById('preview-banner').classList.remove('visible');
+}
+
+// ════════ NAV ════════
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+function navTo(id) { showPage(id, document.querySelectorAll('.nav-link')[id === 'dashboard' ? 0 : 1]); }
+function showSection(id, btn) {
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ════════ MODALS ════════
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+// ════════ BOOKING ════════
+function applyBooking() {
+  document.getElementById('btn-book').href = BOOKING_URL;
+}
+
+// ════════ PHASE DATES ════════
+function openPhaseDateModal(key) {
+  const phase = PHASE_GROUPS.find(p => p.key === key);
+  if (!phase) return;
+  document.getElementById('pd-phase-key').value = key;
+  document.getElementById('pd-date-in').value   = S.phaseDates[key] || phase.defaultDate;
+  openModal('phase-date-modal');
+}
+function savePhaseDates() {
+  const key = document.getElementById('pd-phase-key').value;
+  S.phaseDates[key] = document.getElementById('pd-date-in').value.trim();
+  save('qf_phaseDates', S.phaseDates);
+  renderDashboardDynamic();
+  closeModal('phase-date-modal');
+}
+
+// ════════ LIVE DASHBOARD CALCULATION ════════
+function calcPhaseProgress() {
+  // Returns array of {key, label, short, sub, status, pct, date}
+  const results = [];
+  let foundActive = false;
+
+  for (const pg of PHASE_GROUPS) {
+    // Gather all checklist items for this phase group
+    let total = 0, done = 0;
+    for (const tlId of pg.tlIds) {
+      const tl = TIMELINE.find(t => t.id === tlId);
+      if (!tl) continue;
+      total += tl.checklist.length;
+      done  += tl.checklist.filter(c => !!S.checks[tlId + '__' + c.id]).length;
+    }
+    const pct = total ? Math.round(done / total * 100) : 0;
+    let status;
+    if (pct === 100)    { status = 'done'; }
+    else if (!foundActive) { status = 'active'; foundActive = true; }
+    else                { status = 'upcoming'; }
+
+    results.push({ ...pg, status, pct, done, total, date: S.phaseDates[pg.key] || pg.defaultDate });
+  }
+  return results;
+}
+
+function calcOverallProgress(phases) {
+  let total = 0, done = 0;
+  TIMELINE.forEach(tl => {
+    total += tl.checklist.length;
+    done  += tl.checklist.filter(c => !!S.checks[tl.id + '__' + c.id]).length;
+  });
+  return total ? Math.round(done / total * 100) : 0;
+}
+
+function renderDashboardDynamic() {
+  const phases = calcPhaseProgress();
+  const pct    = calcOverallProgress();
+
+  // Progress bar
+  document.getElementById('dash-pb').style.width = pct + '%';
+  document.getElementById('dash-pct-label').textContent = pct + '% complete';
+
+  // Status metric
+  const active = phases.find(p => p.status === 'active') || phases[phases.length - 1];
+  const allDone = phases.every(p => p.status === 'done');
+  document.getElementById('dash-metric-status').textContent     = allDone ? 'Done' : active.short;
+  document.getElementById('dash-metric-status-sub').textContent = allDone ? 'Engagement complete' : active.sub;
+
+  // Phase rows
+  document.getElementById('dash-phases').innerHTML = phases.map((p, i) => `
+    <div class="phase-row">
+      <div class="phase-num ${p.status}">0${i+1}</div>
+      <div class="phase-info">
+        <div class="phase-name">${p.label}</div>
+        <div class="phase-date-wrap">
+          <span class="phase-date" id="pd-text-${p.key}">${p.date}</span>
+          <button class="edit-date-btn admin-only" onclick="openPhaseDateModal('${p.key}')" title="Edit date">✏</button>
+        </div>
+      </div>
+      <div class="phase-status ${p.status}">${p.status === 'done' ? 'Done' : p.status === 'active' ? 'Active' : 'Upcoming'}</div>
+    </div>`).join('');
+}
+
+// ════════ CHECKLIST ════════
+function toggleCheck(itemId, checkId) {
+  const key = itemId + '__' + checkId;
+  S.checks[key] = !S.checks[key];
+  save('qf_checks', S.checks);
+
+  const box  = document.getElementById('cb-' + key);
+  const text = document.getElementById('ct-' + key);
+  if (box)  box.classList.toggle('checked', S.checks[key]);
+  if (text) text.classList.toggle('checked', S.checks[key]);
+
+  updateMiniProgress(itemId);
+  renderDashboardDynamic(); // <-- live update
+}
+
+function updateMiniProgress(itemId) {
+  const tl    = TIMELINE.find(t => t.id === itemId);
+  if (!tl) return;
+  const total = tl.checklist.length;
+  const done  = tl.checklist.filter(c => S.checks[itemId + '__' + c.id]).length;
+  const bar   = document.getElementById('mpb-' + itemId);
+  const hdr   = document.getElementById('tl-sub-' + itemId);
+  if (bar) bar.style.width = (total ? Math.round(done/total*100) : 0) + '%';
+  if (hdr) hdr.textContent = tl.dates + ' · ' + done + '/' + total + ' complete';
+}
+
+// ════════ TIMELINE ════════
+function renderTimeline() {
+  document.getElementById('tl-container').innerHTML = TIMELINE.map(item => {
+    const total = item.checklist.length;
+    const done  = item.checklist.filter(c => S.checks[item.id + '__' + c.id]).length;
+    const pct   = total ? Math.round(done/total*100) : 0;
+    const comments = S.comments[item.id] || [];
+
+    const checklistHtml = item.checklist.map(c => {
+      const key     = item.id + '__' + c.id;
+      const checked = !!S.checks[key];
+      const linked  = (S.stepLinks && S.stepLinks[key]) ? S.stepLinks[key] : [];
+      const linkedHtml = linked.length ? `<div class="check-linked-docs">${linked.map(l => `<a class="check-linked-doc" href="${l.url}" target="_blank">${l.icon||'📄'} ${l.name}</a>`).join('')}</div>` : '';
+      return `<div class="check-item">
+        <div class="check-box ${checked ? 'checked' : ''}" id="cb-${key}" onclick="toggleCheck('${item.id}','${c.id}')"></div>
+        <div class="check-text">
+          <div class="check-main ${checked ? 'checked' : ''}" id="ct-${key}">${c.star ? '<span class="check-star">★ </span>' : ''}${c.text}</div>
+          <div class="check-meta">
+            ${c.owner ? `<span class="check-owner">${c.owner}</span>` : ''}
+            ${c.note  ? `<span class="check-note">${c.note}</span>` : ''}
+          </div>
+          ${linkedHtml}
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="tl-item">
+      <div class="tl-num-col"><div class="tl-item-num ${item.status}">${item.num}</div></div>
+      <div class="tl-card ${item.status === 'active' ? 'is-active' : ''}">
+        <div class="tl-header" onclick="toggleTl('${item.id}')">
+          <div style="flex:1">
+            <div class="tl-name">${item.name}</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px" id="tl-sub-${item.id}">${item.dates} · ${done}/${total} complete</div>
+          </div>
+          <div class="tl-status ${item.status}">${item.status}</div>
+          <div class="tl-chevron" id="chev-${item.id}">▾</div>
+        </div>
+        <div class="tl-body" id="tlb-${item.id}">
+          <div class="tl-desc">${item.desc}</div>
+          <div class="checklist">
+            <div class="checklist-label">Steps &amp; Checklist (${done}/${total})</div>
+            <div class="progress-mini"><div class="progress-mini-fill" id="mpb-${item.id}" style="width:${pct}%"></div></div>
+            ${checklistHtml}
+          </div>
+          <div class="comments-section">
+            <div class="comments-label" id="ctitle-${item.id}">Notes &amp; Comments (${comments.length})</div>
+            <div id="clist-${item.id}">${renderCommentsList(comments)}</div>
+            <div class="comment-form">
+              <input class="comment-input" id="cinput-${item.id}" placeholder="Add a note or comment…" onkeydown="if(event.key==='Enter')addComment('${item.id}')">
+              <button class="comment-submit" onclick="addComment('${item.id}')">Post</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderCommentsList(comments) {
+  return comments.map(c => `<div class="comment-item">
+    <div class="comment-meta"><span class="comment-author">${c.author}</span><span>${c.date}</span></div>
+    <div class="comment-text">${c.text}</div>
+  </div>`).join('');
+}
+
+function toggleTl(id) {
+  const body = document.getElementById('tlb-' + id);
+  const chev = document.getElementById('chev-' + id);
+  chev.style.transform = body.classList.toggle('open') ? 'rotate(180deg)' : '';
+}
+
+function addComment(id) {
+  const input = document.getElementById('cinput-' + id);
+  const text  = input.value.trim();
+  if (!text) return;
+  if (!S.comments[id]) S.comments[id] = [];
+  S.comments[id].push({ author:'Karine', text, date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) });
+  save('qf_comments', S.comments);
+  input.value = '';
+  document.getElementById('clist-' + id).innerHTML = renderCommentsList(S.comments[id]);
+  document.getElementById('ctitle-' + id).textContent = `Notes & Comments (${S.comments[id].length})`;
+}
+
+// ════════ METHODS ════════
+function renderMethods() {
+  document.getElementById('methods-container').innerHTML = METHODS.map((m, i) => `
+    <div class="method-block">
+      <div class="method-hdr" onclick="toggleMethod('${m.id}', this)">
+        <div class="method-hdr-left">
+          <span class="method-num">0${i+1}</span>
+          <span class="method-title">${m.title}</span>
+        </div>
+        <span class="method-chev">▾</span>
+      </div>
+      <div class="method-body" id="mbdy-${m.id}">${m.body}</div>
+    </div>`).join('');
+}
+function toggleMethod(id, hdr) {
+  hdr.classList.toggle('open', document.getElementById('mbdy-' + id).classList.toggle('open'));
+}
+
+// ════════ DOCUMENTS ════════
+function renderDocs() {
+  document.getElementById('docs-container').innerHTML = `
+    <div class="docs-section">
+      <div class="docs-section-label">Jointly Executed &amp; Signed — Both Parties</div>
+      <div class="docs-grid">${DOCS_SIGNED.map(docCard).join('')}</div>
+    </div>
+    <div class="docs-section">
+      <div class="docs-section-label">Q-Free Documents — Produced &amp; Owned by Q-Free Team</div>
+      <div class="docs-grid">${DOCS_QFREE.map(docCard).join('')}</div>
+    </div>
+    <div class="docs-section">
+      <div class="docs-section-label">Human × AI Methodology — Advisor IP, Shared for Use in the Program</div>
+      <div class="docs-grid">
+        ${DOCS_METHODOLOGY.map(docCard).join('')}
+        ${S.docs.map(docCard).join('')}
+        <div class="add-doc-card" onclick="openModal('doc-modal')"><div class="plus">＋</div><p>Add document</p></div>
+      </div>
+    </div>`;
+}
+
+function docCard(d) {
+  return `<a href="${d.url}" target="_blank" class="doc-card">
+    <div class="doc-icon">${d.icon || '📄'}</div>
+    <div class="doc-name">${d.name}</div>
+    <div class="doc-desc">${d.desc || ''}</div>
+    <div class="doc-type">${d.type || ''}</div>
+    ${d.owner ? `<div class="doc-owner">${d.owner}</div>` : ''}
+  </a>`;
+}
+
+function saveDoc() {
+  const name = document.getElementById('d-name-in').value.trim();
+  const url  = document.getElementById('d-url-in').value.trim();
+  const desc = document.getElementById('d-desc-in').value.trim();
+  if (!name) return;
+  S.docs.push({ name, url: url || '#', desc, icon:'🔗', type:'Link' });
+  save('qf_docs', S.docs);
+  renderDocs();
+  ['d-name-in','d-url-in','d-desc-in'].forEach(id => document.getElementById(id).value = '');
+  closeModal('doc-modal');
+}
+
+// ════════ CALENDAR VIEW ════════
+const CAL_DATA = [
+  { workstream:'Contracts & Setup',
+    prephase:`<div class="cal-milestone">★ NDA · MSA · SOW-002 signed</div>Core team defined (Step 1)<br>Friction interview targets scoped<br><div class="cal-milestone">★ Start date confirmed by Jul 15</div>`,
+    week1:'', week2:'', week3:'' },
+  { workstream:'Comms & Enablement',
+    prephase:`−3 wks: Kickoff communication sent<br>−3 wks: Workshop Guide + Pre-Read distributed<br>−2 wks: Core team Q&A (Step 3)<br>−2 wks: Participant list validated · <strong>calendar locked</strong>`,
+    week1:'', week2:'', week3:'' },
+  { workstream:'Friction Survey',
+    prephase:`−2 wks: <span class="cal-star">★</span> Survey launched<br>−1 wk: Results reviewed<br>−1 wk: Results to participants · synthesis to managers · org-wide message`,
+    week1:`<span class="cal-muted">Synthesis feeds Workshop 1</span>`, week2:'', week3:'' },
+  { workstream:'Workshops',
+    prephase:'',
+    week1:`<div class="cal-tag">★ WORKSHOP 1</div><br>KPI · capabilities · honest current workflows<br>→ <strong>Friction Map v1</strong>`,
+    week2:`<div class="cal-tag">★ WORKSHOP 2</div><br>Target workflows<br>Workflow Allocation<br>Judgment Architecture`,
+    week3:`<div class="cal-tag">★ WORKSHOP 3</div><br>ROI review · prioritise first workflow<br>Migration sequence · Brief outline` },
+  { workstream:'Feedback Loop',
+    prephase:'',
+    week1:`Outputs to Karine ≤24h → feedback ≤48h<br>Weekly Jan Arne sync (pre-read 24h ahead)`,
+    week2:`Same rhythm`,
+    week3:`Same rhythm` },
+  { workstream:'Evaluation',
+    prephase:'',
+    week1:`Data & Insights: baseline metrics + draft uplift (W1–W2)`,
+    week2:`After W2: FP&A + HR cost the from→to org<br>Data & Insights: finalise uplift estimate`,
+    week3:`Cost model + uplift feed ROI projection` },
+  { workstream:'Deliverables',
+    prephase:'',
+    week1:`<strong>Friction Map</strong>`,
+    week2:`<strong>Workflow Allocation</strong><br><strong>Judgment Architecture</strong>`,
+    week3:`<div class="cal-tag">★ Capability Recomposition Brief</div><div class="cal-tag alt" style="margin-top:5px">★ Readout (90 min)</div><div class="cal-tag alt" style="margin-top:5px">★ Private Capability Advisory</div>` },
+];
+
+function renderCalendar() {
+  const head = `<tr>
+    <th>Workstream</th>
+    <th class="phase-col">Pre-Phase<br><span style="font-size:9px;font-weight:400;opacity:.6">≈3 weeks before kickoff</span></th>
+    <th>Week 1<br><span style="font-size:9px;font-weight:400;color:#666">Frame &amp; Current State</span></th>
+    <th>Week 2<br><span style="font-size:9px;font-weight:400;color:#666">Target Workflows</span></th>
+    <th>Week 3<br><span style="font-size:9px;font-weight:400;color:#666">Quantify &amp; Commit</span></th>
+  </tr>`;
+  const rows = CAL_DATA.map(r => `<tr>
+    <td>${r.workstream}</td>
+    <td>${r.prephase || '<span class="cal-muted">—</span>'}</td>
+    <td>${r.week1  || '<span class="cal-muted">—</span>'}</td>
+    <td>${r.week2  || '<span class="cal-muted">—</span>'}</td>
+    <td>${r.week3  || '<span class="cal-muted">—</span>'}</td>
+  </tr>`).join('');
+
+  document.getElementById('cal-container').innerHTML = `
+    <div style="margin-bottom:14px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px">Phase 1 — 4-Week Calendar</div>
+      <div style="font-size:13px;color:var(--mid)">Pre-phase runs under SOW-001 retainer. Kickoff early August 2026. ★ = milestone.</div>
+    </div>
+    <div class="cal-table-wrap">
+      <table class="cal-table">
+        <thead>${head}</thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+// ════════ HxA DOCUMENT LIBRARY ════════
+// S.hxaDocs: [{name, url, desc, icon}]  — persisted in localStorage
+
+function getHxaDocs() { return S.hxaDocs || []; }
+
+function openAddDocModal(idx) {
+  document.getElementById('hxa-doc-modal-title').textContent = idx === undefined ? 'Add Document' : 'Edit Document';
+  document.getElementById('hd-edit-idx').value = idx === undefined ? '' : idx;
+  const docs = getHxaDocs();
+  const d = idx !== undefined ? docs[idx] : null;
+  document.getElementById('hd-name-in').value = d ? d.name  : '';
+  document.getElementById('hd-url-in').value  = d ? d.url   : '';
+  document.getElementById('hd-desc-in').value = d ? d.desc  : '';
+  document.getElementById('hd-icon-in').value = d ? (d.icon || '') : '';
+  openModal('hxa-doc-modal');
+}
+
+function saveHxaDoc() {
+  const idx   = document.getElementById('hd-edit-idx').value;
+  const name  = document.getElementById('hd-name-in').value.trim();
+  const url   = document.getElementById('hd-url-in').value.trim();
+  const desc  = document.getElementById('hd-desc-in').value.trim();
+  const icon  = document.getElementById('hd-icon-in').value.trim() || '📄';
+  if (!name) return;
+  if (!S.hxaDocs) S.hxaDocs = [];
+  if (idx !== '') {
+    S.hxaDocs[parseInt(idx)] = {name, url: url||'#', desc, icon};
+  } else {
+    S.hxaDocs.push({name, url: url||'#', desc, icon});
+  }
+  save('qf_hxaDocs', S.hxaDocs);
+  closeModal('hxa-doc-modal');
+  renderAdminDocList();
+  populateLinkSelectors();
+}
+
+function deleteHxaDoc(idx) {
+  if (!confirm('Remove this document from the library?')) return;
+  S.hxaDocs.splice(idx, 1);
+  save('qf_hxaDocs', S.hxaDocs);
+  // also remove any step links pointing to this doc index — we store by name so they survive reorder
+  renderAdminDocList();
+  populateLinkSelectors();
+  renderAdminStepLinks();
+}
+
+function renderAdminDocList() {
+  const docs = getHxaDocs();
+  const el   = document.getElementById('admin-doc-list');
+  if (!el) return;
+  if (!docs.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">No documents yet. Click "+ Add Document" to begin.</div>';
+    return;
+  }
+  el.innerHTML = docs.map((d, i) => `
+    <div class="admin-doc-row">
+      <div style="font-size:20px;width:32px;flex-shrink:0;padding-top:2px">${d.icon || '📄'}</div>
+      <div class="admin-doc-info">
+        <div class="admin-doc-name">${d.name}</div>
+        ${d.desc ? `<div class="admin-doc-meta">${d.desc}</div>` : ''}
+        <div class="admin-doc-url"><a href="${d.url}" target="_blank" style="color:#aaa">${d.url}</a></div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn-sm-ghost" onclick="openAddDocModal(${i})">Edit</button>
+        <button class="btn-sm-danger" onclick="deleteHxaDoc(${i})">×</button>
+      </div>
+    </div>`).join('');
+}
+
+// ════════ STEP-DOC LINKER ════════
+// S.stepLinks: {[tlId__checkId]: [{name, url}]}
+
+function getStepLinks() { return S.stepLinks || {}; }
+
+function populateLinkSelectors() {
+  const stepSel = document.getElementById('link-step-sel');
+  const docSel  = document.getElementById('link-doc-sel');
+  if (!stepSel || !docSel) return;
+
+  // Steps
+  stepSel.innerHTML = TIMELINE.flatMap(tl =>
+    tl.checklist.map(c => `<option value="${tl.id}__${c.id}">[${tl.num}] ${c.text.replace(/★\s*/,'')}</option>`)
+  ).join('');
+
+  // Docs
+  const docs = getHxaDocs();
+  if (!docs.length) {
+    docSel.innerHTML = '<option value="">— Add documents to library first —</option>';
+  } else {
+    docSel.innerHTML = docs.map((d,i) => `<option value="${i}">${d.icon || ''} ${d.name}</option>`).join('');
+  }
+}
+
+function linkDocToStep() {
+  const stepKey = document.getElementById('link-step-sel').value;
+  const docIdx  = document.getElementById('link-doc-sel').value;
+  const docs    = getHxaDocs();
+  if (!stepKey || docIdx === '' || !docs[parseInt(docIdx)]) return;
+  const d = docs[parseInt(docIdx)];
+  if (!S.stepLinks) S.stepLinks = {};
+  if (!S.stepLinks[stepKey]) S.stepLinks[stepKey] = [];
+  // Deduplicate by name
+  if (!S.stepLinks[stepKey].find(l => l.name === d.name)) {
+    S.stepLinks[stepKey].push({ name: d.name, url: d.url, icon: d.icon || '📄' });
+    save('qf_stepLinks', S.stepLinks);
+  }
+  renderAdminStepLinks();
+  // Re-render timeline to show linked docs in checklist items
+  renderTimeline();
+}
+
+function unlinkDocFromStep(stepKey, docName) {
+  if (!S.stepLinks || !S.stepLinks[stepKey]) return;
+  S.stepLinks[stepKey] = S.stepLinks[stepKey].filter(l => l.name !== docName);
+  if (!S.stepLinks[stepKey].length) delete S.stepLinks[stepKey];
+  save('qf_stepLinks', S.stepLinks);
+  renderAdminStepLinks();
+  renderTimeline();
+}
+
+function renderAdminStepLinks() {
+  const el = document.getElementById('admin-step-links');
+  if (!el) return;
+  const links = getStepLinks();
+  const steps = TIMELINE.flatMap(tl => tl.checklist.map(c => ({key:`${tl.id}__${c.id}`, tlNum:tl.num, text:c.text, linked:links[`${tl.id}__${c.id}`]||[] })));
+  const withLinks = steps.filter(s => s.linked.length);
+  if (!withLinks.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted)">No links yet. Use the form above to link a document to a step.</div>';
+    return;
+  }
+  el.innerHTML = withLinks.map(s => `
+    <div class="step-link-row">
+      <div class="step-link-label">
+        <span class="step-link-phase">[${s.tlNum}]</span> ${s.text.replace(/★\s*/,'')}
+      </div>
+      <div class="step-linked-docs">
+        ${s.linked.map(l => `
+          <div class="step-linked-doc-tag">
+            <span>${l.icon||'📄'}</span>
+            <a href="${l.url}" target="_blank">${l.name}</a>
+            <button class="unlink-btn" onclick="unlinkDocFromStep('${s.key}','${l.name.replace(/'/g,"\\'")}')">✕</button>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// ════════ INIT ════════
+function renderAll() {
+  // Load extended state
+  if (!S.hxaDocs)   S.hxaDocs   = load('qf_hxaDocs', []);
+  if (!S.stepLinks) S.stepLinks = load('qf_stepLinks', {});
+  applyBooking();
+  renderTimeline();
+  renderCalendar();
+  renderMethods();
+  renderDocs();
+  renderDashboardDynamic();
+  renderAdminDocList();
+  populateLinkSelectors();
+  renderAdminStepLinks();
+}
+</script>
+</body>
+</html>
