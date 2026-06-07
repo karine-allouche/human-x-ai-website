@@ -524,6 +524,37 @@
   </div>
 </div>
 
+<!-- Q-Free submit doc modal -->
+<div class="modal-overlay" id="qf-submit-modal">
+  <div class="modal">
+    <h3>Submit a Document</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;margin-top:-10px">Paste a link to a file on OneDrive, SharePoint, or Google Drive.</p>
+    <div class="modal-field"><label>Document Name</label><input type="text" id="qfd-name-in" placeholder="e.g. Friction Map v1"></div>
+    <div class="modal-field"><label>Link / URL</label><input type="url" id="qfd-url-in" placeholder="https://..."></div>
+    <div class="modal-field"><label>Notes (optional)</label><input type="text" id="qfd-desc-in" placeholder="e.g. Output from Workshop 1"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('qf-submit-modal')">Cancel</button>
+      <button class="btn-solid" onclick="saveQfDoc()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit doc URL modal -->
+<div class="modal-overlay" id="doc-url-modal">
+  <div class="modal">
+    <h3>Set Document Link</h3>
+    <input type="hidden" id="du-name-in">
+    <div class="modal-field">
+      <label id="du-label">Document</label>
+      <input type="url" id="du-url-in" placeholder="https://drive.google.com/...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('doc-url-modal')">Cancel</button>
+      <button class="btn-solid" onclick="saveDocUrl()">Save Link</button>
+    </div>
+  </div>
+</div>
+
 <!-- Add/Edit HxA doc modal -->
 <div class="modal-overlay" id="hxa-doc-modal">
   <div class="modal">
@@ -552,8 +583,7 @@
 const PASS_CLIENT = 'Qfree2024';   // Share with Q-Free
 const PASS_ADMIN  = 'HxAI2026!';   // Keep private — Karine only
 
-// ← Paste your Microsoft Bookings URL here
-const BOOKING_URL = 'https://outlook.office365.com/book/humanxai';  // UPDATE THIS
+const BOOKING_URL = 'https://outlook.office.com/bookwithme/user/8354ecd3e8a64bc58c7d2a6212dcc9d9@busuu.com?anonymous&ismsaljsauthenabled&ep=email';
 
 let ROLE = null; // 'admin' | 'client'
 
@@ -708,6 +738,8 @@ let S = {
   checks:     load('qf_checks', {}),
   phaseDates: load('qf_phaseDates', {}),
   docs:       load('qf_docs', []),
+  docUrls:    load('qf_docUrls', {}),   // {[docName]: url} — admin-editable URL overrides
+  qfDocs:     load('qf_submitted_docs', []),  // Q-Free submitted doc links
 };
 
 // ════════ AUTH ════════
@@ -999,6 +1031,31 @@ function toggleMethod(id, hdr) {
 
 // ════════ DOCUMENTS ════════
 function renderDocs() {
+  const submitted = S.qfDocs || [];
+  const submitSection = `
+    <div class="docs-section">
+      <div class="docs-section-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Q-Free Submitted Documents</span>
+        ${submitted.length ? `<button class="btn-sm-ghost" onclick="emailDocsToKarine()" style="font-size:10px">✉ Send all to Karine</button>` : ''}
+      </div>
+      <div class="docs-grid">
+        ${submitted.map((d, i) => `
+          <div class="doc-card" style="position:relative">
+            <div class="doc-icon">📎</div>
+            <a href="${d.url}" target="_blank" style="color:var(--black);text-decoration:none">
+              <div class="doc-name">${d.name}</div>
+            </a>
+            <div class="doc-desc">${d.desc || ''}</div>
+            <div class="doc-type">${d.date || ''}</div>
+            <button onclick="removeQfDoc(${i})" style="position:absolute;top:8px;right:8px;font-size:10px;color:#ccc;background:none;border:none;cursor:pointer" title="Remove">✕</button>
+          </div>`).join('')}
+        <div class="add-doc-card" onclick="openModal('qf-submit-modal')">
+          <div class="plus">＋</div><p>Submit a document</p>
+        </div>
+      </div>
+      ${submitted.length ? `<div style="font-size:11px;color:var(--muted);margin-top:8px">Links are saved in your browser. Use "Send all to Karine" to share them via email.</div>` : ''}
+    </div>`;
+
   document.getElementById('docs-container').innerHTML = `
     <div class="docs-section">
       <div class="docs-section-label">Jointly Executed &amp; Signed — Both Parties</div>
@@ -1008,24 +1065,103 @@ function renderDocs() {
       <div class="docs-section-label">Q-Free Documents — Produced &amp; Owned by Q-Free Team</div>
       <div class="docs-grid">${DOCS_QFREE.map(docCard).join('')}</div>
     </div>
+    ${submitSection}
     <div class="docs-section">
       <div class="docs-section-label">Human × AI Methodology — Advisor IP, Shared for Use in the Program</div>
       <div class="docs-grid">
         ${DOCS_METHODOLOGY.map(docCard).join('')}
         ${S.docs.map(docCard).join('')}
-        <div class="add-doc-card" onclick="openModal('doc-modal')"><div class="plus">＋</div><p>Add document</p></div>
+        <div class="add-doc-card admin-only" onclick="openModal('doc-modal')"><div class="plus">＋</div><p>Add document</p></div>
       </div>
     </div>`;
 }
 
+function removeQfDoc(idx) {
+  if (!S.qfDocs) return;
+  S.qfDocs.splice(idx, 1);
+  save('qf_submitted_docs', S.qfDocs);
+  renderDocs();
+}
+
+function emailDocsToKarine() {
+  const docs = S.qfDocs || [];
+  if (!docs.length) return;
+  const body = docs.map(d => `${d.name}: ${d.url}`).join('\n');
+  window.location.href = `mailto:karine@human-x-ai.com?subject=Q-Free Portal — Submitted Documents&body=${encodeURIComponent(body)}`;
+}
+
+function saveQfDoc() {
+  const name = document.getElementById('qfd-name-in').value.trim();
+  const url  = document.getElementById('qfd-url-in').value.trim();
+  const desc = document.getElementById('qfd-desc-in').value.trim();
+  if (!name || !url) return;
+  if (!S.qfDocs) S.qfDocs = [];
+  S.qfDocs.push({ name, url, desc, date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) });
+  save('qf_submitted_docs', S.qfDocs);
+  ['qfd-name-in','qfd-url-in','qfd-desc-in'].forEach(id => document.getElementById(id).value = '');
+  closeModal('qf-submit-modal');
+  renderDocs();
+}
+
 function docCard(d) {
-  return `<a href="${d.url}" target="_blank" class="doc-card">
-    <div class="doc-icon">${d.icon || '📄'}</div>
-    <div class="doc-name">${d.name}</div>
-    <div class="doc-desc">${d.desc || ''}</div>
-    <div class="doc-type">${d.type || ''}</div>
-    ${d.owner ? `<div class="doc-owner">${d.owner}</div>` : ''}
-  </a>`;
+  const url     = (S.docUrls && S.docUrls[d.name]) || d.url;
+  const hasLink = url && url !== '#';
+  const isAdmin = ROLE === 'admin' || (ROLE === null);
+
+  if (isAdmin) {
+    // Admin: always clickable — opens URL if set, else opens edit modal
+    const onclick = hasLink
+      ? `window.open('${url}','_blank')`
+      : `openDocUrlModal('${d.name.replace(/'/g,"\\'")}')`;
+    return `<div class="doc-card" style="cursor:pointer;position:relative" onclick="${onclick}">
+      <div class="doc-icon">${d.icon || '📄'}</div>
+      <div class="doc-name">${d.name}</div>
+      <div class="doc-desc">${d.desc || ''}</div>
+      <div class="doc-type">${d.type || ''}</div>
+      ${d.owner ? `<div class="doc-owner">${d.owner}</div>` : ''}
+      <div style="margin-top:6px;font-size:10px;font-weight:700;letter-spacing:.06em;color:${hasLink ? '#22c55e' : '#f59e0b'}">
+        ${hasLink ? '✓ Link set' : '+ Set link'}
+      </div>
+    </div>`;
+  } else {
+    // Client: only clickable if URL is set
+    if (hasLink) {
+      return `<a href="${url}" target="_blank" class="doc-card">
+        <div class="doc-icon">${d.icon || '📄'}</div>
+        <div class="doc-name">${d.name}</div>
+        <div class="doc-desc">${d.desc || ''}</div>
+        <div class="doc-type">${d.type || ''}</div>
+        ${d.owner ? `<div class="doc-owner">${d.owner}</div>` : ''}
+      </a>`;
+    } else {
+      return `<div class="doc-card" style="opacity:.45;cursor:default">
+        <div class="doc-icon">${d.icon || '📄'}</div>
+        <div class="doc-name">${d.name}</div>
+        <div class="doc-desc">${d.desc || ''}</div>
+        <div class="doc-type">${d.type || ''}</div>
+        ${d.owner ? `<div class="doc-owner">${d.owner}</div>` : ''}
+        <div style="margin-top:6px;font-size:10px;color:#ccc">Link coming soon</div>
+      </div>`;
+    }
+  }
+}
+
+function openDocUrlModal(name) {
+  document.getElementById('du-name-in').value = name;
+  document.getElementById('du-label').textContent = name;
+  document.getElementById('du-url-in').value = (S.docUrls && S.docUrls[name]) || '';
+  openModal('doc-url-modal');
+}
+
+function saveDocUrl() {
+  const name = document.getElementById('du-name-in').value;
+  const url  = document.getElementById('du-url-in').value.trim();
+  if (!name || !url) return;
+  if (!S.docUrls) S.docUrls = {};
+  S.docUrls[name] = url;
+  save('qf_docUrls', S.docUrls);
+  closeModal('doc-url-modal');
+  renderDocs();
 }
 
 function saveDoc() {
@@ -1253,6 +1389,7 @@ function renderAll() {
   // Load extended state
   if (!S.hxaDocs)   S.hxaDocs   = load('qf_hxaDocs', []);
   if (!S.stepLinks) S.stepLinks = load('qf_stepLinks', {});
+  if (!S.docUrls)   S.docUrls   = load('qf_docUrls', {});
   applyBooking();
   renderTimeline();
   renderCalendar();
