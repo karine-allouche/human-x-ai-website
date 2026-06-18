@@ -326,7 +326,7 @@
     <div class="page-inner">
       <div class="page-eyebrow">Dashboard</div>
       <div class="page-title">Where we are.</div>
-      <div class="page-sub">Phase 1 — AI Capability Recomposition Pilot (SOW-002). 3 weeks from kickoff. Early August 2026.</div>
+      <div class="page-sub">Phase 1 — AI Capability Recomposition Pilot (SOW-002). NDA · MSA · SOW-002 signed June 17, 2026. Start date to be confirmed by July 15.</div>
 
       <!-- Metrics — updated live from checklist -->
       <div class="metrics-strip">
@@ -340,6 +340,16 @@
           <div class="metric-label">Current Status</div>
           <div class="metric-sub" id="dash-metric-status-sub">Pre-phase · preparing for kickoff</div>
         </div>
+      </div>
+
+      <!-- Action required banner -->
+      <div style="border-left:3px solid var(--black);background:var(--white);padding:16px 20px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Action Required</div>
+          <div style="font-size:14px;font-weight:700;color:var(--black)">Confirm Phase 1 start date — by July 15, 2026</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">NDA · MSA · SOW-002 signed June 17 ✓ · Kickoff targeted early August 2026</div>
+        </div>
+        <a href="mailto:karine@human-x-ai.com?subject=Q-Free Phase 1 — Start Date Confirmation" style="font-size:12px;font-weight:700;color:var(--black);text-decoration:underline;text-underline-offset:3px;white-space:nowrap">Write to Karine →</a>
       </div>
 
       <div class="grid-3-1">
@@ -359,16 +369,16 @@
                   <div style="font-size:13px;font-weight:600;color:var(--black)">SOW-002 — Phase 1 Pilot</div>
                 </div>
                 <div style="background:var(--white);padding:13px 15px">
-                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Duration</div>
-                  <div style="font-size:13px;font-weight:600;color:var(--black)">3 weeks · start confirmed by Jul 15</div>
+                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Agreements</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--black)">NDA · MSA · SOW-002 — <span style="color:#16a34a">Signed Jun 17 ✓</span></div>
+                </div>
+                <div style="background:var(--white);padding:13px 15px">
+                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Start Date</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--black)">To confirm — <span style="color:#d97706">deadline Jul 15</span> · Early Aug 2026</div>
                 </div>
                 <div style="background:var(--white);padding:13px 15px">
                   <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Operating Model</div>
                   <div style="font-size:13px;font-weight:600;color:var(--black)">Q-Free produces · Karine briefs &amp; coaches</div>
-                </div>
-                <div style="background:var(--white);padding:13px 15px">
-                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Board Deck</div>
-                  <div style="font-size:13px;font-weight:600;color:var(--black)">Review w/ Jan Arne · CEO visit wk of Jun 9</div>
                 </div>
               </div>
               <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:9px">Core Team</div>
@@ -415,7 +425,7 @@
           <div class="section-block" style="margin-bottom:14px">
             <div class="section-header"><div class="section-num">03</div><div class="section-title">Quick Access</div></div>
             <div class="section-body" style="padding:13px 18px">
-              <a href="#" onclick="navTo('project');return false" class="quick-link">→ Phase 1 Checklist &amp; Timeline</a>
+              <a href="#" onclick="navToPrePhase();return false" class="quick-link">→ Pre-Phase Checklist — We are here</a>
               <a id="btn-book" href="#" target="_blank" rel="noopener" class="quick-link">Book a Meeting with Karine →</a>
             </div>
           </div>
@@ -600,8 +610,8 @@ const TIMELINE = [
   { id:'contracts', num:'01', name:'Pre-Phase — Contracts & Setup', dates:'June 2026', status:'active',
     desc:'Execute all agreements and confirm the engagement structure. Nothing in Phase 1 starts before these are signed.',
     checklist:[
-      {id:'nda-msa',        text:'Execute NDA and MSA (Q-Free Norge AS ↔ Human × AI Labs)', owner:'Karine + James', note:'Now'},
-      {id:'sow002',         text:'Execute SOW-002', owner:'Karine + James', note:'Now'},
+      {id:'nda-msa',        text:'Execute NDA and MSA (Q-Free Norge AS ↔ Human × AI Labs)', owner:'Karine + James', note:'Signed June 17, 2026 ✓'},
+      {id:'sow002',         text:'Execute SOW-002', owner:'Karine + James', note:'Signed June 17, 2026 ✓'},
       {id:'board-deck',     text:'Pressure-test board deck and AI strategy narrative with Jan Arne', owner:'Karine + Jan Arne', note:'June · CEO visit week of Jun 9'},
       {id:'core-team',      text:'Define core team: Internal Champion confirmed; FP&A, HR, and Data & AI engineer named', owner:'Jan Arne + Karine', note:'June – early July', star:true},
       {id:'friction-scope', text:'Scope friction interview targets for the pilot organisation', owner:'Jan Arne + Karine', note:'July'},
@@ -803,6 +813,24 @@ function showPage(id, btn) {
   if (btn) btn.classList.add('active');
 }
 function navTo(id) { showPage(id, document.querySelectorAll('.nav-link')[id === 'dashboard' ? 0 : 1]); }
+function navToPrePhase() {
+  // Go to project page, switch to checklist tab, open all pre-phase items
+  showPage('project', document.querySelectorAll('.nav-link')[1]);
+  const timelineTab = document.querySelector('.section-tab:nth-child(2)');
+  showSection('timeline', timelineTab);
+  ['contracts','comms-enable','friction-survey'].forEach(id => {
+    const body = document.getElementById('tlb-' + id);
+    const chev = document.getElementById('chev-' + id);
+    if (body && !body.classList.contains('open')) {
+      body.classList.add('open');
+      if (chev) chev.style.transform = 'rotate(180deg)';
+    }
+  });
+  setTimeout(() => {
+    const el = document.getElementById('tlb-contracts');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
 function showSection(id, btn) {
   document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
