@@ -251,7 +251,6 @@
     .admin-section { background: var(--white); border: 1px solid var(--border); margin-bottom: 24px; }
     .admin-section-hdr { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
     .admin-section-title { font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--black); }
-    .admin-section-body { padding: 20px 22px; }
     .admin-doc-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
     .admin-doc-row:last-child { border-bottom: none; }
     .admin-doc-info { flex: 1; }
@@ -277,6 +276,33 @@
     .check-linked-doc:hover { background: var(--border); }
     select.admin-select { padding: 8px 10px; border: 1px solid var(--border); font-family: var(--sans); font-size: 13px; color: var(--black); background: var(--white); outline: none; cursor: pointer; }
     select.admin-select:focus { border-color: var(--black); }
+
+    /* CALENDAR ADD BUTTON */
+    .cal-add-btn { font-size:13px; cursor:pointer; background:none; border:none; padding:0 2px; opacity:.5; transition:opacity .15s; vertical-align:middle; line-height:1; }
+    .cal-add-btn:hover { opacity:1; }
+    .cal-date-row { display:flex; align-items:baseline; gap:4px; margin-bottom:5px; }
+    .cal-date-label { font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--black); white-space:nowrap; flex-shrink:0; min-width:42px; }
+
+    /* MEETING NOTES */
+    .note-card { background: var(--white); border: 1px solid var(--border); margin-bottom: 8px; }
+    .note-header { padding: 15px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+    .note-header:hover { background: var(--light); }
+    .note-title { font-size: 14px; font-weight: 700; color: var(--black); flex: 1; }
+    .note-body { padding: 0 18px 18px; display: none; }
+    .note-body.open { display: block; }
+    .note-content { font-size: 13px; color: var(--mid); line-height: 1.8; padding: 10px 0 15px; border-bottom: 1px solid var(--border); white-space: pre-wrap; }
+
+    /* COMMUNICATIONS */
+    .comms-item { background: var(--white); border: 1px solid var(--border); margin-bottom: 8px; }
+    .comms-item-hdr { padding: 15px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+    .comms-item-hdr:hover { background: var(--light); }
+    .comms-item-title { font-size: 14px; font-weight: 700; color: var(--black); flex: 1; }
+    .comms-item-body { padding: 0 18px 18px; display: none; }
+    .comms-item-body.open { display: block; }
+    .comms-content { font-size: 13px; color: var(--mid); line-height: 1.8; padding: 10px 0 15px; border-bottom: 1px solid var(--border); white-space: pre-wrap; }
+    .comms-badge { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 8px; border: 1px solid; flex-shrink: 0; }
+    .comms-badge.draft { color: #1d4ed8; border-color: #bfdbfe; background: #eff6ff; }
+    .comms-badge.guidance { color: var(--mid); border-color: var(--border); background: var(--light); }
 
     /* FOOTER */
     .page-footer { max-width: 1080px; margin: 0 auto; padding: 20px 32px 40px; font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
@@ -309,7 +335,7 @@
   </div>
 
   <nav class="topnav">
-    <div class="nav-wordmark">Human <span class="x">×</span> AI <span class="x" style="margin:0 6px">·</span> Q-Free</div>
+    <a href="https://human-x-ai.com" target="_blank" rel="noopener" class="nav-wordmark" style="text-decoration:none">Human <span class="x">×</span> AI <span class="x" style="margin:0 6px">·</span> Q-Free</a>
     <div class="nav-links">
       <button class="nav-link active" onclick="showPage('dashboard', this)">Dashboard</button>
       <button class="nav-link" onclick="showPage('project', this)">Phase 1 Project</button>
@@ -326,30 +352,27 @@
     <div class="page-inner">
       <div class="page-eyebrow">Dashboard</div>
       <div class="page-title">Where we are.</div>
-      <div class="page-sub">Phase 1 — AI Capability Recomposition Pilot (SOW-002). NDA · MSA · SOW-002 signed June 17, 2026. Start date to be confirmed by July 15.</div>
+      <div class="page-sub">Phase 1 — AI Capability Recomposition Pilot (SOW-002). NDA · MSA · SOW-002 signed June 17, 2026. Kickoff August 10, 2026.</div>
+
+      <!-- Kickoff confirmed banner -->
+      <div style="border-left:3px solid #16a34a;background:var(--white);padding:16px 20px;margin-bottom:28px;border:1px solid #dcfce7;border-left:3px solid #16a34a">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#16a34a;margin-bottom:4px">Kickoff Confirmed</div>
+        <div style="font-size:14px;font-weight:700;color:var(--black)">Phase 1 starts August 10, 2026</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px">NDA · MSA · SOW-002 signed June 17 ✓ · Pre-phase underway</div>
+      </div>
 
       <!-- Metrics — updated live from checklist -->
       <div class="metrics-strip">
         <div class="metric-cell">
           <div class="metric-num">3 wk</div>
           <div class="metric-label">Pilot Duration</div>
-          <div class="metric-sub">Kickoff early August 2026</div>
+          <div class="metric-sub">Kickoff August 10, 2026</div>
         </div>
         <div class="metric-cell">
           <div class="metric-num" id="dash-metric-status">Pre</div>
           <div class="metric-label">Current Status</div>
           <div class="metric-sub" id="dash-metric-status-sub">Pre-phase · preparing for kickoff</div>
         </div>
-      </div>
-
-      <!-- Action required banner -->
-      <div style="border-left:3px solid var(--black);background:var(--white);padding:16px 20px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-        <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Action Required</div>
-          <div style="font-size:14px;font-weight:700;color:var(--black)">Confirm Phase 1 start date — by July 15, 2026</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px">NDA · MSA · SOW-002 signed June 17 ✓ · Kickoff targeted early August 2026</div>
-        </div>
-        <a href="mailto:karine@human-x-ai.com?subject=Q-Free Phase 1 — Start Date Confirmation" style="font-size:12px;font-weight:700;color:var(--black);text-decoration:underline;text-underline-offset:3px;white-space:nowrap">Write to Karine →</a>
       </div>
 
       <div class="grid-3-1">
@@ -373,26 +396,54 @@
                   <div style="font-size:13px;font-weight:600;color:var(--black)">NDA · MSA · SOW-002 — <span style="color:#16a34a">Signed Jun 17 ✓</span></div>
                 </div>
                 <div style="background:var(--white);padding:13px 15px">
-                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Start Date</div>
-                  <div style="font-size:13px;font-weight:600;color:var(--black)">To confirm — <span style="color:#d97706">deadline Jul 15</span> · Early Aug 2026</div>
-                </div>
-                <div style="background:var(--white);padding:13px 15px">
                   <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Operating Model</div>
                   <div style="font-size:13px;font-weight:600;color:var(--black)">Q-Free produces · Karine briefs &amp; coaches</div>
                 </div>
+                <div style="background:var(--white);padding:13px 15px">
+                  <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Start Date</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--black)">August 10, 2026 · <span style="color:#16a34a">Confirmed ✓</span></div>
+                </div>
               </div>
               <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:9px">Core Team</div>
+              <!-- Leadership -->
+              <div class="team-row">
+                <div class="team-initial" style="background:var(--border);color:var(--mid)">Q-F</div>
+                <div><div class="team-name">Leadership</div><div class="team-role">CEO · CFO · EVPs</div></div>
+              </div>
+              <!-- Named core team -->
               <div class="team-row">
                 <div class="team-initial">JA</div>
-                <div><div class="team-name">Jan Arne Eriksen</div><div class="team-role">Internal Champion · transitioning to Chief AI Officer (Q3 2026)</div></div>
+                <div><div class="team-name">Jan-Arne Eriksen</div><div class="team-role">Internal Champion · transitioning to Chief AI Officer (Q3 2026)</div></div>
               </div>
               <div class="team-row">
-                <div class="team-initial">JB</div>
-                <div><div class="team-name">James Barkman</div><div class="team-role">CFO / COO · Budget Signatory</div></div>
+                <div class="team-initial">ML</div>
+                <div><div class="team-name">Mark Lewis</div><div class="team-role">Global Sales and Marketing Operations</div></div>
+              </div>
+              <div class="team-row">
+                <div class="team-initial">AM</div>
+                <div><div class="team-name">Adrian Mittet</div><div class="team-role">FP&amp;A · VP of Finance</div></div>
+              </div>
+              <div class="team-row">
+                <div class="team-initial">KR</div>
+                <div><div class="team-name">Kim Robert Tekseth</div><div class="team-role">AI Engineer</div></div>
+              </div>
+              <!-- Proposed sales participants -->
+              <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 9px">Proposed Participants — Sales</div>
+              <div class="team-row">
+                <div class="team-initial">SF</div>
+                <div><div class="team-name">Steinar Furan</div><div class="team-role">Global Director, Bid</div></div>
+              </div>
+              <div class="team-row">
+                <div class="team-initial">OB</div>
+                <div><div class="team-name">Oliver Bain</div><div class="team-role">Tolling SVP Sales · + 2 sales managers TBD</div></div>
+              </div>
+              <div class="team-row">
+                <div class="team-initial">MM</div>
+                <div><div class="team-name">Mike McIntee</div><div class="team-role">ATMS SVP Sales · + 1 director, 4–5 sales managers, advisor TBD</div></div>
               </div>
               <div class="team-row" style="border-bottom:none">
                 <div class="team-initial" style="background:var(--border);color:var(--mid)">+</div>
-                <div><div class="team-name" style="color:var(--muted)">FP&amp;A · HR · Data &amp; AI Engineer</div><div class="team-role">To be named during pre-phase (Step 1)</div></div>
+                <div><div class="team-name" style="color:var(--muted)">Regional VPs</div><div class="team-role">To be confirmed</div></div>
               </div>
             </div>
           </div>
@@ -421,11 +472,20 @@
 
         <!-- RIGHT -->
         <div>
+          <!-- New from Human × AI -->
+          <div class="section-block" style="margin-bottom:14px" id="dash-new-docs-block">
+            <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 14px">
+              <div><div class="section-num">03</div><div class="section-title">New from Human × AI</div></div>
+              <a href="#" onclick="navToKeyDocs();return false" style="font-size:12px;color:var(--muted);text-decoration:underline;text-underline-offset:2px;white-space:nowrap">View all →</a>
+            </div>
+            <div style="padding:0 20px 14px" id="dash-new-docs"><!-- rendered by JS --></div>
+          </div>
+
           <!-- Quick access -->
           <div class="section-block" style="margin-bottom:14px">
-            <div class="section-header"><div class="section-num">03</div><div class="section-title">Quick Access</div></div>
+            <div class="section-header"><div class="section-num">04</div><div class="section-title">Quick Access</div></div>
             <div class="section-body" style="padding:13px 18px">
-              <a href="#" onclick="navToPrePhase();return false" class="quick-link">→ Pre-Phase Checklist — We are here</a>
+              <a href="#" onclick="navToCalendar();return false" class="quick-link">→ Phase 1 Calendar — We are here</a>
               <a id="btn-book" href="#" target="_blank" rel="noopener" class="quick-link">Book a Meeting with Karine →</a>
             </div>
           </div>
@@ -434,7 +494,7 @@
           <div class="dareonai-block">
             <div class="section-header">
               <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-                <div><div class="section-num">04</div><div class="section-title">DareOnAI</div></div>
+                <div><div class="section-num">05</div><div class="section-title">DareOnAI</div></div>
                 <span class="dareonai-tag">Coming soon</span>
               </div>
             </div>
@@ -449,6 +509,21 @@
 
         </div>
       </div><!-- /grid -->
+    </div>
+      <!-- Latest Meeting Note widget (shows if note posted within last 7 days) -->
+      <div id="dash-latest-note" style="display:none;margin-top:28px">
+        <div class="section-block">
+          <div class="section-header" style="display:flex;align-items:center;justify-content:space-between">
+            <div><div class="section-num">06</div><div class="section-title">Latest Meeting Note</div></div>
+            <a href="#" onclick="navToMeetingNotes();return false" style="font-size:12px;color:var(--muted);text-decoration:underline;text-underline-offset:2px">View all →</a>
+          </div>
+          <div class="section-body">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:5px" id="dash-note-date"></div>
+            <div style="font-size:14px;font-weight:700;color:var(--black);margin-bottom:8px" id="dash-note-title"></div>
+            <div style="font-size:13px;color:var(--mid);line-height:1.7;white-space:pre-wrap" id="dash-note-snippet"></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="page-footer">Human × AI <span>·</span> Q-Free <span>·</span> Judgment before automation</div>
   </div>
@@ -497,7 +572,7 @@
         <div class="admin-section-hdr">
           <div>
             <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">02</div>
-            <div class="admin-section-title">Link Documents to Checklist Steps</div>
+            <div class="admin-section-title">Step Links — Cross-Reference View</div>
           </div>
         </div>
         <div class="admin-section-body">
@@ -517,6 +592,30 @@
           <div id="admin-step-links"><!-- rendered by JS --></div>
         </div>
       </div>
+      <!-- Meeting Notes Management -->
+      <div class="admin-section">
+        <div class="admin-section-hdr">
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">03</div>
+            <div class="admin-section-title">Meeting Notes</div>
+          </div>
+          <button class="btn-sm-ghost" onclick="openModal('note-modal')">+ Add Note</button>
+        </div>
+        <div class="admin-section-body" id="admin-notes-list"><!-- rendered by JS --></div>
+      </div>
+
+      <!-- Communications Management -->
+      <div class="admin-section">
+        <div class="admin-section-hdr">
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">04</div>
+            <div class="admin-section-title">Communications</div>
+          </div>
+          <button class="btn-sm-ghost" onclick="openModal('comms-modal')">+ Add Communication</button>
+        </div>
+        <div class="admin-section-body" id="admin-comms-list"><!-- rendered by JS --></div>
+      </div>
+
     </div>
     <div class="page-footer">Human × AI <span>·</span> Admin <span>·</span> Judgment before automation</div>
   </div>
@@ -567,14 +666,50 @@
 
 <!-- Add/Edit HxA doc modal -->
 <div class="modal-overlay" id="hxa-doc-modal">
-  <div class="modal">
+  <div class="modal" style="max-width:460px">
     <h3 id="hxa-doc-modal-title">Add Document</h3>
     <input type="hidden" id="hd-edit-idx">
     <div class="modal-field"><label>Name</label><input type="text" id="hd-name-in" placeholder="e.g. Workflow Allocation Template"></div>
     <div class="modal-field"><label>URL / Link</label><input type="url" id="hd-url-in" placeholder="https://drive.google.com/..."></div>
     <div class="modal-field"><label>Description</label><textarea id="hd-desc-in" placeholder="One-line description of what this document is for"></textarea></div>
     <div class="modal-field"><label>Icon (emoji, optional)</label><input type="text" id="hd-icon-in" placeholder="📄" maxlength="4"></div>
+    <div class="modal-field">
+      <label>Link to checklist step (optional)</label>
+      <select id="hd-step-sel" class="admin-select" style="width:100%">
+        <option value="">— No step link —</option>
+      </select>
+    </div>
     <div class="modal-actions"><button class="btn-ghost" onclick="closeModal('hxa-doc-modal')">Cancel</button><button class="btn-solid" onclick="saveHxaDoc()">Save</button></div>
+  </div>
+</div>
+
+<!-- Meeting Note modal -->
+<div class="modal-overlay" id="note-modal">
+  <div class="modal" style="max-width:520px">
+    <h3>Add Meeting Note</h3>
+    <div class="modal-field"><label>Title</label><input type="text" id="note-title-in" placeholder="e.g. Weekly sync — Week 1"></div>
+    <div class="modal-field"><label>Meeting / Context (optional)</label><input type="text" id="note-meeting-in" placeholder="e.g. Karine + Jan-Arne weekly sync"></div>
+    <div class="modal-field"><label>Notes</label><textarea id="note-content-in" placeholder="Key points, decisions, next steps…" style="min-height:140px"></textarea></div>
+    <div class="modal-actions"><button class="btn-ghost" onclick="closeModal('note-modal')">Cancel</button><button class="btn-solid" onclick="saveNote()">Post Note</button></div>
+  </div>
+</div>
+
+<!-- Communications modal -->
+<div class="modal-overlay" id="comms-modal">
+  <div class="modal" style="max-width:520px">
+    <h3>Add Communication</h3>
+    <div class="modal-field">
+      <label>Type</label>
+      <select id="comms-type-sel" style="width:100%;padding:10px 14px;border:1px solid var(--border);font-family:var(--sans);font-size:14px;color:var(--black);background:var(--white);outline:none">
+        <option value="Draft">Draft — ready to send</option>
+        <option value="Guidance">Guidance — how to communicate</option>
+      </select>
+    </div>
+    <div class="modal-field"><label>Title</label><input type="text" id="comms-title-in" placeholder="e.g. Kickoff email to sales team"></div>
+    <div class="modal-field"><label>Timing / Audience (optional)</label><input type="text" id="comms-timing-in" placeholder="e.g. Kickoff −3 weeks · from Jan-Arne to team"></div>
+    <div class="modal-field"><label>Framing notes (optional)</label><input type="text" id="comms-guidance-in" placeholder="e.g. Send from Jan-Arne. Informal tone. No mention of AI tools yet."></div>
+    <div class="modal-field"><label>Content / Draft text</label><textarea id="comms-content-in" placeholder="Paste the draft message or guidance here…" style="min-height:140px"></textarea></div>
+    <div class="modal-actions"><button class="btn-ghost" onclick="closeModal('comms-modal')">Cancel</button><button class="btn-solid" onclick="saveComms()">Post</button></div>
   </div>
 </div>
 
@@ -583,7 +718,7 @@
   <div class="modal">
     <h3>Edit Phase Date</h3>
     <input type="hidden" id="pd-phase-key">
-    <div class="modal-field"><label>Date / Period</label><input type="text" id="pd-date-in" placeholder="e.g. Early August 2026 · ★ Workshop 1"></div>
+    <div class="modal-field"><label>Date / Period</label><input type="text" id="pd-date-in" placeholder="e.g. August 10, 2026 · ★ Workshop 1"></div>
     <div class="modal-actions"><button class="btn-ghost" onclick="closeModal('phase-date-modal')">Cancel</button><button class="btn-solid" onclick="savePhaseDates()">Save</button></div>
   </div>
 </div>
@@ -599,10 +734,10 @@ let ROLE = null; // 'admin' | 'client'
 
 // ════════ PHASE GROUPINGS (maps dashboard phases → timeline items) ════════
 const PHASE_GROUPS = [
-  { key:'prephase', label:'Pre-Phase',             short:'Pre',  sub:'Pre-phase · preparing for kickoff',  defaultDate:'June – July 2026 · start confirmed by Jul 15', tlIds:['contracts','comms-enable','friction-survey'] },
-  { key:'week1',    label:'Week 1 — Workshop 1',   short:'Wk 1', sub:'Workshop 1 underway',                defaultDate:'Early August 2026 · ★ Workshop 1 · Friction Map',        tlIds:['workshop1'] },
-  { key:'week2',    label:'Week 2 — Workshop 2',   short:'Wk 2', sub:'Workshop 2 underway',                defaultDate:'August 2026 · ★ Workshop 2 · Workflow Allocation',          tlIds:['workshop2'] },
-  { key:'week3',    label:'Week 3 — Workshop 3',   short:'Wk 3', sub:'Workshop 3 · final week',            defaultDate:'August 2026 · ★ Workshop 3 · Capability Recomposition Brief', tlIds:['workshop3'] },
+  { key:'prephase', label:'Pre-Phase',             short:'Pre',  sub:'Pre-phase · preparing for kickoff',  defaultDate:'June – July 2026 · NDA/MSA/SOW-002 signed Jun 17', tlIds:['contracts','comms-enable','friction-survey'] },
+  { key:'week1',    label:'Week 1 — Workshop 1',   short:'Wk 1', sub:'Workshop 1 underway',                defaultDate:'August 10, 2026 · ★ Workshop 1 · Friction Map',        tlIds:['workshop1'] },
+  { key:'week2',    label:'Week 2 — Workshop 2',   short:'Wk 2', sub:'Workshop 2 underway',                defaultDate:'August 17, 2026 · ★ Workshop 2 · Workflow Allocation',   tlIds:['workshop2'] },
+  { key:'week3',    label:'Week 3 — Workshop 3',   short:'Wk 3', sub:'Workshop 3 · final week',            defaultDate:'August 24, 2026 · ★ Workshop 3 · Capability Recomposition Brief', tlIds:['workshop3'] },
 ];
 
 // ════════ TIMELINE DATA ════════
@@ -615,7 +750,7 @@ const TIMELINE = [
       {id:'board-deck',     text:'Pressure-test board deck and AI strategy narrative with Jan Arne', owner:'Karine + Jan Arne', note:'June · CEO visit week of Jun 9'},
       {id:'core-team',      text:'Define core team: Internal Champion confirmed; FP&A, HR, and Data & AI engineer named', owner:'Jan Arne + Karine', note:'June – early July', star:true},
       {id:'friction-scope', text:'Scope friction interview targets for the pilot organisation', owner:'Jan Arne + Karine', note:'July'},
-      {id:'start-date',     text:'Confirm Phase 1 start date', owner:'Jan Arne + James', note:'By July 15', star:true},
+      {id:'start-date',     text:'Confirm Phase 1 start date', owner:'Jan Arne + James', note:'August 10, 2026 ✓', star:true},
     ]},
   { id:'comms-enable', num:'02', name:'Pre-Phase — Comms & Team Enablement', dates:'Kickoff −3 to −2 weeks', status:'upcoming',
     desc:'Frame the mandate for the teams. Ensure every workshop room is composed correctly and every participant knows what is expected of them before they walk in.',
@@ -635,7 +770,7 @@ const TIMELINE = [
       {id:'s3b-managers',    text:'Share full synthesis with workshop managers (sent with Workshop 1 pre-read)', owner:'Karine + Jan Arne', note:'Kickoff −1 week'},
       {id:'s3c-org',         text:"Send org-wide message: 'We are looking at workflows to make your job easier'", owner:'Jan Arne', note:'Kickoff −1 week'},
     ]},
-  { id:'workshop1', num:'04', name:'Week 1 — Workshop 1: Frame & Current State', dates:'Early August 2026', status:'upcoming',
+  { id:'workshop1', num:'04', name:'Week 1 — Workshop 1: Frame & Current State', dates:'August 10, 2026', status:'upcoming',
     desc:"Reject 'apply AI to what we have' out loud. Define the one overarching KPI, map capabilities as outcomes, map current workflows honestly — handoffs, delays, workarounds.",
     checklist:[
       {id:'w1-kpi',      text:'Define the one overarching KPI for the pilot organisation'},
@@ -646,7 +781,7 @@ const TIMELINE = [
       {id:'w1-feedback', text:'Send workshop outputs to Karine', owner:'Core team', note:'≤24h after workshop'},
       {id:'w1-baseline', text:'Data & Insights: begin baseline metrics per workflow + draft uplift estimates', owner:'Data & Insights', note:'Between W1–W2'},
     ]},
-  { id:'workshop2', num:'05', name:'Week 2 — Workshop 2: Target Workflows & Decision Boundaries', dates:'August 2026', status:'upcoming',
+  { id:'workshop2', num:'05', name:'Week 2 — Workshop 2: Target Workflows & Decision Boundaries', dates:'August 17, 2026', status:'upcoming',
     desc:"Draft the target workflow for each current workflow. Classify every step: Autonomous / Augmented / Human-essential. 'Classified, not cut.' Name workflow owners.",
     checklist:[
       {id:'w2-target',    text:'Draft target workflow for each current workflow on the Friction Map'},
@@ -657,7 +792,7 @@ const TIMELINE = [
       {id:'w2-cost',      text:'FP&A + HR: begin cost model for from→to organisation design', owner:'FP&A + HR', note:'Starts after W2 · deliver before W3'},
       {id:'w2-uplift',    text:'Data & Insights: finalise productivity uplift estimate per target workflow', owner:'Data & Insights', note:'Deliver before W3'},
     ]},
-  { id:'workshop3', num:'06', name:'Week 3 — Workshop 3 + Readout', dates:'August 2026', status:'upcoming',
+  { id:'workshop3', num:'06', name:'Week 3 — Workshop 3 + Readout', dates:'August 24, 2026', status:'upcoming',
     desc:'Review ROI projection. Prioritise first workflow(s), agree migration sequence, outline the Brief. Then: 90-min readout with Jan Arne and James Barkman — walk the document, not slides.',
     checklist:[
       {id:'w3-roi',      text:'Review ROI projection: workflow optimisation gains + pre/post org design impact'},
@@ -744,12 +879,14 @@ function load(k, fb) { try { const v = localStorage.getItem(k); return v !== nul
 function save(k, v)  { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 
 let S = {
-  comments:   load('qf_comments', {}),
-  checks:     load('qf_checks', {}),
-  phaseDates: load('qf_phaseDates', {}),
-  docs:       load('qf_docs', []),
-  docUrls:    load('qf_docUrls', {}),   // {[docName]: url} — admin-editable URL overrides
-  qfDocs:     load('qf_submitted_docs', []),  // Q-Free submitted doc links
+  comments:     load('qf_comments', {}),
+  checks:       load('qf_checks', {}),
+  phaseDates:   load('qf_phaseDates', {}),
+  docs:         load('qf_docs', []),
+  docUrls:      load('qf_docUrls', {}),        // {[docName]: url} — admin-editable URL overrides
+  qfDocs:       load('qf_submitted_docs', []), // Q-Free submitted doc links
+  meetingNotes: load('qf_meeting_notes', []),  // [{title, meeting, content, date, ts, comments:[]}]
+  commsItems:   load('qf_comms_items', []),    // [{type, title, timing, guidance, content, date, ts}]
 };
 
 // ════════ AUTH ════════
@@ -813,8 +950,53 @@ function showPage(id, btn) {
   if (btn) btn.classList.add('active');
 }
 function navTo(id) { showPage(id, document.querySelectorAll('.nav-link')[id === 'dashboard' ? 0 : 1]); }
+function navToMeetingNotes() {
+  showPage('project', document.querySelectorAll('.nav-link')[1]);
+  const tab = document.querySelector('.section-tab:nth-child(4)');
+  if (tab) showSection('documents', tab);
+  setTimeout(() => {
+    const el = document.getElementById('docs-notes-section');
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 60);
+}
+function navToKeyDocs() {
+  showPage('project', document.querySelectorAll('.nav-link')[1]);
+  const tab = document.querySelector('.section-tab:nth-child(4)');
+  if (tab) showSection('documents', tab);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function navToCalendar() {
+  showPage('project', document.querySelectorAll('.nav-link')[1]);
+  const tab = document.querySelector('.section-tab:nth-child(1)');
+  if (tab) showSection('calendar', tab);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function navToComms() {
+  showPage('project', document.querySelectorAll('.nav-link')[1]);
+  const tab = document.querySelector('.section-tab:nth-child(4)');
+  if (tab) showSection('documents', tab);
+  setTimeout(() => {
+    const el = document.getElementById('docs-comms-section');
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 60);
+}
+
+// All items linkable to checklist steps: HxA docs + meeting notes + comms
+function getAllLinkableItems() {
+  const docs  = (S.hxaDocs || []).map(d => ({ name: d.name, url: d.url, icon: d.icon || '📄', _group: 'doc' }));
+  const notes = (S.meetingNotes || []).map(n => ({ name: n.title, url: 'javascript:navToMeetingNotes()', icon: '📋', _group: 'note' }));
+  const comms = (S.commsItems  || []).map(c => ({ name: c.title, url: 'javascript:navToComms()', icon: c.type === 'Draft' ? '📨' : '💡', _group: 'comms' }));
+  return [...docs, ...notes, ...comms];
+}
+function showSection(id, btn) {
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Navigate to Pre-Phase checklist items on timeline tab
 function navToPrePhase() {
-  // Go to project page, switch to checklist tab, open all pre-phase items
   showPage('project', document.querySelectorAll('.nav-link')[1]);
   const timelineTab = document.querySelector('.section-tab:nth-child(2)');
   showSection('timeline', timelineTab);
@@ -830,12 +1012,6 @@ function navToPrePhase() {
     const el = document.getElementById('tlb-contracts');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 50);
-}
-function showSection(id, btn) {
-  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('section-' + id).classList.add('active');
-  btn.classList.add('active');
 }
 
 // ════════ MODALS ════════
@@ -1101,7 +1277,24 @@ function renderDocs() {
         ${S.docs.map(docCard).join('')}
         <div class="add-doc-card admin-only" onclick="openModal('doc-modal')"><div class="plus">＋</div><p>Add document</p></div>
       </div>
+    </div>
+    <div class="docs-section" id="docs-notes-section">
+      <div class="docs-section-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Meeting Notes</span>
+        <button class="btn-sm-ghost admin-only" onclick="openModal('note-modal')" style="font-size:10px">+ Add Note</button>
+      </div>
+      <div id="meeting-notes-container"></div>
+    </div>
+    <div class="docs-section" id="docs-comms-section">
+      <div class="docs-section-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Communications</span>
+        <button class="btn-sm-ghost admin-only" onclick="openModal('comms-modal')" style="font-size:10px">+ Add Communication</button>
+      </div>
+      <div id="comms-container"></div>
     </div>`;
+  // Render notes and comms into their new containers
+  renderMeetingNotes();
+  renderComms();
 }
 
 function removeQfDoc(idx) {
@@ -1204,46 +1397,89 @@ function saveDoc() {
   closeModal('doc-modal');
 }
 
+// ════════ ADD TO CALENDAR ════════
+function addToCalendar(title, yyyymmdd, durationDays, description) {
+  const pad = n => String(n).padStart(2,'0');
+  function addDays(d, n) {
+    const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+    return dt.getFullYear() + pad(dt.getMonth()+1) + pad(dt.getDate());
+  }
+  const start = yyyymmdd;
+  const end   = addDays(new Date(
+    parseInt(yyyymmdd.slice(0,4)),
+    parseInt(yyyymmdd.slice(4,6))-1,
+    parseInt(yyyymmdd.slice(6,8))
+  ), durationDays || 1);
+  const uid = 'hxai-' + yyyymmdd + '-' + Math.random().toString(36).slice(2,7) + '@human-x-ai.com';
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Human x AI//Q-Free Portal//EN','CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    'DTSTART;VALUE=DATE:' + start,
+    'DTEND;VALUE=DATE:' + end,
+    'SUMMARY:' + title.replace(/,/g,'\\,'),
+    'DESCRIPTION:' + (description||'Q-Free · Phase 1 · Human × AI').replace(/,/g,'\\,').replace(/\n/g,'\\n'),
+    'UID:' + uid,
+    'END:VEVENT','END:VCALENDAR'
+  ].join('\r\n');
+  const blob = new Blob([ics], {type:'text/calendar;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), {href:url, download: title.replace(/[^a-zA-Z0-9]/g,'_').slice(0,40)+'.ics'});
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+function cal(title, date, days, desc) {
+  return `<button class="cal-add-btn" onclick="addToCalendar('${title.replace(/'/g,"\\'")}','${date}',${days||1},'${(desc||'').replace(/'/g,"\\'")}') " title="Add to calendar">📅</button>`;
+}
+
 // ════════ CALENDAR VIEW ════════
+// Dates (kickoff Aug 10, working back)
+// −3 wks = Jul 20 | −2 wks = Jul 27 | −1 wk = Aug 3 | W1 = Aug 10 | W2 = Aug 17 | W3 = Aug 24
 const CAL_DATA = [
   { workstream:'Contracts & Setup',
-    prephase:`<div class="cal-milestone">★ NDA · MSA · SOW-002 signed</div>Core team defined (Step 1)<br>Friction interview targets scoped<br><div class="cal-milestone">★ Start date confirmed by Jul 15</div>`,
+    prephase:`<div class="cal-milestone">★ NDA · MSA · SOW-002 — Signed Jun 17 ✓</div><div style="margin-top:4px">Core team defined &amp; named</div><div style="margin-top:4px"><strong>★ Kickoff confirmed: Aug 10</strong></div>`,
     week1:'', week2:'', week3:'' },
   { workstream:'Comms & Enablement',
-    prephase:`−3 wks: Kickoff communication sent<br>−3 wks: Workshop Guide + Pre-Read distributed<br>−2 wks: Core team Q&A (Step 3)<br>−2 wks: Participant list validated · <strong>calendar locked</strong>`,
+    prephase:`
+      <div class="cal-date-row"><span class="cal-date-label">Jul 20</span><span>Kickoff communication (Jan-Arne → team)</span><span id="calbtn-jc"></span></div>
+      <div class="cal-date-row"><span class="cal-date-label">Jul 20</span><span>Workshop Guide + Pre-Read distributed</span><span id="calbtn-wg"></span></div>
+      <div class="cal-date-row"><span class="cal-date-label">Jul 27</span><span>Core team Q&amp;A · 60 min</span><span id="calbtn-qa"></span></div>
+      <div class="cal-date-row"><span class="cal-date-label">Jul 27</span><span>Participant list validated · <strong>calendar locked</strong></span><span id="calbtn-cal"></span></div>`,
     week1:'', week2:'', week3:'' },
   { workstream:'Friction Survey',
-    prephase:`−2 wks: <span class="cal-star">★</span> Survey launched<br>−1 wk: Results reviewed<br>−1 wk: Results to participants · synthesis to managers · org-wide message`,
+    prephase:`
+      <div class="cal-date-row"><span class="cal-date-label">Jul 27</span><span><span class="cal-star">★</span> Survey launched</span><span id="calbtn-sv"></span></div>
+      <div class="cal-date-row"><span class="cal-date-label">Aug 3</span><span>Results reviewed internally</span></div>
+      <div class="cal-date-row"><span class="cal-date-label">Aug 3</span><span>Results to participants · synthesis to managers · org-wide message</span></div>`,
     week1:`<span class="cal-muted">Synthesis feeds Workshop 1</span>`, week2:'', week3:'' },
   { workstream:'Workshops',
     prephase:'',
-    week1:`<div class="cal-tag">★ WORKSHOP 1</div><br>KPI · capabilities · honest current workflows<br>→ <strong>Friction Map v1</strong>`,
-    week2:`<div class="cal-tag">★ WORKSHOP 2</div><br>Target workflows<br>Workflow Allocation<br>Judgment Architecture`,
-    week3:`<div class="cal-tag">★ WORKSHOP 3</div><br>ROI review · prioritise first workflow<br>Migration sequence · Brief outline` },
+    week1:`<div class="cal-tag">★ WORKSHOP 1</div><span id="calbtn-w1"></span><br>KPI · capabilities · honest current workflows<br>→ <strong>Friction Map v1</strong>`,
+    week2:`<div class="cal-tag">★ WORKSHOP 2</div><span id="calbtn-w2"></span><br>Target workflows<br>Workflow Allocation<br>Judgment Architecture`,
+    week3:`<div class="cal-tag">★ WORKSHOP 3</div><span id="calbtn-w3"></span><br>ROI review · prioritise first workflow<br>Migration sequence · Brief outline` },
   { workstream:'Feedback Loop',
     prephase:'',
-    week1:`Outputs to Karine ≤24h → feedback ≤48h<br>Weekly Jan Arne sync (pre-read 24h ahead)`,
+    week1:`Outputs to Karine ≤24h → feedback ≤48h<br>Weekly Jan-Arne sync (pre-read 24h ahead)`,
     week2:`Same rhythm`,
     week3:`Same rhythm` },
   { workstream:'Evaluation',
     prephase:'',
-    week1:`Data & Insights: baseline metrics + draft uplift (W1–W2)`,
-    week2:`After W2: FP&A + HR cost the from→to org<br>Data & Insights: finalise uplift estimate`,
+    week1:`Data &amp; Insights: baseline metrics + draft uplift (W1–W2)`,
+    week2:`After W2: FP&amp;A + HR cost the from→to org<br>Data &amp; Insights: finalise uplift estimate`,
     week3:`Cost model + uplift feed ROI projection` },
   { workstream:'Deliverables',
     prephase:'',
     week1:`<strong>Friction Map</strong>`,
     week2:`<strong>Workflow Allocation</strong><br><strong>Judgment Architecture</strong>`,
-    week3:`<div class="cal-tag">★ Capability Recomposition Brief</div><div class="cal-tag alt" style="margin-top:5px">★ Readout (90 min)</div><div class="cal-tag alt" style="margin-top:5px">★ Private Capability Advisory</div>` },
+    week3:`<div class="cal-tag">★ Capability Recomposition Brief</div><div class="cal-tag alt" style="margin-top:5px">★ Readout (90 min)<span id="calbtn-ro"></span></div><div class="cal-tag alt" style="margin-top:5px">★ Private Capability Advisory</div>` },
 ];
 
 function renderCalendar() {
   const head = `<tr>
     <th>Workstream</th>
-    <th class="phase-col">Pre-Phase<br><span style="font-size:9px;font-weight:400;opacity:.6">≈3 weeks before kickoff</span></th>
-    <th>Week 1<br><span style="font-size:9px;font-weight:400;color:#666">Frame &amp; Current State</span></th>
-    <th>Week 2<br><span style="font-size:9px;font-weight:400;color:#666">Target Workflows</span></th>
-    <th>Week 3<br><span style="font-size:9px;font-weight:400;color:#666">Quantify &amp; Commit</span></th>
+    <th class="phase-col">Pre-Phase<br><span style="font-size:9px;font-weight:400;opacity:.6">Jul 20 – Aug 9</span></th>
+    <th>Week 1 · Aug 10<br><span style="font-size:9px;font-weight:400;color:#666">Frame &amp; Current State</span></th>
+    <th>Week 2 · Aug 17<br><span style="font-size:9px;font-weight:400;color:#666">Target Workflows</span></th>
+    <th>Week 3 · Aug 24<br><span style="font-size:9px;font-weight:400;color:#666">Quantify &amp; Commit</span></th>
   </tr>`;
   const rows = CAL_DATA.map(r => `<tr>
     <td>${r.workstream}</td>
@@ -1256,7 +1492,7 @@ function renderCalendar() {
   document.getElementById('cal-container').innerHTML = `
     <div style="margin-bottom:14px">
       <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px">Phase 1 — 4-Week Calendar</div>
-      <div style="font-size:13px;color:var(--mid)">Pre-phase runs under SOW-001 retainer. Kickoff early August 2026. ★ = milestone.</div>
+      <div style="font-size:13px;color:var(--mid)">Pre-phase runs under SOW-001 retainer. Kickoff August 10, 2026. ★ = milestone. Click 📅 to add to calendar.</div>
     </div>
     <div class="cal-table-wrap">
       <table class="cal-table">
@@ -1264,6 +1500,21 @@ function renderCalendar() {
         <tbody>${rows}</tbody>
       </table>
     </div>`;
+
+  // Inject calendar buttons now that DOM is rendered
+  const inject = (id, title, date, days, desc) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = cal(title, date, days, desc);
+  };
+  inject('calbtn-jc',  'Kickoff communication — Q-Free Phase 1',             '20260720', 1, 'Jan-Arne sends kickoff communication to pilot teams. Q-Free · Human × AI Phase 1.');
+  inject('calbtn-wg',  'Workshop Guide + Pre-Read distributed — Q-Free Phase 1','20260720', 1, 'Karine distributes Pilot Recomposition Workshop Guide and Participant Pre-Read.');
+  inject('calbtn-qa',  'Core team Q&A — Q-Free Phase 1',                     '20260727', 1, '60-min session: methodology, templates, roles. Karine + core team.');
+  inject('calbtn-cal', 'Participant list validated · calendar locked — Q-Free','20260727', 1, 'Final participant list confirmed. Workshop calendar locked: three slots + weekly syncs.');
+  inject('calbtn-sv',  'Friction Survey launched — Q-Free Phase 1',           '20260727', 1, 'Friction survey launched to pilot organisation participants. Jan-Arne + Karine.');
+  inject('calbtn-w1',  '★ Workshop 1 — Frame & Current State · Q-Free Phase 1','20260810', 1, 'Workshop 1: KPI · capabilities · current workflows · Friction Map. Human × AI.');
+  inject('calbtn-w2',  '★ Workshop 2 — Target Workflows · Q-Free Phase 1',    '20260817', 1, 'Workshop 2: Target workflows · Workflow Allocation · Judgment Architecture.');
+  inject('calbtn-w3',  '★ Workshop 3 — Quantify & Commit · Q-Free Phase 1',   '20260824', 1, 'Workshop 3: ROI · prioritise first workflow · migration sequence · Brief outline.');
+  inject('calbtn-ro',  '★ Readout — Capability Recomposition Brief · Q-Free', '20260826', 1, '90-min readout: Jan-Arne + James Barkman + stakeholders. Walk the Brief, not slides.');
 }
 
 // ════════ HxA DOCUMENT LIBRARY ════════
@@ -1280,26 +1531,47 @@ function openAddDocModal(idx) {
   document.getElementById('hd-url-in').value  = d ? d.url   : '';
   document.getElementById('hd-desc-in').value = d ? d.desc  : '';
   document.getElementById('hd-icon-in').value = d ? (d.icon || '') : '';
+  // Populate step selector
+  const stepSel = document.getElementById('hd-step-sel');
+  stepSel.innerHTML = '<option value="">— No step link —</option>' +
+    TIMELINE.flatMap(tl => tl.checklist.map(c =>
+      `<option value="${tl.id}__${c.id}">[${tl.num}] ${c.text.replace(/★\s*/,'').slice(0,60)}</option>`
+    )).join('');
+  stepSel.value = '';
   openModal('hxa-doc-modal');
 }
 
 function saveHxaDoc() {
-  const idx   = document.getElementById('hd-edit-idx').value;
-  const name  = document.getElementById('hd-name-in').value.trim();
-  const url   = document.getElementById('hd-url-in').value.trim();
-  const desc  = document.getElementById('hd-desc-in').value.trim();
-  const icon  = document.getElementById('hd-icon-in').value.trim() || '📄';
+  const idx     = document.getElementById('hd-edit-idx').value;
+  const name    = document.getElementById('hd-name-in').value.trim();
+  const url     = document.getElementById('hd-url-in').value.trim();
+  const desc    = document.getElementById('hd-desc-in').value.trim();
+  const icon    = document.getElementById('hd-icon-in').value.trim() || '📄';
+  const stepKey = document.getElementById('hd-step-sel').value;
   if (!name) return;
   if (!S.hxaDocs) S.hxaDocs = [];
   if (idx !== '') {
-    S.hxaDocs[parseInt(idx)] = {name, url: url||'#', desc, icon};
+    const existing = S.hxaDocs[parseInt(idx)] || {};
+    S.hxaDocs[parseInt(idx)] = {name, url: url||'#', desc, icon, ts: existing.ts || Date.now()};
   } else {
-    S.hxaDocs.push({name, url: url||'#', desc, icon});
+    S.hxaDocs.push({name, url: url||'#', desc, icon, ts: Date.now()});
   }
   save('qf_hxaDocs', S.hxaDocs);
+  // Optionally link to step in one go
+  if (stepKey) {
+    if (!S.stepLinks) S.stepLinks = {};
+    if (!S.stepLinks[stepKey]) S.stepLinks[stepKey] = [];
+    if (!S.stepLinks[stepKey].find(l => l.name === name)) {
+      S.stepLinks[stepKey].push({name, url: url||'#', icon});
+      save('qf_stepLinks', S.stepLinks);
+    }
+  }
   closeModal('hxa-doc-modal');
   renderAdminDocList();
+  renderDashboardNewDocs();
+  renderAdminStepLinks();
   populateLinkSelectors();
+  renderTimeline();
 }
 
 function deleteHxaDoc(idx) {
@@ -1308,8 +1580,36 @@ function deleteHxaDoc(idx) {
   save('qf_hxaDocs', S.hxaDocs);
   // also remove any step links pointing to this doc index — we store by name so they survive reorder
   renderAdminDocList();
+  renderDashboardNewDocs();
   populateLinkSelectors();
   renderAdminStepLinks();
+}
+
+// Returns steps linked to a given doc name
+function getStepsForDoc(docName) {
+  return Object.entries(S.stepLinks || {})
+    .filter(([, docs]) => docs.some(d => d.name === docName))
+    .map(([key]) => {
+      const [tlId, cId] = key.split('__');
+      const tl = TIMELINE.find(t => t.id === tlId);
+      const c  = tl && tl.checklist.find(c => c.id === cId);
+      return { key, label: c ? `[${tl.num}] ${c.text.replace(/★\s*/,'').slice(0,52)}` : key };
+    });
+}
+
+function inlineLinkDoc(docName, docUrl, docIcon, selId) {
+  const stepKey = document.getElementById(selId).value;
+  if (!stepKey) return;
+  if (!S.stepLinks) S.stepLinks = {};
+  if (!S.stepLinks[stepKey]) S.stepLinks[stepKey] = [];
+  if (!S.stepLinks[stepKey].find(l => l.name === docName)) {
+    S.stepLinks[stepKey].push({name: docName, url: docUrl, icon: docIcon || '📄'});
+    save('qf_stepLinks', S.stepLinks);
+  }
+  document.getElementById(selId).value = '';
+  renderAdminDocList();
+  renderAdminStepLinks();
+  renderTimeline();
 }
 
 function renderAdminDocList() {
@@ -1320,19 +1620,40 @@ function renderAdminDocList() {
     el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">No documents yet. Click "+ Add Document" to begin.</div>';
     return;
   }
-  el.innerHTML = docs.map((d, i) => `
-    <div class="admin-doc-row">
+  const stepOptions = TIMELINE.flatMap(tl => tl.checklist.map(c =>
+    `<option value="${tl.id}__${c.id}">[${tl.num}] ${c.text.replace(/★\s*/,'').slice(0,55)}</option>`
+  )).join('');
+
+  el.innerHTML = docs.map((d, i) => {
+    const linked = getStepsForDoc(d.name);
+    const safeUrl  = (d.url||'#').replace(/'/g,"\\'");
+    const safeIcon = (d.icon||'📄').replace(/'/g,"\\'");
+    const safeName = d.name.replace(/'/g,"\\'");
+    return `<div class="admin-doc-row" style="flex-wrap:wrap;align-items:flex-start">
       <div style="font-size:20px;width:32px;flex-shrink:0;padding-top:2px">${d.icon || '📄'}</div>
-      <div class="admin-doc-info">
+      <div class="admin-doc-info" style="min-width:0">
         <div class="admin-doc-name">${d.name}</div>
         ${d.desc ? `<div class="admin-doc-meta">${d.desc}</div>` : ''}
         <div class="admin-doc-url"><a href="${d.url}" target="_blank" style="color:#aaa">${d.url}</a></div>
+        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;align-items:center">
+          ${linked.map(s => `
+            <span class="step-linked-doc-tag" style="font-size:10px">
+              ${s.label}
+              <button class="unlink-btn" onclick="unlinkDocFromStep('${s.key}','${safeName}')">✕</button>
+            </span>`).join('')}
+          <select id="inline-step-${i}" class="admin-select" style="font-size:11px;padding:3px 6px">
+            <option value="">+ Link to step…</option>
+            ${stepOptions}
+          </select>
+          <button class="btn-sm-ghost" style="font-size:11px;padding:4px 8px" onclick="inlineLinkDoc('${safeName}','${safeUrl}','${safeIcon}','inline-step-${i}')">Link</button>
+        </div>
       </div>
-      <div style="display:flex;gap:6px;flex-shrink:0">
+      <div style="display:flex;gap:6px;flex-shrink:0;margin-top:2px">
         <button class="btn-sm-ghost" onclick="openAddDocModal(${i})">Edit</button>
         <button class="btn-sm-danger" onclick="deleteHxaDoc(${i})">×</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ════════ STEP-DOC LINKER ════════
@@ -1350,19 +1671,25 @@ function populateLinkSelectors() {
     tl.checklist.map(c => `<option value="${tl.id}__${c.id}">[${tl.num}] ${c.text.replace(/★\s*/,'')}</option>`)
   ).join('');
 
-  // Docs
-  const docs = getHxaDocs();
-  if (!docs.length) {
-    docSel.innerHTML = '<option value="">— Add documents to library first —</option>';
+  // All linkable items: docs + notes + comms
+  const items = getAllLinkableItems();
+  if (!items.length) {
+    docSel.innerHTML = '<option value="">— Add documents, notes or comms first —</option>';
   } else {
-    docSel.innerHTML = docs.map((d,i) => `<option value="${i}">${d.icon || ''} ${d.name}</option>`).join('');
+    const grouped = {doc:[], note:[], comms:[]};
+    items.forEach((d,i) => grouped[d._group].push({d,i}));
+    let html = '';
+    if (grouped.doc.length)   html += `<optgroup label="📄 HxA Documents">${grouped.doc.map(({d,i})=>`<option value="${i}">${d.icon} ${d.name}</option>`).join('')}</optgroup>`;
+    if (grouped.note.length)  html += `<optgroup label="📋 Meeting Notes">${grouped.note.map(({d,i})=>`<option value="${i}">${d.icon} ${d.name}</option>`).join('')}</optgroup>`;
+    if (grouped.comms.length) html += `<optgroup label="📨 Communications">${grouped.comms.map(({d,i})=>`<option value="${i}">${d.icon} ${d.name}</option>`).join('')}</optgroup>`;
+    docSel.innerHTML = html;
   }
 }
 
 function linkDocToStep() {
   const stepKey = document.getElementById('link-step-sel').value;
   const docIdx  = document.getElementById('link-doc-sel').value;
-  const docs    = getHxaDocs();
+  const docs    = getAllLinkableItems();
   if (!stepKey || docIdx === '' || !docs[parseInt(docIdx)]) return;
   const d = docs[parseInt(docIdx)];
   if (!S.stepLinks) S.stepLinks = {};
@@ -1412,6 +1739,252 @@ function renderAdminStepLinks() {
     </div>`).join('');
 }
 
+// ════════ MEETING NOTES ════════
+function renderMeetingNotes() {
+  const container = document.getElementById('meeting-notes-container');
+  if (!container) return;
+  const isAdmin = ROLE === 'admin';
+  const notes = (S.meetingNotes || []).slice().reverse(); // newest first
+  const addBtn = isAdmin
+    ? `<div style="margin-bottom:20px"><button class="btn-solid" onclick="openModal('note-modal')">+ Add Meeting Note</button></div>`
+    : '';
+  if (!notes.length) {
+    container.innerHTML = addBtn + `<div style="font-size:13px;color:var(--muted);padding:8px 0">No meeting notes yet.</div>`;
+    return;
+  }
+  container.innerHTML = addBtn + notes.map((n, i) => {
+    const realIdx = S.meetingNotes.length - 1 - i;
+    const comments = n.comments || [];
+    return `<div class="note-card">
+      <div class="note-header" onclick="toggleNote(${realIdx})">
+        <div style="flex:1">
+          <div class="note-title">${n.title}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">${n.date}${n.meeting ? ' · ' + n.meeting : ''}</div>
+        </div>
+        <div class="tl-chevron" id="note-chev-${realIdx}">▾</div>
+      </div>
+      <div class="note-body" id="note-body-${realIdx}">
+        <div class="note-content">${n.content}</div>
+        ${isAdmin ? `<div style="display:flex;justify-content:flex-end;padding-top:10px;border-bottom:1px solid var(--border);margin-bottom:2px"><button class="btn-sm-danger" onclick="deleteNote(${realIdx})">Delete note</button></div>` : ''}
+        <div class="comments-section" style="margin-top:10px">
+          <div class="comments-label" id="note-ctitle-${realIdx}">Comments (${comments.length})</div>
+          <div id="note-clist-${realIdx}">${renderCommentsList(comments)}</div>
+          <div class="comment-form">
+            <input class="comment-input" id="note-cinput-${realIdx}" placeholder="Add a comment…" onkeydown="if(event.key==='Enter')addNoteComment(${realIdx})">
+            <button class="comment-submit" onclick="addNoteComment(${realIdx})">Post</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleNote(idx) {
+  const body = document.getElementById('note-body-' + idx);
+  const chev = document.getElementById('note-chev-' + idx);
+  if (!body) return;
+  chev.style.transform = body.classList.toggle('open') ? 'rotate(180deg)' : '';
+}
+
+function renderAdminNotes() {
+  const el = document.getElementById('admin-notes-list');
+  if (!el) return;
+  const notes = (S.meetingNotes || []).slice().reverse();
+  if (!notes.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">No meeting notes yet. Click "+ Add Note" to post one.</div>';
+    return;
+  }
+  el.innerHTML = notes.map((n, i) => {
+    const realIdx = S.meetingNotes.length - 1 - i;
+    const snippet = n.content.length > 120 ? n.content.slice(0, 120) + '…' : n.content;
+    return `<div class="admin-doc-row">
+      <div class="admin-doc-info">
+        <div class="admin-doc-name">${n.title}</div>
+        <div class="admin-doc-meta">${n.date}${n.meeting ? ' · ' + n.meeting : ''} · ${(n.comments||[]).length} comment(s)</div>
+        <div class="admin-doc-url" style="color:var(--muted);white-space:pre-wrap">${snippet}</div>
+      </div>
+      <button class="btn-sm-danger" onclick="deleteNote(${realIdx})">×</button>
+    </div>`;
+  }).join('');
+}
+
+function saveNote() {
+  const title   = document.getElementById('note-title-in').value.trim();
+  const meeting = document.getElementById('note-meeting-in').value.trim();
+  const content = document.getElementById('note-content-in').value.trim();
+  if (!title || !content) return;
+  S.meetingNotes.push({ title, meeting, content,
+    date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}),
+    ts: Date.now(), comments: []
+  });
+  save('qf_meeting_notes', S.meetingNotes);
+  ['note-title-in','note-meeting-in','note-content-in'].forEach(id => document.getElementById(id).value = '');
+  closeModal('note-modal');
+  renderMeetingNotes();
+  renderAdminNotes();
+  renderDashboardLatestNote();
+  populateLinkSelectors();
+}
+
+function deleteNote(idx) {
+  if (!confirm('Delete this meeting note?')) return;
+  S.meetingNotes.splice(idx, 1);
+  save('qf_meeting_notes', S.meetingNotes);
+  renderMeetingNotes();
+  renderAdminNotes();
+  renderDashboardLatestNote();
+}
+
+function addNoteComment(idx) {
+  const input = document.getElementById('note-cinput-' + idx);
+  const text  = input.value.trim();
+  if (!text) return;
+  if (!S.meetingNotes[idx].comments) S.meetingNotes[idx].comments = [];
+  S.meetingNotes[idx].comments.push({
+    author: ROLE === 'admin' ? 'Karine' : 'Jan-Arne',
+    text,
+    date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'})
+  });
+  save('qf_meeting_notes', S.meetingNotes);
+  input.value = '';
+  document.getElementById('note-clist-' + idx).innerHTML = renderCommentsList(S.meetingNotes[idx].comments);
+  document.getElementById('note-ctitle-' + idx).textContent = `Comments (${S.meetingNotes[idx].comments.length})`;
+}
+
+// Dashboard widget — most recent note within last 7 days
+function renderDashboardLatestNote() {
+  const el = document.getElementById('dash-latest-note');
+  if (!el) return;
+  const oneWeek = 7 * 24 * 60 * 60 * 1000;
+  const recent = (S.meetingNotes || [])
+    .filter(n => (Date.now() - n.ts) < oneWeek)
+    .sort((a, b) => b.ts - a.ts)[0];
+  if (!recent) { el.style.display = 'none'; return; }
+  el.style.display = '';
+  document.getElementById('dash-note-date').textContent    = recent.date + (recent.meeting ? ' · ' + recent.meeting : '');
+  document.getElementById('dash-note-title').textContent   = recent.title;
+  const snippet = recent.content.length > 200 ? recent.content.slice(0, 200) + '…' : recent.content;
+  document.getElementById('dash-note-snippet').textContent = snippet;
+}
+
+// Dashboard widget — recently added HxA documents
+function renderDashboardNewDocs() {
+  const el    = document.getElementById('dash-new-docs');
+  const block = document.getElementById('dash-new-docs-block');
+  if (!el) return;
+  const docs = (S.hxaDocs || []).slice().sort((a, b) => (b.ts||0) - (a.ts||0)).slice(0, 5);
+  if (!docs.length) {
+    if (block) block.style.display = 'none';
+    return;
+  }
+  if (block) block.style.display = '';
+  const oneWeek = 7 * 24 * 60 * 60 * 1000;
+  el.innerHTML = docs.map((d, i) => {
+    const isNew = d.ts && (Date.now() - d.ts) < oneWeek;
+    const url   = (S.docUrls && S.docUrls[d.name]) || d.url;
+    const hasLink = url && url !== '#';
+    const border  = i < docs.length - 1 ? 'border-bottom:1px solid var(--border);' : '';
+    return `<div style="display:flex;align-items:flex-start;gap:9px;padding:9px 0;${border}">
+      <span style="font-size:17px;flex-shrink:0;margin-top:1px">${d.icon || '📄'}</span>
+      <div style="flex:1;min-width:0">
+        ${hasLink
+          ? `<a href="${url}" target="_blank" style="font-size:13px;font-weight:600;color:var(--black);text-decoration:none;line-height:1.3;display:block">${d.name}</a>`
+          : `<div style="font-size:13px;font-weight:600;color:var(--mid);line-height:1.3">${d.name}</div>`}
+        ${d.desc ? `<div style="font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${d.desc}</div>` : ''}
+      </div>
+      ${isNew ? `<span style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#15803d;border:1px solid #86efac;border-radius:2px;padding:2px 5px;flex-shrink:0;margin-top:2px">New</span>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ════════ COMMUNICATIONS ════════
+function renderAdminComms() {
+  const el = document.getElementById('admin-comms-list');
+  if (!el) return;
+  const items = (S.commsItems || []).slice().reverse();
+  if (!items.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">No communications yet. Click "+ Add Communication" to post a draft or guidance note.</div>';
+    return;
+  }
+  el.innerHTML = items.map((c, i) => {
+    const realIdx = S.commsItems.length - 1 - i;
+    return `<div class="admin-doc-row">
+      <div class="admin-doc-info">
+        <span class="comms-badge ${c.type === 'Draft' ? 'draft' : 'guidance'}" style="display:inline-block;margin-bottom:5px">${c.type}</span>
+        <div class="admin-doc-name">${c.title}</div>
+        <div class="admin-doc-meta">${c.date}${c.timing ? ' · ' + c.timing : ''}</div>
+      </div>
+      <button class="btn-sm-danger" onclick="deleteComms(${realIdx})">×</button>
+    </div>`;
+  }).join('');
+}
+
+function renderComms() {
+  const container = document.getElementById('comms-container');
+  if (!container) return;
+  const isAdmin = ROLE === 'admin';
+  const items = (S.commsItems || []).slice().reverse(); // newest first
+  const addBtn = isAdmin
+    ? `<div style="margin-bottom:20px"><button class="btn-solid" onclick="openModal('comms-modal')">+ Add Communication</button></div>`
+    : '';
+  if (!items.length) {
+    container.innerHTML = addBtn + `<div style="font-size:13px;color:var(--muted);padding:8px 0">No communications posted yet. Use this tab to share draft messages and framing guidance with the Q-Free team.</div>`;
+    return;
+  }
+  container.innerHTML = addBtn + items.map((c, i) => {
+    const realIdx = S.commsItems.length - 1 - i;
+    return `<div class="comms-item">
+      <div class="comms-item-hdr" onclick="toggleComms(${realIdx})">
+        <span class="comms-badge ${c.type === 'Draft' ? 'draft' : 'guidance'}">${c.type}</span>
+        <div style="flex:1">
+          <div class="comms-item-title">${c.title}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">${c.date}${c.timing ? ' · ' + c.timing : ''}</div>
+        </div>
+        <div class="tl-chevron" id="comms-chev-${realIdx}">▾</div>
+      </div>
+      <div class="comms-item-body" id="comms-body-${realIdx}">
+        ${c.guidance ? `<div style="font-size:12px;font-style:italic;color:var(--muted);padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:8px">💡 ${c.guidance}</div>` : ''}
+        <div class="comms-content">${c.content}</div>
+        ${isAdmin ? `<div style="display:flex;justify-content:flex-end;padding-top:10px"><button class="btn-sm-danger" onclick="deleteComms(${realIdx})">Delete</button></div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleComms(idx) {
+  const body = document.getElementById('comms-body-' + idx);
+  const chev = document.getElementById('comms-chev-' + idx);
+  if (!body) return;
+  chev.style.transform = body.classList.toggle('open') ? 'rotate(180deg)' : '';
+}
+
+function saveComms() {
+  const type     = document.getElementById('comms-type-sel').value;
+  const title    = document.getElementById('comms-title-in').value.trim();
+  const timing   = document.getElementById('comms-timing-in').value.trim();
+  const guidance = document.getElementById('comms-guidance-in').value.trim();
+  const content  = document.getElementById('comms-content-in').value.trim();
+  if (!title || !content) return;
+  S.commsItems.push({ type, title, timing, guidance, content,
+    date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}),
+    ts: Date.now()
+  });
+  save('qf_comms_items', S.commsItems);
+  ['comms-title-in','comms-timing-in','comms-guidance-in','comms-content-in'].forEach(id => document.getElementById(id).value = '');
+  closeModal('comms-modal');
+  renderComms();
+  renderAdminComms();
+  populateLinkSelectors();
+}
+
+function deleteComms(idx) {
+  if (!confirm('Delete this item?')) return;
+  S.commsItems.splice(idx, 1);
+  save('qf_comms_items', S.commsItems);
+  renderComms();
+  renderAdminComms();
+}
+
 // ════════ INIT ════════
 function renderAll() {
   // Load extended state
@@ -1424,7 +1997,13 @@ function renderAll() {
   renderMethods();
   renderDocs();
   renderDashboardDynamic();
+  renderMeetingNotes();
+  renderComms();
+  renderDashboardLatestNote();
+  renderDashboardNewDocs();
   renderAdminDocList();
+  renderAdminNotes();
+  renderAdminComms();
   populateLinkSelectors();
   renderAdminStepLinks();
 }
