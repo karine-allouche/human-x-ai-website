@@ -472,29 +472,29 @@
 
         <!-- RIGHT -->
         <div>
+          <!-- Quick access -->
+          <div class="section-block" style="margin-bottom:14px">
+            <div class="section-header"><div class="section-num">03</div><div class="section-title">Quick Access</div></div>
+            <div class="section-body" style="padding:13px 18px">
+              <a href="#" onclick="navToPrePhase();return false" class="quick-link">→ Pre-Phase Checklist — We are here</a>
+              <a id="btn-book" href="#" target="_blank" rel="noopener" class="quick-link">Book a Meeting with Karine →</a>
+            </div>
+          </div>
+
           <!-- New from Human × AI -->
           <div class="section-block" style="margin-bottom:14px" id="dash-new-docs-block">
             <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 14px">
-              <div><div class="section-num">03</div><div class="section-title">New from Human × AI</div></div>
+              <div><div class="section-num">04</div><div class="section-title">New from Human × AI</div></div>
               <a href="#" onclick="navToKeyDocs();return false" style="font-size:12px;color:var(--muted);text-decoration:underline;text-underline-offset:2px;white-space:nowrap">View all →</a>
             </div>
             <div style="padding:0 20px 14px" id="dash-new-docs"><!-- rendered by JS --></div>
-          </div>
-
-          <!-- Quick access -->
-          <div class="section-block" style="margin-bottom:14px">
-            <div class="section-header"><div class="section-num">04</div><div class="section-title">Quick Access</div></div>
-            <div class="section-body" style="padding:13px 18px">
-              <a href="#" onclick="navToCalendar();return false" class="quick-link">→ Phase 1 Calendar — We are here</a>
-              <a id="btn-book" href="#" target="_blank" rel="noopener" class="quick-link">Book a Meeting with Karine →</a>
-            </div>
           </div>
 
           <!-- DareOnAI -->
           <div class="dareonai-block">
             <div class="section-header">
               <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-                <div><div class="section-num">05</div><div class="section-title">DareOnAI</div></div>
+                <div><div class="section-num">04</div><div class="section-title">DareOnAI</div></div>
                 <span class="dareonai-tag">Coming soon</span>
               </div>
             </div>
@@ -514,7 +514,7 @@
       <div id="dash-latest-note" style="display:none;margin-top:28px">
         <div class="section-block">
           <div class="section-header" style="display:flex;align-items:center;justify-content:space-between">
-            <div><div class="section-num">06</div><div class="section-title">Latest Meeting Note</div></div>
+            <div><div class="section-num">05</div><div class="section-title">Latest Meeting Note</div></div>
             <a href="#" onclick="navToMeetingNotes();return false" style="font-size:12px;color:var(--muted);text-decoration:underline;text-underline-offset:2px">View all →</a>
           </div>
           <div class="section-body">
@@ -874,9 +874,71 @@ const DOCS_METHODOLOGY = [
   {name:'Judgment Architecture Template (blank)', url:'#', desc:'Framework for Automate / Assist / Human / Never decision boundaries', type:'Advisor IP', icon:'📐'},
 ];
 
+// ════════ GITHUB STORAGE ════════
+const GH = {
+  token:  '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',   // ← paste your Fine-grained PAT here
+  owner:  'karine-allouche',
+  repo:   'human-x-ai-website',
+  path:   'clients/qfree/data.json',
+  branch: 'main'
+};
+let _ghSha = null;
+let _ghSaveTimer = null;
+
+async function ghFetch() {
+  if (!GH.token || GH.token === 'YOUR_GITHUB_PAT_HERE') return null;
+  try {
+    const r = await fetch(
+      `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`,
+      { headers: { 'Authorization': `Bearer ${GH.token}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' } }
+    );
+    if (r.status === 404) return null;
+    if (!r.ok) { console.warn('GH fetch', r.status); return null; }
+    const j = await r.json();
+    _ghSha = j.sha;
+    return JSON.parse(atob(j.content.replace(/\s/g, '')));
+  } catch(e) { console.warn('GH load error', e); return null; }
+}
+
+async function ghPush() {
+  if (!GH.token || GH.token === 'YOUR_GITHUB_PAT_HERE') return;
+  const data = {
+    qf_comments:       S.comments       || {},
+    qf_checks:         S.checks         || {},
+    qf_phaseDates:     S.phaseDates     || {},
+    qf_docs:           S.docs           || [],
+    qf_docUrls:        S.docUrls        || {},
+    qf_submitted_docs: S.qfDocs         || [],
+    qf_hxaDocs:        S.hxaDocs        || [],
+    qf_meeting_notes:  S.meetingNotes   || [],
+    qf_comms_items:    S.commsItems     || [],
+    qf_stepLinks:      S.stepLinks      || {}
+  };
+  const body = {
+    message: 'Portal sync · ' + new Date().toISOString().slice(0,16).replace('T',' '),
+    content:  btoa(unescape(encodeURIComponent(JSON.stringify(data)))),
+    branch:   GH.branch
+  };
+  if (_ghSha) body.sha = _ghSha;
+  try {
+    const r = await fetch(
+      `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`,
+      { method: 'PUT', headers: { 'Authorization': `Bearer ${GH.token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, body: JSON.stringify(body) }
+    );
+    if (r.status === 409) { await ghFetch(); ghPush(); return; } // SHA conflict — retry
+    const result = await r.json();
+    if (result.content) _ghSha = result.content.sha;
+  } catch(e) { console.warn('GH save error', e); }
+}
+
+function scheduledGhSave() {
+  clearTimeout(_ghSaveTimer);
+  _ghSaveTimer = setTimeout(ghPush, 2000);  // batch writes — push 2 s after last change
+}
+
 // ════════ STATE ════════
 function load(k, fb) { try { const v = localStorage.getItem(k); return v !== null ? JSON.parse(v) : fb; } catch { return fb; } }
-function save(k, v)  { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+function save(k, v)  { try { localStorage.setItem(k, JSON.stringify(v)); scheduledGhSave(); } catch {} }
 
 let S = {
   comments:     load('qf_comments', {}),
@@ -892,7 +954,7 @@ let S = {
 // ════════ AUTH ════════
 document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
-function doLogin() {
+async function doLogin() {
   const pw = document.getElementById('pw-input').value;
   if (pw === PASS_ADMIN) {
     ROLE = 'admin';
@@ -905,6 +967,33 @@ function doLogin() {
   applyRole(ROLE);
   document.getElementById('login-page').style.display = 'none';
   document.getElementById('app').style.display = 'block';
+
+  // Show a loading overlay while we pull the latest data from GitHub
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:var(--light);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px';
+  overlay.innerHTML = `<div style="font-family:var(--serif);font-size:22px;color:var(--black)">Human × AI</div><div style="font-size:13px;color:var(--muted);letter-spacing:.06em">Loading portal data…</div>`;
+  document.body.appendChild(overlay);
+
+  // Pull latest data from GitHub (source of truth)
+  const ghData = await ghFetch();
+  if (ghData) {
+    const keys = ['qf_comments','qf_checks','qf_phaseDates','qf_docs','qf_docUrls',
+                  'qf_submitted_docs','qf_hxaDocs','qf_meeting_notes','qf_comms_items','qf_stepLinks'];
+    keys.forEach(k => { if (ghData[k] !== undefined) localStorage.setItem(k, JSON.stringify(ghData[k])); });
+    // Re-hydrate S from freshly written localStorage
+    S.comments     = load('qf_comments', {});
+    S.checks       = load('qf_checks', {});
+    S.phaseDates   = load('qf_phaseDates', {});
+    S.docs         = load('qf_docs', []);
+    S.docUrls      = load('qf_docUrls', {});
+    S.qfDocs       = load('qf_submitted_docs', []);
+    S.hxaDocs      = load('qf_hxaDocs', []);
+    S.meetingNotes = load('qf_meeting_notes', []);
+    S.commsItems   = load('qf_comms_items', []);
+    S.stepLinks    = load('qf_stepLinks', {});
+  }
+
+  overlay.remove();
   renderAll();
 }
 
@@ -963,12 +1052,6 @@ function navToKeyDocs() {
   showPage('project', document.querySelectorAll('.nav-link')[1]);
   const tab = document.querySelector('.section-tab:nth-child(4)');
   if (tab) showSection('documents', tab);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-function navToCalendar() {
-  showPage('project', document.querySelectorAll('.nav-link')[1]);
-  const tab = document.querySelector('.section-tab:nth-child(1)');
-  if (tab) showSection('calendar', tab);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function navToComms() {
@@ -1275,21 +1358,21 @@ function renderDocs() {
       <div class="docs-grid">
         ${DOCS_METHODOLOGY.map(docCard).join('')}
         ${S.docs.map(docCard).join('')}
+        <div class="add-doc-card admin-only" onclick="openModal('doc-modal')"><div class="plus">＋</div><p>Add document</p></div>
       </div>
     </div>
-    ${(S.hxaDocs && S.hxaDocs.length) ? `
-    <div class="docs-section">
-      <div class="docs-section-label">Human × AI — Shared Documents</div>
-      <div class="docs-grid">
-        ${S.hxaDocs.map(docCard).join('')}
-      </div>
-    </div>` : ''}
     <div class="docs-section" id="docs-notes-section">
-      <div class="docs-section-label">Meeting Notes</div>
+      <div class="docs-section-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Meeting Notes</span>
+        <button class="btn-sm-ghost admin-only" onclick="openModal('note-modal')" style="font-size:10px">+ Add Note</button>
+      </div>
       <div id="meeting-notes-container"></div>
     </div>
     <div class="docs-section" id="docs-comms-section">
-      <div class="docs-section-label">Communications</div>
+      <div class="docs-section-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Communications</span>
+        <button class="btn-sm-ghost admin-only" onclick="openModal('comms-modal')" style="font-size:10px">+ Add Communication</button>
+      </div>
       <div id="comms-container"></div>
     </div>`;
   // Render notes and comms into their new containers
@@ -1572,7 +1655,6 @@ function saveHxaDoc() {
   renderAdminStepLinks();
   populateLinkSelectors();
   renderTimeline();
-  renderDocs();
 }
 
 function deleteHxaDoc(idx) {
@@ -1584,7 +1666,6 @@ function deleteHxaDoc(idx) {
   renderDashboardNewDocs();
   populateLinkSelectors();
   renderAdminStepLinks();
-  renderDocs();
 }
 
 // Returns steps linked to a given doc name
@@ -1747,7 +1828,9 @@ function renderMeetingNotes() {
   if (!container) return;
   const isAdmin = ROLE === 'admin';
   const notes = (S.meetingNotes || []).slice().reverse(); // newest first
-  const addBtn = ''; // Meeting notes are added from the Admin page only
+  const addBtn = isAdmin
+    ? `<div style="margin-bottom:20px"><button class="btn-solid" onclick="openModal('note-modal')">+ Add Meeting Note</button></div>`
+    : '';
   if (!notes.length) {
     container.innerHTML = addBtn + `<div style="font-size:13px;color:var(--muted);padding:8px 0">No meeting notes yet.</div>`;
     return;
@@ -1924,7 +2007,9 @@ function renderComms() {
   if (!container) return;
   const isAdmin = ROLE === 'admin';
   const items = (S.commsItems || []).slice().reverse(); // newest first
-  const addBtn = ''; // Communications are added from the Admin page only
+  const addBtn = isAdmin
+    ? `<div style="margin-bottom:20px"><button class="btn-solid" onclick="openModal('comms-modal')">+ Add Communication</button></div>`
+    : '';
   if (!items.length) {
     container.innerHTML = addBtn + `<div style="font-size:13px;color:var(--muted);padding:8px 0">No communications posted yet. Use this tab to share draft messages and framing guidance with the Q-Free team.</div>`;
     return;
