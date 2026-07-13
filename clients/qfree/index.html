@@ -976,6 +976,7 @@ async function doLogin() {
 
   overlay.remove();
   renderAll();
+  jbPush(); // sync current state to cloud on every login
 }
 
 function applyRole(role) {
