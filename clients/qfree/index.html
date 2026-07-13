@@ -874,34 +874,23 @@ const DOCS_METHODOLOGY = [
   {name:'Judgment Architecture Template (blank)', url:'#', desc:'Framework for Automate / Assist / Human / Never decision boundaries', type:'Advisor IP', icon:'📐'},
 ];
 
-// ════════ GITHUB STORAGE ════════
-const GH = {
-  token:  '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',   // ← paste your Fine-grained PAT here
-  owner:  'karine-allouche',
-  repo:   'human-x-ai-website',
-  path:   'clients/qfree/data.json',
-  branch: 'main'
+// ════════ JSONBIN STORAGE ════════
+const JB = {
+  key: '$2a$10$UgiguN.eCiFvwS16/qpJd.rRvgC5Gpim5ZlO/y4uHKXrEq9wIGYiy',
+  url: 'https://api.jsonbin.io/v3/b/6a54bbfef5f4af5e298790c7'
 };
-let _ghSha = null;
-let _ghSaveTimer = null;
+let _jbSaveTimer = null;
 
-async function ghFetch() {
-  if (!GH.token || GH.token === 'YOUR_GITHUB_PAT_HERE') return null;
+async function jbFetch() {
   try {
-    const r = await fetch(
-      `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`,
-      { headers: { 'Authorization': `Bearer ${GH.token}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' } }
-    );
-    if (r.status === 404) return null;
-    if (!r.ok) { console.warn('GH fetch', r.status); return null; }
+    const r = await fetch(JB.url + '/latest', { headers: { 'X-Master-Key': JB.key } });
+    if (!r.ok) { console.warn('JB fetch', r.status); return null; }
     const j = await r.json();
-    _ghSha = j.sha;
-    return JSON.parse(atob(j.content.replace(/\s/g, '')));
-  } catch(e) { console.warn('GH load error', e); return null; }
+    return j.record || null;
+  } catch(e) { console.warn('JB load error', e); return null; }
 }
 
-async function ghPush() {
-  if (!GH.token || GH.token === 'YOUR_GITHUB_PAT_HERE') return;
+async function jbPush() {
   const data = {
     qf_comments:       S.comments       || {},
     qf_checks:         S.checks         || {},
@@ -914,31 +903,23 @@ async function ghPush() {
     qf_comms_items:    S.commsItems     || [],
     qf_stepLinks:      S.stepLinks      || {}
   };
-  const body = {
-    message: 'Portal sync · ' + new Date().toISOString().slice(0,16).replace('T',' '),
-    content:  btoa(unescape(encodeURIComponent(JSON.stringify(data)))),
-    branch:   GH.branch
-  };
-  if (_ghSha) body.sha = _ghSha;
   try {
-    const r = await fetch(
-      `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`,
-      { method: 'PUT', headers: { 'Authorization': `Bearer ${GH.token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, body: JSON.stringify(body) }
-    );
-    if (r.status === 409) { await ghFetch(); ghPush(); return; } // SHA conflict — retry
-    const result = await r.json();
-    if (result.content) _ghSha = result.content.sha;
-  } catch(e) { console.warn('GH save error', e); }
+    await fetch(JB.url, {
+      method: 'PUT',
+      headers: { 'X-Master-Key': JB.key, 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  } catch(e) { console.warn('JB save error', e); }
 }
 
-function scheduledGhSave() {
-  clearTimeout(_ghSaveTimer);
-  _ghSaveTimer = setTimeout(ghPush, 2000);  // batch writes — push 2 s after last change
+function scheduledJbSave() {
+  clearTimeout(_jbSaveTimer);
+  _jbSaveTimer = setTimeout(jbPush, 2000);
 }
 
 // ════════ STATE ════════
 function load(k, fb) { try { const v = localStorage.getItem(k); return v !== null ? JSON.parse(v) : fb; } catch { return fb; } }
-function save(k, v)  { try { localStorage.setItem(k, JSON.stringify(v)); scheduledGhSave(); } catch {} }
+function save(k, v)  { try { localStorage.setItem(k, JSON.stringify(v)); scheduledJbSave(); } catch {} }
 
 let S = {
   comments:     load('qf_comments', {}),
@@ -974,8 +955,8 @@ async function doLogin() {
   overlay.innerHTML = `<div style="font-family:var(--serif);font-size:22px;color:var(--black)">Human × AI</div><div style="font-size:13px;color:var(--muted);letter-spacing:.06em">Loading portal data…</div>`;
   document.body.appendChild(overlay);
 
-  // Pull latest data from GitHub (source of truth)
-  const ghData = await ghFetch();
+  // Pull latest data from JSONBin (source of truth)
+  const ghData = await jbFetch();
   if (ghData) {
     const keys = ['qf_comments','qf_checks','qf_phaseDates','qf_docs','qf_docUrls',
                   'qf_submitted_docs','qf_hxaDocs','qf_meeting_notes','qf_comms_items','qf_stepLinks'];
