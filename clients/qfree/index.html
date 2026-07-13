@@ -1275,21 +1275,21 @@ function renderDocs() {
       <div class="docs-grid">
         ${DOCS_METHODOLOGY.map(docCard).join('')}
         ${S.docs.map(docCard).join('')}
-        <div class="add-doc-card admin-only" onclick="openModal('doc-modal')"><div class="plus">＋</div><p>Add document</p></div>
       </div>
     </div>
-    <div class="docs-section" id="docs-notes-section">
-      <div class="docs-section-label" style="display:flex;align-items:center;justify-content:space-between">
-        <span>Meeting Notes</span>
-        <button class="btn-sm-ghost admin-only" onclick="openModal('note-modal')" style="font-size:10px">+ Add Note</button>
+    ${(S.hxaDocs && S.hxaDocs.length) ? `
+    <div class="docs-section">
+      <div class="docs-section-label">Human × AI — Shared Documents</div>
+      <div class="docs-grid">
+        ${S.hxaDocs.map(docCard).join('')}
       </div>
+    </div>` : ''}
+    <div class="docs-section" id="docs-notes-section">
+      <div class="docs-section-label">Meeting Notes</div>
       <div id="meeting-notes-container"></div>
     </div>
     <div class="docs-section" id="docs-comms-section">
-      <div class="docs-section-label" style="display:flex;align-items:center;justify-content:space-between">
-        <span>Communications</span>
-        <button class="btn-sm-ghost admin-only" onclick="openModal('comms-modal')" style="font-size:10px">+ Add Communication</button>
-      </div>
+      <div class="docs-section-label">Communications</div>
       <div id="comms-container"></div>
     </div>`;
   // Render notes and comms into their new containers
@@ -1572,6 +1572,7 @@ function saveHxaDoc() {
   renderAdminStepLinks();
   populateLinkSelectors();
   renderTimeline();
+  renderDocs();
 }
 
 function deleteHxaDoc(idx) {
@@ -1583,6 +1584,7 @@ function deleteHxaDoc(idx) {
   renderDashboardNewDocs();
   populateLinkSelectors();
   renderAdminStepLinks();
+  renderDocs();
 }
 
 // Returns steps linked to a given doc name
@@ -1745,9 +1747,7 @@ function renderMeetingNotes() {
   if (!container) return;
   const isAdmin = ROLE === 'admin';
   const notes = (S.meetingNotes || []).slice().reverse(); // newest first
-  const addBtn = isAdmin
-    ? `<div style="margin-bottom:20px"><button class="btn-solid" onclick="openModal('note-modal')">+ Add Meeting Note</button></div>`
-    : '';
+  const addBtn = ''; // Meeting notes are added from the Admin page only
   if (!notes.length) {
     container.innerHTML = addBtn + `<div style="font-size:13px;color:var(--muted);padding:8px 0">No meeting notes yet.</div>`;
     return;
@@ -1924,9 +1924,7 @@ function renderComms() {
   if (!container) return;
   const isAdmin = ROLE === 'admin';
   const items = (S.commsItems || []).slice().reverse(); // newest first
-  const addBtn = isAdmin
-    ? `<div style="margin-bottom:20px"><button class="btn-solid" onclick="openModal('comms-modal')">+ Add Communication</button></div>`
-    : '';
+  const addBtn = ''; // Communications are added from the Admin page only
   if (!items.length) {
     container.innerHTML = addBtn + `<div style="font-size:13px;color:var(--muted);padding:8px 0">No communications posted yet. Use this tab to share draft messages and framing guidance with the Q-Free team.</div>`;
     return;
