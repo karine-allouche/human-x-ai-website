@@ -494,29 +494,29 @@
 
         <!-- RIGHT -->
         <div>
-          <!-- Quick access -->
-          <div class="section-block" style="margin-bottom:14px">
-            <div class="section-header"><div class="section-num">03</div><div class="section-title">Quick Access</div></div>
-            <div class="section-body" style="padding:13px 18px">
-              <a href="#" onclick="navToPrePhase();return false" class="quick-link">→ Pre-Phase Checklist — We are here</a>
-              <a id="btn-book" href="#" target="_blank" rel="noopener" class="quick-link">Book a Meeting with Karine →</a>
-            </div>
-          </div>
-
           <!-- New from Human × AI -->
           <div class="section-block" style="margin-bottom:14px" id="dash-new-docs-block">
             <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 14px">
-              <div><div class="section-num">04</div><div class="section-title">New from Human × AI</div></div>
+              <div><div class="section-num">03</div><div class="section-title">New from Human × AI</div></div>
               <a href="#" onclick="navToKeyDocs();return false" style="font-size:12px;color:var(--muted);text-decoration:underline;text-underline-offset:2px;white-space:nowrap">View all →</a>
             </div>
             <div style="padding:0 20px 14px" id="dash-new-docs"><!-- rendered by JS --></div>
+          </div>
+
+          <!-- Quick access -->
+          <div class="section-block" style="margin-bottom:14px">
+            <div class="section-header"><div class="section-num">04</div><div class="section-title">Quick Access</div></div>
+            <div class="section-body" style="padding:13px 18px">
+              <a href="#" onclick="navToCalendar();return false" class="quick-link">→ Phase 1 Calendar — We are here</a>
+              <a id="btn-book" href="#" target="_blank" rel="noopener" class="quick-link">Book a Meeting with Karine →</a>
+            </div>
           </div>
 
           <!-- DareOnAI -->
           <div class="dareonai-block">
             <div class="section-header">
               <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-                <div><div class="section-num">04</div><div class="section-title">DareOnAI</div></div>
+                <div><div class="section-num">05</div><div class="section-title">DareOnAI</div></div>
                 <span class="dareonai-tag">Coming soon</span>
               </div>
             </div>
@@ -536,7 +536,7 @@
       <div id="dash-latest-note" style="display:none;margin-top:28px">
         <div class="section-block">
           <div class="section-header" style="display:flex;align-items:center;justify-content:space-between">
-            <div><div class="section-num">05</div><div class="section-title">Latest Meeting Note</div></div>
+            <div><div class="section-num">06</div><div class="section-title">Latest Meeting Note</div></div>
             <a href="#" onclick="navToMeetingNotes();return false" style="font-size:12px;color:var(--muted);text-decoration:underline;text-underline-offset:2px">View all →</a>
           </div>
           <div class="section-body">
@@ -555,7 +555,7 @@
     <div class="page-inner">
       <div class="page-eyebrow">Phase 1 · SOW-002</div>
       <div class="page-title">Capability Recomposition Pilot.</div>
-      <div class="page-sub">The discipline is the sequence. Pre-phase → three workshops → board-ready Capability Recomposition Brief.</div>
+      <div class="page-sub">The discipline is the sequence. Prework → board checkpoint (15 Sept) → four workshops → convergence &amp; readout. Two lines, one process — run separately, then converging.</div>
       <div class="section-tabs">
         <button class="section-tab active" onclick="showSection('calendar', this)">Calendar View</button>
         <button class="section-tab" onclick="showSection('timeline', this)">Checklist &amp; Timeline</button>
@@ -756,73 +756,74 @@ let ROLE = null; // 'admin' | 'client'
 
 // ════════ PHASE GROUPINGS (maps dashboard phases → timeline items) ════════
 const PHASE_GROUPS = [
-  { key:'prephase', label:'Prework',               short:'Prework', sub:'Prework · 26 Aug – 9 Sept',  defaultDate:'26 Aug – 9 Sept 2026 · strategic objectives, workflows, org baseline', tlIds:['contracts','comms-enable','friction-survey'] },
-  { key:'week1',    label:'Board Checkpoint',      short:'Board',   sub:'Board checkpoint · Sep 15',  defaultDate:'September 15, 2026 · scope · framework · ownership · plan',        tlIds:['workshop1'] },
-  { key:'week2',    label:'Workshops 1–4',         short:'W1–4',    sub:'Workshops · Oct',            defaultDate:'w/c 5 Oct – w/c 26 Oct 2026 · four workshops, both lines',   tlIds:['workshop2'] },
-  { key:'week3',    label:'Convergence & Readout', short:'Conv',    sub:'Convergence & readout · Nov',defaultDate:'w/c 2 Nov – w/c 9 Nov 2026 · lines converge · readout to James', tlIds:['workshop3'] },
+  { key:'prework',     label:'Prework',               short:'Prework', sub:'Prework · 26 Aug – 9 Sept',   defaultDate:'26 Aug – 9 Sept 2026 · objectives, workflows, org baseline', tlIds:['setup','enablement','survey','prework'] },
+  { key:'board',       label:'Board Checkpoint',      short:'Board',   sub:'Board checkpoint · Sep 15',   defaultDate:'September 15, 2026 · scope · framework · ownership · plan', tlIds:['board'] },
+  { key:'workshops',   label:'Workshops 1–4',         short:'W1–4',    sub:'Workshops · October',         defaultDate:'w/c 5 Oct – w/c 26 Oct 2026 · four workshops, both lines', tlIds:['workshops'] },
+  { key:'convergence', label:'Convergence & Readout', short:'Conv',    sub:'Convergence & readout · Nov', defaultDate:'w/c 2 Nov – w/c 9 Nov 2026 · lines converge · readout to James', tlIds:['convergence'] },
 ];
 
 // ════════ TIMELINE DATA ════════
+// done:true marks a step completed so far — it renders greyed and counts toward progress.
 const TIMELINE = [
-  { id:'contracts', num:'01', name:'Pre-Phase — Contracts & Setup', dates:'June 2026', status:'active',
-    desc:'Execute all agreements and confirm the engagement structure. Nothing in Phase 1 starts before these are signed.',
+  { id:'setup', num:'01', name:'Setup & Contracts', dates:'Complete', status:'done',
+    desc:'Agreements executed and the working environment stood up. Everything here is done.',
     checklist:[
-      {id:'nda-msa',        text:'Execute NDA and MSA (Q-Free Norge AS ↔ Human × AI Labs)', owner:'Karine + James', note:'Signed June 17, 2026 ✓'},
-      {id:'sow002',         text:'Execute SOW-002', owner:'Karine + James', note:'Signed June 17, 2026 ✓'},
-      {id:'board-deck',     text:'Pressure-test board deck and AI strategy narrative with Jan Arne', owner:'Karine + Jan Arne', note:'June · CEO visit week of Jun 9'},
-      {id:'core-team',      text:'Define core team: Internal Champion confirmed; FP&A, HR, and Data & AI engineer named', owner:'Jan Arne + Karine', note:'June – early July', star:true},
-      {id:'friction-scope', text:'Scope friction interview targets for the pilot organisation', owner:'Jan Arne + Karine', note:'July'},
-      {id:'start-date',     text:'Confirm Phase 1 start date', owner:'Jan Arne + James', note:'August 24, 2026 ✓', star:true},
+      {id:'agreements',  text:'NDA, MSA, SOW-001 and SOW-002 signed and held (Adobe Sign)', owner:'Karine + James', note:'Signed ✓', done:true},
+      {id:'sow001-live', text:'SOW-001 active — billing to the 15 September board', owner:'Karine + James', note:'Running ✓', done:true, star:true},
+      {id:'sheet',       text:'Shared workspace access granted (Qfree Core LT → Jan-Arne, Marco)', owner:'Karine', note:'Granted ✓', done:true},
+      {id:'env',         text:'Claude Organization Project stood up as the working environment', owner:'Kim', note:'Before kickoff ✓', done:true},
     ]},
-  { id:'comms-enable', num:'02', name:'Pre-Phase — Comms & Team Enablement', dates:'Kickoff −3 to −2 weeks', status:'upcoming',
-    desc:'Frame the mandate for the teams. Ensure every workshop room is composed correctly and every participant knows what is expected of them before they walk in.',
+  { id:'enablement', num:'02', name:'Kickoff & Team Enablement', dates:'26 August 2026', status:'active',
+    desc:'The last fixed point before prework. Seats confirmed, teams briefed, and everything the lines need to run unsupervised landed in the kickoff hour.',
     checklist:[
-      {id:'kickoff-comm',   text:"Send kickoff communication from Jan Arne — 'Don't apply AI to your current workflow. Rethink how the function works.'", owner:'Jan Arne', note:'Kickoff −3 weeks'},
-      {id:'workshop-guide', text:'Distribute Pilot Recomposition Workshop Guide + Participant Pre-Read', owner:'Karine', note:'Kickoff −3 weeks'},
-      {id:'qa-session',     text:'Hold Q&A session with core team (60 min) — methodology, templates, roles', owner:'Karine + core team', note:'Kickoff −2 weeks'},
-      {id:'participant-val',text:'Validate participant list: 5–7 per room, actual drivers only, no passive observers, boundary partners confirmed', owner:'Jan Arne + Karine', note:'Kickoff −2 weeks'},
-      {id:'workshop-cal',   text:'Lock final workshop calendar: three workshop slots + weekly Jan Arne sync + async review slots', owner:'Jan Arne', note:'Kickoff −2 weeks', star:true},
+      {id:'deck',      text:'Kickoff deck built and sent to Jan-Arne', owner:'Karine', note:'Done ✓', done:true},
+      {id:'seats',     text:'All seats named and confirmed by their owners (24 Aug roster)', owner:'Jan-Arne + leaders', note:'Done ✓', done:true, star:true},
+      {id:'briefing',  text:'Seat briefing notes issued — all eleven roles', owner:'Karine', note:'23 Aug ✓', done:true},
+      {id:'kickoff',   text:'Hold kickoff — process, seats and plan', owner:'Jan-Arne + Karine + Roger + Marco', note:'26 Aug · 17:00–18:00 CEST', star:true},
+      {id:'brief-teams',text:'Decide who briefs the engineering teams — in whose name, which slides, by when', owner:'Roger, Marco'},
+      {id:'pm-cover',  text:'Confirm cover for the Tolling product-manager seat to end September', owner:'Roger'},
     ]},
-  { id:'friction-survey', num:'03', name:'Pre-Phase — Friction Survey', dates:'Kickoff −2 to −1 week', status:'upcoming',
-    desc:'The survey surfaces what the workshops work on. Results feed Workshop 1 — and give the wider organisation a reason to believe.',
+  { id:'survey', num:'03', name:'Velocity & Friction Survey', dates:'This week – 2 Sept', status:'active',
+    desc:'Anonymous survey (MS Forms) run on Q-Free’s side. Themes feed the prework and the first workshop.',
     checklist:[
-      {id:'s1-launch',       text:'Launch friction survey to pilot organisation participants', owner:'Jan Arne + Karine', note:'Kickoff −2 weeks', star:true},
-      {id:'s2-synthesis',    text:'Synthesise survey results: friction by workflow, R&R gaps, broken system items', owner:'Karine + Jan Arne', note:'Kickoff −1 week'},
-      {id:'s3a-participants',text:'Send results to survey participants: thank them, show what was heard, say what happens next', owner:'Jan Arne', note:'Kickoff −1 week'},
-      {id:'s3b-managers',    text:'Share full synthesis with workshop managers (sent with Workshop 1 pre-read)', owner:'Karine + Jan Arne', note:'Kickoff −1 week'},
-      {id:'s3c-org',         text:"Send org-wide message: 'We are looking at workflows to make your job easier'", owner:'Jan Arne', note:'Kickoff −1 week'},
+      {id:'sv-review',  text:'Review survey instrument and drop item 5', owner:'Karine', note:'Done ✓', done:true},
+      {id:'sv-build',   text:'Build in MS Forms — anonymous, names not recorded', owner:'Jan-Arne', note:'Done ✓', done:true},
+      {id:'sv-qa',      text:'Content QA before distribution', owner:'Kim'},
+      {id:'sv-distribute',text:'Distribute survey to both lines', owner:'Q-Free', star:true},
+      {id:'sv-synthesis',text:'First-pass synthesis of themes', owner:'AI champions (Kim, Aloys)', note:'During prework'},
     ]},
-  { id:'workshop1', num:'04', name:'Week 1 — Workshop 1: Frame & Current State', dates:'August 24, 2026', status:'upcoming',
-    desc:"Reject 'apply AI to what we have' out loud. Define the one overarching KPI, map capabilities as outcomes, map current workflows honestly — handoffs, delays, workarounds.",
+  { id:'prework', num:'04', name:'Prework — 26 Aug to 9 Sept', dates:'26 Aug – 9 Sept 2026', status:'upcoming',
+    desc:'Prework carries the facts; the workshops do the thinking. Runs without Karine (off-pocket 29 Aug – 9 Sept). The AI champions hold the future-state challenge.',
     checklist:[
-      {id:'w1-kpi',      text:'Define the one overarching KPI for the pilot organisation'},
-      {id:'w1-caps',     text:'Map capabilities as outcomes — not job titles, not workflows'},
-      {id:'w1-workflows',text:'Map current workflows honestly: handoffs, delays, workarounds — as they actually happen'},
-      {id:'w1-survey',   text:'Review friction interview findings and Survey Results Synthesis'},
-      {id:'w1-friction', text:'Produce Friction Map v1 for the pilot organisation', owner:'Core team', note:'Output document', star:true},
-      {id:'w1-feedback', text:'Send workshop outputs to Karine', owner:'Core team', note:'≤24h after workshop'},
-      {id:'w1-baseline', text:'Data & Insights: begin baseline metrics per workflow + draft uplift estimates', owner:'Data & Insights', note:'Between W1–W2'},
+      {id:'pw-objectives',text:'Define strategic objectives and KPIs per line', owner:'Roger, Marco', star:true},
+      {id:'pw-carve',    text:'Carve ~4 workflows per line — by technology, feature or process step', owner:'Leaders + process owners'},
+      {id:'pw-describe', text:'Describe current workflows as they actually run — workarounds included', owner:'Process owners'},
+      {id:'pw-baseline', text:'Capture the organisation baseline', owner:'Data owners'},
+      {id:'pw-handover', text:'Weekly update #3 and handover note — what the champions hold while Karine is away', owner:'Karine', note:'Thu 27 Aug'},
+      {id:'pw-submit',   text:'Submit first prep document', owner:'Roger, Marco', note:'9 Sept', star:true},
     ]},
-  { id:'workshop2', num:'05', name:'Week 2 — Workshop 2: Target Workflows & Decision Boundaries', dates:'August 31, 2026', status:'upcoming',
-    desc:"Draft the target workflow for each current workflow. Classify every step: Autonomous / Augmented / Human-essential. 'Classified, not cut.' Name workflow owners.",
+  { id:'board', num:'05', name:'Board Checkpoint — 15 September', dates:'10 – 15 September 2026', status:'upcoming',
+    desc:'The board sees scope, framework, ownership and plan — no productivity, capacity or headcount numbers. The 10/11 Sept session is a sign-off, not a review.',
     checklist:[
-      {id:'w2-target',    text:'Draft target workflow for each current workflow on the Friction Map'},
-      {id:'w2-allocation',text:'Complete Workflow Allocation template: pre/post organisation structure for the pilot', owner:'Core team', note:'Output document', star:true},
-      {id:'w2-judgment',  text:'Complete Judgment Architecture template: Automate / Assist / Human / Never per step', owner:'Core team', note:'Output document', star:true},
-      {id:'w2-owners',    text:'Name workflow owners for each target workflow'},
-      {id:'w2-feedback',  text:'Send outputs to Karine', owner:'Core team', note:'≤24h after workshop'},
-      {id:'w2-cost',      text:'FP&A + HR: begin cost model for from→to organisation design', owner:'FP&A + HR', note:'Starts after W2 · deliver before W3'},
-      {id:'w2-uplift',    text:'Data & Insights: finalise productivity uplift estimate per target workflow', owner:'Data & Insights', note:'Deliver before W3'},
+      {id:'bd-objectives',text:'Strategic objectives challenged — last gate before the board', owner:'Joint · slot held', note:'10 / 11 Sept', star:true},
+      {id:'bd-pack',     text:'Assemble the board pack', owner:'Karine + Jan-Arne', note:'14 Sept'},
+      {id:'bd-meeting',  text:'Board meeting — scope, framework, ownership and plan', owner:'James, Jan-Arne', note:'15 Sept', star:true},
     ]},
-  { id:'workshop3', num:'06', name:'Week 3 — Workshop 3 + Readout', dates:'September 7, 2026', status:'upcoming',
-    desc:'Review ROI projection. Prioritise first workflow(s), agree migration sequence, outline the Brief. Then: 90-min readout with Jan Arne and James Barkman — walk the document, not slides.',
+  { id:'workshops', num:'06', name:'Workshops 1–4 — October', dates:'w/c 5 Oct – w/c 26 Oct 2026', status:'upcoming',
+    desc:'Two lines, one process — run separately. Each workshop iterates on the last. Roughly four workflows per line.',
     checklist:[
-      {id:'w3-roi',      text:'Review ROI projection: workflow optimisation gains + pre/post org design impact'},
-      {id:'w3-prioritise',text:'Prioritise first workflow(s) and agree migration sequence'},
-      {id:'w3-brief',    text:'Produce Capability Recomposition Brief (board-ready): KPI · Friction Map · current→target workflows · ROI · first workflow owner named', owner:'Core team', note:'End of Week 3', star:true},
-      {id:'w3-feedback', text:'Send outputs to Karine', owner:'Core team', note:'≤24h after workshop'},
-      {id:'w3-readout',  text:'Readout session (90 min) — Jan Arne + James Barkman + invited stakeholders · walk the Brief, not slides', owner:'Core team + Karine', note:'End of Week 3', star:true},
-      {id:'w3-advisory', text:'Private Capability Advisory: team strengths, gaps, and structural decisions required before Phase 2', owner:'Karine', note:'After readout', star:true},
+      {id:'ws1', text:'Workshop 1 — strategic objectives, measurement baseline, first workflows', note:'w/c 5 Oct', star:true},
+      {id:'ws2', text:'Workshop 2 — remaining workflows, judgment allocation, hand-offs', note:'w/c 12 Oct'},
+      {id:'ws3', text:'Workshop 3 — effort, capacity, capability · Finance joins', note:'w/c 19 Oct'},
+      {id:'ws4', text:'Workshop 4 — organisation, governance, future-state roles · with HR', note:'w/c 26 Oct'},
+      {id:'ws-pm', text:'Tolling product manager joins Workshop 3 to verify and deep-dive the hand-off', owner:'Roger’s PM', note:'w/c 19 Oct'},
+    ]},
+  { id:'convergence', num:'07', name:'Convergence & Readout — November', dates:'w/c 2 Nov – w/c 9 Nov 2026', status:'upcoming',
+    desc:'The two lines compare and share what works. Then the readout to James, and the decision on whether and where this expands.',
+    checklist:[
+      {id:'cv-converge', text:'Convergence — the two lines compare, share what works, and identify synergies', note:'w/c 2 Nov'},
+      {id:'cv-readout',  text:'Readout to James — framework, prioritised workflows, and how success is measured', owner:'Joint', note:'w/c 9 Nov', star:true},
+      {id:'cv-expand',   text:'Decision on whether and where this expands', owner:'James, Jan-Arne'},
     ]},
 ];
 
@@ -1056,6 +1057,12 @@ function navToKeyDocs() {
   if (tab) showSection('documents', tab);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+function navToCalendar() {
+  showPage('project', document.querySelectorAll('.nav-link')[1]);
+  const tab = document.querySelector('.section-tab:nth-child(1)');
+  if (tab) showSection('calendar', tab);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 function navToComms() {
   showPage('project', document.querySelectorAll('.nav-link')[1]);
   const tab = document.querySelector('.section-tab:nth-child(4)');
@@ -1140,7 +1147,7 @@ function calcPhaseProgress() {
       const tl = TIMELINE.find(t => t.id === tlId);
       if (!tl) continue;
       total += tl.checklist.length;
-      done  += tl.checklist.filter(c => !!S.checks[tlId + '__' + c.id]).length;
+      done  += tl.checklist.filter(c => !!S.checks[tlId + '__' + c.id] || c.done).length;
     }
     const pct = total ? Math.round(done / total * 100) : 0;
     let status;
@@ -1157,7 +1164,7 @@ function calcOverallProgress(phases) {
   let total = 0, done = 0;
   TIMELINE.forEach(tl => {
     total += tl.checklist.length;
-    done  += tl.checklist.filter(c => !!S.checks[tl.id + '__' + c.id]).length;
+    done  += tl.checklist.filter(c => !!S.checks[tl.id + '__' + c.id] || c.done).length;
   });
   return total ? Math.round(done / total * 100) : 0;
 }
@@ -1210,7 +1217,7 @@ function updateMiniProgress(itemId) {
   const tl    = TIMELINE.find(t => t.id === itemId);
   if (!tl) return;
   const total = tl.checklist.length;
-  const done  = tl.checklist.filter(c => S.checks[itemId + '__' + c.id]).length;
+  const done  = tl.checklist.filter(c => S.checks[itemId + '__' + c.id] || c.done).length;
   const bar   = document.getElementById('mpb-' + itemId);
   const hdr   = document.getElementById('tl-sub-' + itemId);
   if (bar) bar.style.width = (total ? Math.round(done/total*100) : 0) + '%';
@@ -1221,13 +1228,13 @@ function updateMiniProgress(itemId) {
 function renderTimeline() {
   document.getElementById('tl-container').innerHTML = TIMELINE.map(item => {
     const total = item.checklist.length;
-    const done  = item.checklist.filter(c => S.checks[item.id + '__' + c.id]).length;
+    const done  = item.checklist.filter(c => S.checks[item.id + '__' + c.id] || c.done).length;
     const pct   = total ? Math.round(done/total*100) : 0;
     const comments = S.comments[item.id] || [];
 
     const checklistHtml = item.checklist.map(c => {
       const key     = item.id + '__' + c.id;
-      const checked = !!S.checks[key];
+      const checked = !!S.checks[key] || !!c.done;
       const linked  = (S.stepLinks && S.stepLinks[key]) ? S.stepLinks[key] : [];
       const linkedHtml = linked.length ? `<div class="check-linked-docs">${linked.map(l => `<a class="check-linked-doc" href="${l.url}" target="_blank">${l.icon||'📄'} ${l.name}</a>`).join('')}</div>` : '';
       return `<div class="check-item">
@@ -1360,21 +1367,21 @@ function renderDocs() {
       <div class="docs-grid">
         ${DOCS_METHODOLOGY.map(docCard).join('')}
         ${S.docs.map(docCard).join('')}
-        <div class="add-doc-card admin-only" onclick="openModal('doc-modal')"><div class="plus">＋</div><p>Add document</p></div>
       </div>
     </div>
-    <div class="docs-section" id="docs-notes-section">
-      <div class="docs-section-label" style="display:flex;align-items:center;justify-content:space-between">
-        <span>Meeting Notes</span>
-        <button class="btn-sm-ghost admin-only" onclick="openModal('note-modal')" style="font-size:10px">+ Add Note</button>
+    ${(S.hxaDocs && S.hxaDocs.length) ? `
+    <div class="docs-section">
+      <div class="docs-section-label">Human × AI — Shared Documents</div>
+      <div class="docs-grid">
+        ${S.hxaDocs.map(docCard).join('')}
       </div>
+    </div>` : ''}
+    <div class="docs-section" id="docs-notes-section">
+      <div class="docs-section-label">Meeting Notes</div>
       <div id="meeting-notes-container"></div>
     </div>
     <div class="docs-section" id="docs-comms-section">
-      <div class="docs-section-label" style="display:flex;align-items:center;justify-content:space-between">
-        <span>Communications</span>
-        <button class="btn-sm-ghost admin-only" onclick="openModal('comms-modal')" style="font-size:10px">+ Add Communication</button>
-      </div>
+      <div class="docs-section-label">Communications</div>
       <div id="comms-container"></div>
     </div>`;
   // Render notes and comms into their new containers
@@ -1635,6 +1642,7 @@ function saveHxaDoc() {
   renderAdminStepLinks();
   populateLinkSelectors();
   renderTimeline();
+  renderDocs();
 }
 
 function deleteHxaDoc(idx) {
@@ -1646,6 +1654,7 @@ function deleteHxaDoc(idx) {
   renderDashboardNewDocs();
   populateLinkSelectors();
   renderAdminStepLinks();
+  renderDocs();
 }
 
 // Returns steps linked to a given doc name
@@ -1808,9 +1817,7 @@ function renderMeetingNotes() {
   if (!container) return;
   const isAdmin = ROLE === 'admin';
   const notes = (S.meetingNotes || []).slice().reverse(); // newest first
-  const addBtn = isAdmin
-    ? `<div style="margin-bottom:20px"><button class="btn-solid" onclick="openModal('note-modal')">+ Add Meeting Note</button></div>`
-    : '';
+  const addBtn = ''; // Meeting notes are added from the Admin page only
   if (!notes.length) {
     container.innerHTML = addBtn + `<div style="font-size:13px;color:var(--muted);padding:8px 0">No meeting notes yet.</div>`;
     return;
@@ -1987,9 +1994,7 @@ function renderComms() {
   if (!container) return;
   const isAdmin = ROLE === 'admin';
   const items = (S.commsItems || []).slice().reverse(); // newest first
-  const addBtn = isAdmin
-    ? `<div style="margin-bottom:20px"><button class="btn-solid" onclick="openModal('comms-modal')">+ Add Communication</button></div>`
-    : '';
+  const addBtn = ''; // Communications are added from the Admin page only
   if (!items.length) {
     container.innerHTML = addBtn + `<div style="font-size:13px;color:var(--muted);padding:8px 0">No communications posted yet. Use this tab to share draft messages and framing guidance with the Q-Free team.</div>`;
     return;
